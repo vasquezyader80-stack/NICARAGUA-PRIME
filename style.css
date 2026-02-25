@@ -1,36 +1,70 @@
 :root { --blue: #005aab; --red: #e60045; --white: #fff; --gray: #f1f3f6; }
 body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--gray); overflow-x: hidden; }
 
-/* Splash Screen */
-.splash-screen { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.logo-main span { color: var(--red); }
-.author { letter-spacing: 3px; font-weight: 800; color: #ccc; font-size: 0.7rem; }
+/* --- ERROR DE LA X SOLUCIONADO AQUÍ --- */
+.drawer { 
+    position: fixed; 
+    top: 0; 
+    right: 0; 
+    width: 100%; 
+    height: 100%; 
+    z-index: 9999; 
+    visibility: hidden; /* Esto hace que la X sea invisible e intocable */
+    pointer-events: none; /* Evita que hagas clic accidentalmente */
+    transition: 0.4s;
+}
 
-/* Header y Cacaos */
+.drawer.open { 
+    visibility: visible; 
+    pointer-events: auto; /* Se activa solo cuando abres el menú */
+}
+
+.drawer-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0);
+    transition: 0.4s;
+}
+
+.drawer.open .drawer-overlay { background: rgba(0,0,0,0.5); }
+
+.drawer-content { 
+    position: absolute;
+    right: -100%; /* Totalmente fuera de la pantalla */
+    width: 80%; 
+    height: 100%; 
+    background: #fff; 
+    padding: 25px; 
+    transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+}
+
+.drawer.open .drawer-content { right: 0; }
+
+.close-btn { 
+    background: var(--gray); 
+    border: none; 
+    border-radius: 50%; 
+    width: 40px; 
+    height: 40px; 
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* --- RESTO DEL DISEÑO --- */
 .main-header { background: #fff; padding: 15px; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
 .header-top { display: flex; justify-content: space-between; align-items: center; }
-.cacaos-pill { background: #fff8e1; color: #ffa000; padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; border: 1px solid #ffe082; }
-.search-bar input { width: 100%; padding: 12px; border: none; background: var(--gray); border-radius: 12px; margin-top: 10px; box-sizing: border-box; }
+.logo-text { color: var(--blue); margin: 0; font-weight: 800; }
+.logo-text span { color: var(--red); }
+.cacaos-pill { background: #fff8e1; color: #ffa000; padding: 5px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; border: 1px solid #ffe082; }
 
-/* Grid de Productos */
 .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; padding-bottom: 100px; }
-.card { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.04); border: 1px solid #eee; }
+.card { background: #fff; border-radius: 20px; overflow: hidden; border: 1px solid #eee; }
 .card img { width: 100%; height: 110px; object-fit: cover; }
-.card-body { padding: 10px; }
-.card-body h4 { margin: 0; font-size: 0.85rem; }
-.price-tag { color: var(--red); font-weight: 800; }
 
-/* EL ARREGLO DE LA X Y EL DRAWER */
-.drawer { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; z-index: 2000; transition: 0.4s ease; background: rgba(0,0,0,0.4); display: flex; justify-content: flex-end; }
-.drawer.open { right: 0; }
-.drawer-content { width: 80%; background: #fff; height: 100%; padding: 25px; box-shadow: -5px 0 20px rgba(0,0,0,0.2); position: relative; }
-.drawer-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 20px; }
-.close-btn { background: var(--gray); border: none; border-radius: 50%; width: 35px; height: 35px; font-weight: bold; cursor: pointer; }
-
-/* Navbar */
 .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 12px 0 30px; border-top: 1px solid #eee; z-index: 1000; }
-.n-item { font-size: 0.7rem; color: #888; text-align: center; display: flex; flex-direction: column; }
-.badge { background: var(--red); color: #fff; padding: 2px 6px; border-radius: 50%; font-size: 10px; position: absolute; margin-left: 15px; margin-top: -5px; }
+.badge { background: var(--red); color: #fff; padding: 2px 7px; border-radius: 50%; font-size: 10px; position: absolute; margin-left: 15px; margin-top: -5px; }
 
-/* Botones */
-.btn-action, .btn-buy { width: 100%; padding: 15px; background: var(--blue); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; }
+.splash-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }

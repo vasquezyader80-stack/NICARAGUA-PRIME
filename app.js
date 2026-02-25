@@ -1,80 +1,78 @@
 const NicaApp = {
-    state: JSON.parse(localStorage.getItem('NicaPrime_Store')) || {
-        cacaos: 100,
-        products: [],
-        history: []
+    // 1. CARGA DE DATOS (Persistent Data)
+    state: JSON.parse(localStorage.getItem('NicaMarket_Pro_Data')) || {
+        userName: "Yader Stack",
+        cacaos: 150,
+        products: []
     },
 
     init() {
-        this.render();
         this.updateUI();
-        this.bindEvents();
+        this.renderProducts();
+        console.log("🚀 Tierra Nica Pro: Sistema de persistencia listo.");
     },
 
+    // 2. GUARDADO AUTOMÁTICO
     save() {
-        localStorage.setItem('NicaPrime_Store', JSON.stringify(this.state));
+        localStorage.setItem('NicaMarket_Pro_Data', JSON.stringify(this.state));
+    },
+
+    // 3. REGISTRO DE PRODUCTOS
+    registerProduct() {
+        const nameInput = document.getElementById('p-name');
+        const priceInput = document.getElementById('p-price');
+
+        if (!nameInput.value || !priceInput.value) {
+            alert("Por favor, llena todos los campos");
+            return;
+        }
+
+        const newProduct = {
+            id: Date.now(),
+            name: nameInput.value,
+            price: priceInput.value,
+            seller: this.state.userName
+        };
+
+        this.state.products.push(newProduct);
+        this.state.cacaos += 25; // Recompensa por registro
+        
+        this.save(); // Persistencia inmediata
+        this.renderProducts();
+        this.updateUI();
+
+        // Limpiar campos
+        nameInput.value = '';
+        priceInput.value = '';
+        alert("✅ ¡Producto registrado exitosamente!");
     },
 
     updateUI() {
         document.getElementById('balance-display').innerText = this.state.cacaos;
-        document.getElementById('wallet-total').innerText = this.state.cacaos + " 🪙";
+        document.getElementById('user-name').innerText = this.state.userName;
     },
 
-    addProduct(name, price, category) {
-        const product = { id: Date.now(), name, price, category };
-        this.state.products.push(product);
-        this.state.cacaos += 50;
-        this.state.history.unshift({
-            desc: `Venta/Reg: ${name}`,
-            val: "+50",
-            date: new Date().toLocaleDateString()
-        });
-        this.save();
-        this.render();
-        this.updateUI();
-    },
-
-    render() {
+    renderProducts() {
         const list = document.getElementById('product-list');
-        list.innerHTML = this.state.products.length ? '' : '<p style="grid-column: 1/3; text-align:center;">No hay productos aún.</p>';
-        this.state.products.slice().reverse().forEach(p => {
+        list.innerHTML = '';
+        
+        this.state.products.forEach(p => {
             list.innerHTML += `
                 <div class="product-card">
-                    <small style="color:var(--gold)">${p.category}</small>
-                    <h4 style="margin:5px 0">${p.name}</h4>
-                    <strong style="color:var(--primary)">C$ ${p.price}</strong>
-                </div>
-            `;
-        });
-
-        const historyBox = document.getElementById('history-box');
-        historyBox.innerHTML = '';
-        this.state.history.slice(0, 5).forEach(h => {
-            historyBox.innerHTML += `
-                <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee">
-                    <span>${h.desc}</span>
-                    <b style="color:green">${h.val}</b>
+                    <h4>${p.name}</h4>
+                    <p>C$ ${p.price}</p>
+                    <small>Vendedor: ${p.seller}</small>
                 </div>
             `;
         });
     },
 
-    bindEvents() {
-        document.getElementById('reg-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const n = document.getElementById('p-name').value;
-            const p = document.getElementById('p-price').value;
-            const c = document.getElementById('p-cat').value;
-            this.addProduct(n, p, c);
-            toggleModal('modal-reg');
-            e.target.reset();
-        });
+    resetApp() {
+        if(confirm("¿Seguro que quieres borrar todos los datos guardados?")) {
+            localStorage.removeItem('NicaMarket_Pro_Data');
+            location.reload();
+        }
     }
 };
-
-function toggleModal(id) {
-    const m = document.getElementById(id);
-    m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-}
 
 window.onload = () => NicaApp.init();

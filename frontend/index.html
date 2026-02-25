@@ -3,98 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tierra Nica Pro | Premium</title>
+    <title>Tierra Nica Pro | Mercado Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
-        
-        :root { --brand: #5d2e0a; }
+        :root { --accent: #c2410c; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #000; /* Fondo oscuro para que el cristal resalte */
-            background-image: radial-gradient(circle at 0% 0%, #2d1806 0%, #000 50%);
-            color: white;
-            min-height: 100vh;
+            background: #f8fafc; 
+            background-image: radial-gradient(circle at top right, #fff7ed, #f8fafc);
+            -webkit-tap-highlight-color: transparent;
         }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(25px) saturate(150%);
-            -webkit-backdrop-filter: blur(25px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 32px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        /* Cristal de alta gama */
+        .glass-premium {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
         }
-
-        .btn-premium {
-            background: linear-gradient(135deg, #ff9d42 0%, #8b4513 100%);
-            border: none;
-            box-shadow: 0 10px 20px rgba(139, 69, 19, 0.4);
-            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        /* Efecto de pulsación al tocar (igual que en apps nativas) */
+        .tap-scale:active { transform: scale(0.95); transition: 0.1s; }
+        
+        .cacao-card {
+            background: linear-gradient(135deg, #4e2c0e 0%, #2d1806 100%);
+            box-shadow: 0 10px 25px rgba(45, 24, 6, 0.2);
         }
-
-        .btn-premium:active { transform: scale(0.92); opacity: 0.8; }
-
-        .product-image {
-            background: linear-gradient(45deg, #1a1a1a, #333);
-            border-radius: 24px;
-            position: relative;
-            overflow: hidden;
+        
+        /* Animación suave de entrada */
+        .fade-in-item {
+            animation: slideUp 0.7s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
-
-        /* Animación suave igual al video */
-        .fade-up {
-            animation: fadeUp 0.8s cubic-bezier(0.05, 0.9, 0.1, 1) forwards;
-        }
-
-        @keyframes fadeUp {
+        @keyframes slideUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="p-4 pb-28">
+<body class="pb-28">
 
-    <header class="glass-card p-6 mb-8 flex justify-between items-center mt-4 fade-up">
-        <div>
-            <p class="text-[10px] font-black text-orange-400 uppercase tracking-[0.3em]">Premium Access</p>
-            <input id="userName" type="text" class="bg-transparent text-2xl font-extrabold outline-none text-white w-full" placeholder="Artesano">
-        </div>
-        <div class="text-right">
-            <p class="text-[10px] font-bold opacity-50 uppercase">Balance</p>
-            <div class="flex items-center gap-2">
-                <span id="balance" class="text-3xl font-black text-orange-400">0</span>
-                <span class="text-xl">🍫</span>
+    <nav class="sticky top-0 z-50 p-4 bg-white/30 backdrop-blur-xl border-b border-white/50">
+        <div class="max-w-md mx-auto flex justify-between items-center">
+            <div>
+                <span class="text-[10px] font-black text-orange-900/40 uppercase tracking-[0.2em]">Chinandega Market</span>
+                <input id="userName" type="text" class="bg-transparent text-xl font-extrabold outline-none text-gray-900 w-full" placeholder="Artesano...">
+            </div>
+            <div class="cacao-card px-5 py-2.5 rounded-2xl text-white">
+                <p class="text-[9px] font-bold opacity-60 uppercase">Saldo</p>
+                <div class="flex items-center gap-1 font-black tracking-tighter">
+                    <span id="balance">0</span>
+                    <span class="text-xs">C$</span>
+                </div>
             </div>
         </div>
-    </header>
-
-    <section class="glass-card p-6 mb-10 fade-up" style="animation-delay: 0.1s">
-        <h3 class="text-xs font-bold opacity-40 uppercase mb-4 tracking-widest">Publicar en el Mercado</h3>
-        <div class="space-y-4">
-            <input id="pName" type="text" placeholder="Nombre de la pieza..." class="w-full bg-white/5 p-4 rounded-2xl outline-none border border-white/10 focus:border-orange-500/50 transition-all font-semibold">
-            <div class="flex gap-3">
-                <input id="pPrice" type="number" placeholder="Cacaos" class="w-1/3 bg-white/5 p-4 rounded-2xl outline-none border border-white/10 font-bold text-orange-400">
-                <button onclick="publish()" class="w-2/3 btn-premium rounded-2xl font-black uppercase text-[12px] tracking-widest">Lanzar Producto</button>
-            </div>
-        </div>
-    </section>
-
-    <div id="productGrid" class="grid grid-cols-1 gap-6 mb-20">
-        </div>
-
-    <nav class="fixed bottom-6 left-6 right-6 h-20 glass-card flex justify-around items-center px-8 z-[100]">
-        <button class="text-orange-400 transition-all"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
-        <button class="text-white/20 hover:text-orange-400 transition-all"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></button>
-        <button class="text-white/20 hover:text-orange-400 transition-all" onclick="location.reload()"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
     </nav>
 
+    <main class="max-w-md mx-auto px-6 pt-6 space-y-8">
+        
+        <section class="glass-premium rounded-[2.5rem] p-6 shadow-xl">
+            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-4">Panel de Ventas</h3>
+            <div class="space-y-4">
+                <input id="pName" type="text" placeholder="¿Qué pieza creaste?" class="w-full bg-white/50 p-4 rounded-2xl outline-none border border-transparent focus:border-orange-200 transition-all font-semibold">
+                <div class="flex gap-3">
+                    <input id="pPrice" type="number" placeholder="Precio C$" class="w-1/3 bg-white/50 p-4 rounded-2xl outline-none border border-transparent font-bold text-orange-900">
+                    <button onclick="publish()" class="w-2/3 cacao-card text-white rounded-2xl font-bold tap-scale text-sm uppercase tracking-widest">Publicar</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="productGrid" class="grid grid-cols-1 gap-6">
+            </div>
+    </main>
+
+    <div class="fixed bottom-6 left-6 right-6 z-50">
+        <div class="glass-premium rounded-full h-18 flex justify-around items-center px-10 shadow-2xl py-4">
+            <button class="text-orange-900 tap-scale"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg></button>
+            <button class="text-gray-300 tap-scale" onclick="alert('Funcionalidad en desarrollo')"><svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></button>
+            <button class="text-gray-300 tap-scale" onclick="location.reload()"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
+        </div>
+    </div>
+
     <script>
-        // LÓGICA DE PERSISTENCIA Y MOVIMIENTO
-        let balance = parseInt(localStorage.getItem('user_cacaos') || "500");
+        // Lógica Pro: Sincronización con Córdobas
+        let balance = parseInt(localStorage.getItem('user_cordobas') || "1000");
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('userName').value = localStorage.getItem('user_name') || "Pedro";
+            document.getElementById('userName').value = localStorage.getItem('user_name') || "Artesano";
             document.getElementById('balance').innerText = balance;
             
             document.getElementById('userName').addEventListener('input', (e) => {
@@ -108,19 +101,19 @@
             const data = await res.json();
             const grid = document.getElementById('productGrid');
             grid.innerHTML = data.map((p, i) => `
-                <div class="glass-card p-5 fade-up" style="animation-delay: ${i * 0.1}s">
-                    <div class="product-image h-64 flex items-center justify-center text-7xl mb-5 shadow-inner">
+                <div class="glass-premium rounded-[2.5rem] p-5 fade-in-item" style="animation-delay: ${i * 0.1}s">
+                    <div class="h-56 bg-gradient-to-br from-orange-50 to-white rounded-[2rem] flex items-center justify-center text-6xl shadow-inner mb-4 relative overflow-hidden">
                         🏺
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute top-4 left-4 bg-white/80 px-3 py-1 rounded-full text-[10px] font-black text-orange-900 border border-white">CHINANDEGA</div>
                     </div>
-                    <div class="flex justify-between items-end">
+                    <div class="flex justify-between items-end px-2">
                         <div>
-                            <h3 class="text-2xl font-black text-white">${p.name}</h3>
-                            <p class="text-orange-400/50 text-xs font-bold uppercase tracking-widest">Premium Quality</p>
+                            <h3 class="text-xl font-extrabold text-gray-800">${p.name}</h3>
+                            <p class="text-xs font-bold text-orange-600/50 uppercase tracking-tighter">Hecho a mano</p>
                         </div>
                         <div class="text-right">
-                            <p class="text-3xl font-black text-white">${p.price}<span class="text-sm ml-1 opacity-40 text-orange-400">🍫</span></p>
-                            <button onclick="buy('${p.price}')" class="btn-premium px-6 py-2.5 rounded-xl font-black text-[10px] uppercase mt-2">Adquirir</button>
+                            <p class="text-2xl font-black text-gray-900 tracking-tighter">${p.price}<span class="text-sm ml-0.5 font-bold">C$</span></p>
+                            <button onclick="buy('${p.price}')" class="mt-2 bg-gray-900 text-white text-[10px] font-black px-6 py-2.5 rounded-full uppercase tracking-widest tap-scale shadow-lg">Comprar</button>
                         </div>
                     </div>
                 </div>
@@ -144,11 +137,11 @@
         function buy(cost) {
             if(balance >= cost) {
                 balance -= cost;
-                localStorage.setItem('user_cacaos', balance);
+                localStorage.setItem('user_cordobas', balance);
                 document.getElementById('balance').innerText = balance;
-                alert("✓ Transacción completada");
+                alert("🛒 ¡Compra realizada con éxito!");
             } else {
-                alert("Cacaos insuficientes");
+                alert("❌ Saldo insuficiente en Córdobas.");
             }
         }
     </script>

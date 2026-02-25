@@ -3,36 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tierra Nica Pro</title>
+    <title>NicaMarket Hub | Tierra Nica Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="logo">TierraNica<span>Pro</span></div>
-        <div style="font-weight:bold"><span id="cacao-bal">0</span> 🪙</div>
+    <header class="app-header">
+        <div class="top-row">
+            <div class="location">
+                <small>Entregar en</small>
+                <p>📍 Managua, Nicaragua ▾</p>
+            </div>
+            <div class="user-badge">
+                <span id="cacao-balance">150</span> 🪙
+            </div>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Busca en NicaMarket...">
+        </div>
     </header>
 
-    <div class="categories">
-        <div class="cat-item" style="background: #ffe0eb; color: #e0004d;">🔥 Destacados</div>
-        <div class="cat-item">🧀 Lácteos</div>
-        <div class="cat-item">☕ Café</div>
-        <div class="cat-item">🏺 Artesanías</div>
-    </div>
+    <nav class="categories-scroll">
+        <div class="cat-card active">🔥 Populares</div>
+        <div class="cat-card">🧀 Lácteos</div>
+        <div class="cat-card">☕ Café</div>
+        <div class="cat-card">🍛 Comida</div>
+        <div class="cat-card">🏺 Artesanía</div>
+    </nav>
 
-    <main class="app-container">
-        <h3 style="margin-bottom:20px">Descubrí productos Nicas</h3>
-        <div id="product-list">
+    <main class="feed">
+        <section class="banner-promo">
+            <div class="promo-text">
+                <h2>Envío Gratis</h2>
+                <p>En tu primera compra con Cacaos</p>
             </div>
+        </section>
+
+        <h3 class="section-title">Productos Destacados</h3>
+        <div id="product-grid" class="product-grid">
+            </div>
+
+        <footer class="credits">
+            <p>© 2026 NicaMarket. Todos los derechos reservados.</p>
+            <p>Desarrollado por <strong>Yader Stack & Gemini AI</strong></p>
+        </footer>
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active"><i>🏠</i><span>Inicio</span></button>
-        <button class="nav-item"><i>🔍</i><span>Buscar</span></button>
-        <button class="nav-item"><i>🛍️</i><span>Pedidos</span></button>
-        <button class="nav-item" onclick="alert('Configuración de Cacaos')"><i>👤</i><span>Perfil</span></button>
+        <div class="nav-btn active"><span>🏠</span><small>Inicio</small></div>
+        <div class="nav-btn" onclick="NicaApp.toggleRegister()"><span>📝</span><small>Vender</small></div>
+        <div class="nav-btn"><span>🛍️</span><small>Pedidos</small></div>
+        <div class="nav-btn"><span>👤</span><small>Perfil</small></div>
     </nav>
+
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <h3>Vender Producto</h3>
+            <input type="text" id="new-p-name" placeholder="Nombre del producto">
+            <input type="number" id="new-p-price" placeholder="Precio en C$">
+            <input type="text" id="new-p-img" placeholder="URL de la imagen">
+            <button onclick="NicaApp.addNewProduct()" class="btn-main">Publicar Ahora</button>
+            <button onclick="NicaApp.toggleRegister()" class="btn-link">Cancelar</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

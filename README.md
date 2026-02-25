@@ -14,4 +14,4 @@ Este proyecto es una plataforma para artesanos que utiliza la moneda digital **C
 
 ## 🛠️ Instalación
 1. Subir esta carpeta a **GitHub**.
-2. Conectar con **Vercel** para obtener el link público.
+2. Conectar con **Vercel** para obtener el link público...

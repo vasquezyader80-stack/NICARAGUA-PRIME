@@ -1,94 +1,100 @@
 const PinolApp = {
-    state: JSON.parse(localStorage.getItem('Pinol_DB_Yader')) || {
-        balance: 500,
+    state: JSON.parse(localStorage.getItem('Pinol_Master_Data')) || {
         cart: [],
-        products: [
-            { id: 1, name: "Quesillo La Paz Centro", price: 85, cat: "lácteos", img: "https://images.unsplash.com/photo-1585476482101-789a77490089?w=300" },
-            { id: 2, name: "Cacao con Leche", price: 45, cat: "bebidas", img: "https://images.unsplash.com/photo-1556881286-fc6915169721?w=300" },
-            { id: 3, name: "Café Prestigio", price: 120, cat: "bebidas", img: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=300" },
-            { id: 4, name: "Vigorón Granadino", price: 90, cat: "comida", img: "https://images.unsplash.com/photo-1599974590225-2af2fe2030f2?w=300" }
+        shops: [
+            { id: 101, name: "Super Express", type: "super", time: "15-25 min", ship: 35, img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=500" },
+            { id: 102, name: "Quesillos El Pipe", type: "restaurante", time: "20-30 min", ship: 40, img: "https://images.unsplash.com/photo-1585476482101-789a77490089?w=500" },
+            { id: 103, name: "Farmacias Value", type: "farmacia", time: "10-20 min", ship: 25, img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?w=500" },
+            { id: 104, name: "Artesanías Masaya", type: "tienda", time: "40-60 min", ship: 80, img: "https://images.unsplash.com/photo-1519920101044-899312b9bb82?w=500" }
         ]
     },
 
     init() {
-        setTimeout(() => { document.getElementById('splash').style.display = 'none'; }, 2000);
-        this.render();
-        this.updateUI();
+        setTimeout(() => {
+            document.getElementById('splash').style.display = 'none';
+        }, 2500);
+        this.renderShops();
+        this.sync();
     },
 
-    updateUI() {
-        document.getElementById('user-money').innerText = `C$ ${this.state.balance}`;
-        document.getElementById('cart-count').innerText = this.state.cart.length;
-        localStorage.setItem('Pinol_DB_Yader', JSON.stringify(this.state));
+    sync() {
+        document.getElementById('cart-qty').innerText = this.state.cart.length;
+        localStorage.setItem('Pinol_Master_Data', JSON.stringify(this.state));
     },
 
-    render(items = this.state.products) {
-        const grid = document.getElementById('product-grid');
-        grid.innerHTML = items.map(p => `
-            <div class="card">
-                <img src="${p.img}">
-                <h4>${p.name}</h4>
-                <p>C$ ${p.price}</p>
-                <button onclick="PinolApp.addToCart(${p.id})" style="width:100%; margin-top:8px; border:1px solid #e60045; color:#e60045; background:none; border-radius:5px; font-weight:bold;">Añadir</button>
+    renderShops(items = this.state.shops) {
+        const container = document.getElementById('shop-list');
+        container.innerHTML = items.map(s => `
+            <div class="shop-card" onclick="PinolApp.addToCart('${s.name}')">
+                <img src="${s.img}" class="shop-img">
+                <div class="shop-info">
+                    <h4>${s.name}</h4>
+                    <div class="shop-meta">
+                        <span>⭐ 4.8</span>
+                        <span>•</span>
+                        <span>${s.time}</span>
+                        <span>•</span>
+                        <span class="tag">C$ ${s.ship} Envío</span>
+                    </div>
+                </div>
             </div>
         `).join('');
     },
 
-    registerProduct() {
+    search() {
+        const query = document.getElementById('global-search').value.toLowerCase();
+        const filtered = this.state.shops.filter(s => s.name.toLowerCase().includes(query));
+        this.renderShops(filtered);
+    },
+
+    filter(type) {
+        const filtered = this.state.shops.filter(s => s.type === type);
+        this.renderShops(filtered);
+    },
+
+    saveToLocalStorage() {
         const name = document.getElementById('reg-name').value;
         const price = document.getElementById('reg-price').value;
-        const cat = document.getElementById('reg-cat').value;
+        const type = document.getElementById('reg-type').value;
 
-        if(!name || !price) return alert("Por favor llena los datos");
+        if(!name) return alert("Ingresa el nombre del negocio");
 
-        const newP = {
+        const newShop = {
             id: Date.now(),
-            name,
-            price: parseInt(price),
-            cat,
-            img: "https://via.placeholder.com/300?text=Pinol+app"
+            name: name,
+            type: type,
+            time: "Nuevo",
+            ship: parseInt(price) || 0,
+            img: "https://via.placeholder.com/500x300?text=Pinol+app+Negocio"
         };
 
-        this.state.products.unshift(newP);
-        this.toggleModal();
-        this.render();
-        this.updateUI();
-        alert("¡Producto registrado por Yader Vasquez!");
+        this.state.shops.unshift(newShop);
+        this.sync();
+        this.renderShops();
+        this.closeSellerPanel();
+        alert("¡Negocio registrado exitosamente por Yader Vasquez!");
     },
 
-    addToCart(id) {
-        const p = this.state.products.find(x => x.id === id);
-        this.state.cart.push(p);
-        this.updateUI();
-        alert(`${p.name} al carrito`);
+    addToCart(name) {
+        this.state.cart.push(name);
+        this.sync();
+        alert(`Añadiste productos de ${name} a tu pedido.`);
     },
 
-    toggleModal() {
-        const m = document.getElementById('vendor-modal');
-        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-    },
-
-    toggleCart() { document.getElementById('cart-drawer').classList.toggle('open'); this.renderCart(); },
+    toggleCart() { document.getElementById('cart-drawer').classList.toggle('active'); this.renderCart(); },
+    openSellerPanel() { document.getElementById('seller-modal').style.display = 'flex'; },
+    closeSellerPanel() { document.getElementById('seller-modal').style.display = 'none'; },
 
     renderCart() {
-        const list = document.getElementById('cart-items');
-        let total = 0;
-        list.innerHTML = this.state.cart.map(i => {
-            total += i.price;
-            return `<div style="padding:10px; border-bottom:1px solid #eee;">${i.name} - <b>C$ ${i.price}</b></div>`;
-        }).join('');
-        document.getElementById('cart-total').innerText = `C$ ${total}`;
+        const body = document.getElementById('cart-body');
+        body.innerHTML = this.state.cart.map(i => `<div style="padding:15px; border-bottom:1px solid #eee;">📦 Pedido de: <b>${i}</b></div>`).join('') || '<p style="text-align:center; padding:50px;">No hay pedidos activos.</p>';
     },
 
-    search() {
-        const q = document.getElementById('search-input').value.toLowerCase();
-        const f = this.state.products.filter(p => p.name.toLowerCase().includes(q));
-        this.render(f);
-    },
-
-    filter(cat) {
-        const f = cat === 'todos' ? this.state.products : this.state.products.filter(p => p.cat === cat);
-        this.render(f);
+    checkout() {
+        alert("🇳🇮 Procesando pedido...\n\nGracias por usar Pinol app, la plataforma de Yader Vasquez.");
+        this.state.cart = [];
+        this.sync();
+        this.toggleCart();
     }
 };
 

@@ -1,17 +1,19 @@
-# 🏺 Tierra Nica Pro
-**Conectando las Raíces de Nicaragua**
+# 🇳🇮 Pinol App - Tierra Nica Pro
+### La plataforma de delivery y servicios para todo Nicaragua.
 
-Este proyecto es una plataforma para artesanos que utiliza la moneda digital **Cacaos**.
+Conectando desde la fritanga de la esquina hasta los talleres y motorizados de todo el país.
 
 ## 🚀 Funcionalidades
-* **Persistencia Total:** El nombre del usuario y su saldo de Cacaos se guardan en el teléfono (LocalStorage).
-* **Inventario Local:** Los productos registrados no se borran al cerrar el navegador.
-* **API Ready:** Estructura backend lista para conectar con la nube.
+- **Persistencia Local:** Los datos de usuario y balance se guardan en el teléfono (LocalStorage).
+- **Registro Abierto:** Cualquier negocio o motorizado puede unirse sin exclusiones.
+- **Moneda Local:** Manejo total en Córdobas (C$).
+- **API Ready:** Estructura backend lista para escalar a la nube.
 
-## 📂 Estructura del Sistema
-- `/backend`: Servidor Node.js y lógica de APIs.
-- `/frontend`: Interfaz de usuario con persistencia de datos.
+## 📂 Estructura del Proyecto
+- `/Interfaz`: Frontend moderno con diseño tipo PedidosYa.
+- `/backend`: Lógica de servidor para futuras conexiones globales.
 
 ## 🛠️ Instalación
-1. Subir esta carpeta a **GitHub**.
-2. Conectar con **Vercel** para obtener el link público...
+1. Clona este repositorio.
+2. Abre `Interfaz/index.html` en tu navegador o despliega en Vercel.
+3. 

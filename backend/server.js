@@ -1,21 +1,26 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
+const http = require('http');
 
-app.use(cors());
-app.use(express.json());
-
-// Base de datos local simulada para productos de Chinandega
-const productosChinandega = [
-  { id: 101, nombre: "Ron Artesanal 5 Años", precio: 45, moneda: "Cacaos" },
-  { id: 102, nombre: "Sal Marina con Hierbas", precio: 8.5, moneda: "Cacaos" },
-  { id: 103, nombre: "Mesa de Centro Tropical", precio: 450, moneda: "Cacaos" }
+let db = [
+    { name: "Máscara de Güegüense", price: 85 },
+    { name: "Cajeta de Zapoyol", price: 20 }
 ];
 
-app.get('/api/products', (req, res) => {
-    res.json(productosChinandega);
+const server = http.createServer((req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'GET' && req.url === '/api/products') {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(db));
+    } else if (req.method === 'POST' && req.url === '/api/products') {
+        let body = '';
+        req.on('data', c => body += c);
+        req.on('end', () => {
+            db.unshift(JSON.parse(body));
+            res.writeHead(201);
+            res.end();
+        });
+    }
 });
 
-// El puerto debe ser dinámico para Vercel
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor activo en puerto ${PORT}`));
+server.listen(3000);

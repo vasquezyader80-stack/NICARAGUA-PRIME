@@ -12,125 +12,70 @@
     <div id="splash" class="splash-screen">
         <div class="splash-content">
             <h1 class="brand-logo">Pinol<span>app</span></h1>
+            <p>POR YADER VASQUEZ</p>
             <div class="spinner"></div>
-            <p class="auth">BY YADER VASQUEZ</p>
         </div>
     </div>
 
     <header class="app-header">
-        <div class="address-bar">
-            <div class="loc-icon">📍</div>
-            <div class="loc-text">
-                <small>Entregar en</small>
-                <p>Managua, Nicaragua ▾</p>
+        <div class="header-main">
+            <div class="logo-area">
+                <h2 class="brand-logo-small">Pinol<span>app</span></h2>
+            </div>
+            <div class="user-status">
+                <span id="user-points">500</span> 🪙
             </div>
         </div>
-        <div class="search-wrapper">
-            <div class="search-input-group">
-                <span class="search-icon">🔍</span>
-                <input type="text" id="global-search" oninput="PinolApp.search()" placeholder="Tiendas, restaurantes, pulperías...">
-            </div>
+        <div class="search-box">
+            <input type="text" id="main-search" oninput="PinolApp.search()" placeholder="Busca comida, súper o tiendas...">
         </div>
     </header>
 
-    <main class="app-container">
-        <section class="hero-slider">
-            <div class="promo-card">
-                <h2>Envío Gratis</h2>
-                <p>En tu primer pedido local</p>
-                <button>Ver tiendas</button>
-            </div>
+    <main class="content">
+        <section id="view-shops">
+            <div class="section-title"><h3>Negocios en Nicaragua</h3></div>
+            <div id="shop-grid" class="shop-grid"></div>
         </section>
 
-        <nav class="main-categories">
-            <div class="cat-item" onclick="PinolApp.filter('restaurante')">
-                <div class="cat-icon">🍔</div>
-                <span>Comida</span>
-            </div>
-            <div class="cat-item" onclick="PinolApp.filter('super')">
-                <div class="cat-icon">🛒</div>
-                <span>Súper</span>
-            </div>
-            <div class="cat-item" onclick="PinolApp.filter('farmacia')">
-                <div class="cat-icon">💊</div>
-                <span>Salud</span>
-            </div>
-            <div class="cat-item" onclick="PinolApp.filter('tienda')">
-                <div class="cat-icon">🛍️</div>
-                <span>Tiendas</span>
-            </div>
-        </nav>
-
-        <section class="shop-section">
-            <div class="section-head">
-                <h3>Negocios Destacados</h3>
-                <a href="#">Ver todos</a>
-            </div>
-            <div id="shop-list" class="shop-grid">
-                </div>
+        <section id="view-menu" style="display:none;">
+            <button class="btn-back" onclick="PinolApp.showShops()">← Volver a tiendas</button>
+            <div id="shop-header-info"></div>
+            <div id="product-list" class="product-list"></div>
         </section>
 
-        <footer class="legal-info">
-            <p>© 2026 Pinol app. Marca Registrada.</p>
-            <p>Director de Proyecto: <b>Yader Vasquez</b></p>
+        <footer class="footer">
+            <p>© 2026 Pinol app | <b>Yader Vasquez</b></p>
         </footer>
     </main>
 
-    <nav class="dock-bar">
-        <div class="dock-tab active" onclick="location.reload()">
-            <div class="icon">🏠</div>
-            <span>Inicio</span>
+    <nav class="tab-bar">
+        <div class="tab active" onclick="PinolApp.showShops()"><span>🏠</span><p>Inicio</p></div>
+        <div class="tab" onclick="PinolApp.toggleCart()">
+            <div class="badge" id="cart-qty">0</div>
+            <span>🛍️</span><p>Carrito</p>
         </div>
-        <div class="dock-tab" onclick="PinolApp.toggleCart()">
-            <div class="icon">🛍️<span class="badge" id="cart-qty">0</span></div>
-            <span>Pedidos</span>
-        </div>
-        <div class="dock-tab" onclick="PinolApp.openSellerPanel()">
-            <div class="icon">🏪</div>
-            <span>Mi Negocio</span>
-        </div>
-        <div class="dock-tab">
-            <div class="icon">👤</div>
-            <span>Perfil</span>
-        </div>
+        <div class="tab" onclick="PinolApp.toggleModal()"><span>🏪</span><p>Vender</p></div>
     </nav>
 
-    <div id="seller-modal" class="modal">
-        <div class="modal-inner">
-            <div class="modal-header">
-                <h3>Registrar en Pinol app</h3>
-                <button onclick="PinolApp.closeSellerPanel()">✕</button>
-            </div>
-            <div class="modal-form">
-                <label>Nombre del Negocio o Producto</label>
-                <input type="text" id="reg-name" placeholder="Ej: Pulpería 'La Bendición'">
-                
-                <label>Precio o Tarifa Base (C$)</label>
-                <input type="number" id="reg-price" placeholder="0.00">
-                
-                <label>Categoría</label>
-                <select id="reg-type">
-                    <option value="restaurante">Comida / Restaurante</option>
-                    <option value="super">Supermercado / Pulpería</option>
-                    <option value="tienda">Tienda / Emprendimiento</option>
-                </select>
-                
-                <button class="submit-btn" onclick="PinolApp.saveToLocalStorage()">Publicar Negocio</button>
-            </div>
+    <div id="modal-reg" class="modal">
+        <div class="modal-content">
+            <h3>Registrar mi Negocio</h3>
+            <input type="text" id="reg-name" placeholder="Nombre del Negocio">
+            <input type="text" id="reg-desc" placeholder="¿Qué vendes? (ej. Lácteos)">
+            <button class="btn-main" onclick="PinolApp.registerShop()">Publicar en Pinol app</button>
+            <button class="btn-text" onclick="PinolApp.toggleModal()">Cerrar</button>
         </div>
     </div>
 
     <div id="cart-drawer" class="drawer">
-        <div class="drawer-top">
-            <h3>Tu Carrito</h3>
+        <div class="drawer-header">
+            <h3>Mi Pedido</h3>
             <button onclick="PinolApp.toggleCart()">✕</button>
         </div>
-        <div id="cart-body" class="drawer-content"></div>
-        <div class="drawer-bottom">
-            <div class="price-summary">
-                <div class="row"><span>Total</span><span id="cart-total">C$ 0</span></div>
-            </div>
-            <button class="checkout-btn" onclick="PinolApp.checkout()">Hacer Pedido</button>
+        <div id="cart-body" class="drawer-body"></div>
+        <div class="drawer-footer">
+            <div class="total-row"><span>Total:</span><span id="cart-total">C$ 0</span></div>
+            <button class="btn-main" onclick="PinolApp.checkout()">Confirmar Pedido</button>
         </div>
     </div>
 

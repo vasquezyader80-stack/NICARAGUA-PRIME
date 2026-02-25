@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NICASync Pro | Sistema Operativo de Logística</title>
+    <title>NICASync Pro | Dashboard Logístico</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -12,118 +12,125 @@
             background: #020617; 
             color: #f8fafc;
             background-image: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #020617 80%);
+            min-height: 100vh;
         }
         .glass-premium {
             background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 32px;
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 28px;
         }
         .accent-glow {
             background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
-            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
         }
-        .card-anim {
-            animation: slideUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+        .accent-glow:active { transform: scale(0.95); }
+        .order-card {
+            animation: slideIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(40px); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
-<body class="p-6 md:p-12 min-h-screen">
+<body class="p-4 md:p-10">
 
-    <header class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
-        <div class="flex items-center gap-5">
-            <div class="w-14 h-14 accent-glow rounded-3xl flex items-center justify-center font-black text-2xl">N</div>
+    <header class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 mb-12">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 accent-glow rounded-2xl flex items-center justify-center font-black text-xl">NS</div>
             <div>
-                <h1 class="text-4xl font-800 tracking-tighter uppercase italic">NicaSync <span class="text-blue-500 font-normal">Pro</span></h1>
-                <p class="text-[9px] font-bold text-blue-400 tracking-[0.4em] uppercase">Regional Logistics v2.0</p>
+                <h1 class="text-3xl font-800 tracking-tighter">NICASYNC <span class="text-blue-500">PRO</span></h1>
+                <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">Red de Logística Colaborativa</p>
             </div>
         </div>
-
-        <div class="glass-premium px-10 py-5 flex items-center gap-10">
-            <div class="text-center">
-                <p class="text-[9px] font-bold text-slate-500 uppercase">Capital Operativo</p>
-                <p class="text-3xl font-black italic">C$ <span id="balanceDisplay">50,000</span></p>
+        
+        <div class="glass-premium px-8 py-4 flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[9px] font-bold text-slate-500 uppercase">Mis Ganancias</p>
+                <p class="text-2xl font-black">C$ <span id="balanceDisplay">0.00</span></p>
             </div>
-            <div class="w-[1px] h-10 bg-white/10"></div>
-            <input id="userName" type="text" class="bg-transparent font-bold text-lg outline-none text-blue-400 w-32" placeholder="Agente ID">
+            <div class="w-[1px] h-8 bg-slate-700"></div>
+            <input id="userName" type="text" class="bg-transparent font-bold text-blue-400 outline-none w-24" placeholder="Usuario">
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
-        <div class="lg:col-span-4 space-y-8">
-            <div class="glass-premium p-10">
-                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-8">Nueva Orden de Carga</h2>
-                <div class="space-y-6">
-                    <input id="route" type="text" placeholder="Ruta (Ej: Chinandega -> Managua)" class="w-full bg-slate-900/50 p-5 rounded-2xl outline-none border border-slate-800 focus:border-blue-500 transition-all font-semibold">
-                    <input id="cargo" type="text" placeholder="Detalle de la Carga" class="w-full bg-slate-900/50 p-5 rounded-2xl outline-none border border-slate-800 font-semibold">
-                    <button onclick="dispatchOrder()" class="w-full accent-glow p-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] active:scale-95 transition-all">Despachar en Red</button>
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-4">
+            <div class="glass-premium p-8">
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-6">Nueva Orden de Carga</h2>
+                <div class="space-y-4">
+                    <input id="routeInput" type="text" placeholder="Origen ➔ Destino" class="w-full bg-slate-900/50 p-4 rounded-xl outline-none border border-slate-700 focus:border-blue-500 transition-all font-semibold">
+                    <input id="cargoInput" type="text" placeholder="¿Qué se envía?" class="w-full bg-slate-900/50 p-4 rounded-xl outline-none border border-slate-700 font-semibold">
+                    <button onclick="createOrder()" class="w-full accent-glow p-4 rounded-xl font-black uppercase text-xs tracking-widest mt-2">Registrar Envío</button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8">
-            <h2 class="text-xl font-800 mb-8 flex items-center gap-3">
-                Monitor de Flota Activa
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-            </h2>
-            <div id="ordersGrid" class="space-y-5">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-800">Envíos Activos en Nicaragua</h2>
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-[10px] font-bold text-green-500 uppercase">Sistema Online</span>
+                </div>
+            </div>
+            <div id="ordersContainer" class="space-y-4">
                 </div>
         </div>
     </main>
 
     <script>
-        let balance = parseFloat(localStorage.getItem('ns_balance') || "50000");
-
+        let balance = parseFloat(localStorage.getItem('ns_balance') || "1250.75");
+        
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('userName').value = localStorage.getItem('ns_user') || "Admin_01";
-            updateUI();
-            fetchOrders();
-        });
-
-        function updateUI() {
+            document.getElementById('userName').value = localStorage.getItem('ns_user') || "Admin";
             document.getElementById('balanceDisplay').innerText = balance.toLocaleString();
-            localStorage.setItem('ns_balance', balance);
-        }
+            fetchOrders();
+
+            document.getElementById('userName').addEventListener('input', (e) => {
+                localStorage.setItem('ns_user', e.target.value);
+            });
+        });
 
         async function fetchOrders() {
             const res = await fetch('/api/orders');
-            const data = await res.json();
-            const grid = document.getElementById('ordersGrid');
-            grid.innerHTML = data.map((o, i) => `
-                <div class="glass-premium p-8 flex justify-between items-center card-anim hover:bg-white/5 transition-all" style="animation-delay: ${i*0.1}s">
-                    <div class="flex items-center gap-6">
-                        <div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🚛</div>
+            const orders = await res.json();
+            const container = document.getElementById('ordersContainer');
+            
+            container.innerHTML = orders.map((o, i) => `
+                <div class="glass-premium p-6 flex justify-between items-center order-card hover:bg-white/5 transition-all" style="animation-delay: ${i*0.1}s">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 bg-slate-900 rounded-xl flex items-center justify-center text-xl shadow-inner">🚚</div>
                         <div>
-                            <h3 class="text-xl font-black tracking-tight">${o.cargo}</h3>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest italic">${o.route}</p>
+                            <h3 class="font-800 text-lg tracking-tight">${o.cargo}</h3>
+                            <p class="text-[10px] font-bold text-blue-400 uppercase tracking-widest">${o.route}</p>
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-2xl font-black">C$ ${o.cost}</p>
-                        <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">En Tránsito</p>
+                        <p class="text-xl font-black text-white">C$ ${o.cost}</p>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-tighter">Tarifa Logística</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function dispatchOrder() {
-            const route = document.getElementById('route').value;
-            const cargo = document.getElementById('cargo').value;
+        async function createOrder() {
+            const route = document.getElementById('routeInput').value;
+            const cargo = document.getElementById('cargoInput').value;
             if(!route || !cargo) return;
 
-            const cost = Math.floor(Math.random() * (1500 - 300) + 300);
+            const cost = Math.floor(Math.random() * (450 - 150) + 150);
+            
             await fetch('/api/orders', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ route, cargo, cost })
             });
 
-            document.getElementById('route').value = '';
-            document.getElementById('cargo').value = '';
+            document.getElementById('routeInput').value = '';
+            document.getElementById('cargoInput').value = '';
             fetchOrders();
         }
     </script>

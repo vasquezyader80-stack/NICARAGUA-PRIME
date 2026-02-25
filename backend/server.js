@@ -1,9 +1,8 @@
 const http = require('http');
 
-// Base de Datos Volátil (Se integrará a MongoDB en la fase 2)
-let globalOrders = [
-    { id: "NS-771", route: "Chinandega -> León", cargo: "Cacao Orgánico (50kg)", cost: 240 },
-    { id: "NS-772", route: "Managua -> Rivas", cargo: "Mobiliario Madera", cost: 680 }
+let activeShipments = [
+    { manifest: "30 Sacos de Granos Básicos", route: "Chinandega -> Puerto Corinto", cost: 1450 },
+    { manifest: "Maquinaria Agrícola", route: "Managua -> Estelí", cost: 3200 }
 ];
 
 const server = http.createServer((req, res) => {
@@ -11,30 +10,21 @@ const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-        res.writeHead(204);
-        res.end();
-        return;
-    }
+    if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
 
-    if (req.url === '/api/orders' && req.method === 'GET') {
+    if (req.url === '/api/logistics' && req.method === 'GET') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(globalOrders));
+        res.end(JSON.stringify(activeShipments));
     } 
     
-    else if (req.url === '/api/orders' && req.method === 'POST') {
+    else if (req.url === '/api/logistics' && req.method === 'POST') {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
-            const order = JSON.parse(body);
-            order.id = "NS-" + Math.floor(Math.random() * 999);
-            globalOrders.unshift(order); // Prioridad a lo nuevo
-            res.writeHead(201, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify(order));
+            activeShipments.unshift(JSON.parse(body));
+            res.writeHead(201);
+            res.end();
         });
-    } else {
-        res.writeHead(404);
-        res.end();
     }
 });
 

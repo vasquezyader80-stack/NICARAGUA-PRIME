@@ -3,72 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol app | By Yader Vasquez</title>
+    <title>Pinol app | Propiedad de Yader Vasquez</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash-screen">
-        <h1 class="logo">Pinol<span>app</span></h1>
-        <p>AUTOR: YADER VASQUEZ</p>
+        <h1 class="logo-main">Pinol<span>app</span></h1>
+        <p class="author">BY YADER VASQUEZ</p>
     </div>
 
-    <header class="header">
-        <div class="top-bar">
-            <h2>Pinol<span>app</span></h2>
-            <button class="btn-perfil" onclick="App.toggleReg()">👤 Cuenta</button>
+    <header class="main-header">
+        <div class="header-top">
+            <div class="user-info">
+                <span id="display-name">Usuario</span>
+                <div class="cacaos-pill">🪙 <span id="cacaos-val">0</span> Cacaos</div>
+            </div>
+            <button class="menu-trigger" onclick="App.toggleDrawer()">☰</button>
         </div>
-        <div class="search-box">
-            <input type="text" id="search" oninput="App.search()" placeholder="Buscar en Nicaragua...">
+        <div class="search-bar">
+            <input type="text" id="search-input" oninput="App.search()" placeholder="Buscar en Nicaragua...">
         </div>
     </header>
 
-    <main>
-        <div class="categories">
-            <button onclick="App.filter('todos')">🏠 Todos</button>
-            <button onclick="App.filter('comida')">🥘 Comida</button>
-            <button onclick="App.filter('super')">🛒 Súper</button>
-            <button onclick="App.filter('artesania')">🏺 Artesanía</button>
+    <main id="app-content">
+        <div class="filter-row">
+            <button class="f-chip" onclick="App.filter('todos')">Todos</button>
+            <button class="f-chip" onclick="App.filter('comida')">🥘 Comida</button>
+            <button class="f-chip" onclick="App.filter('super')">🛒 Súper</button>
+            <button class="f-chip" onclick="App.filter('artesania')">🏺 Nica</button>
         </div>
 
-        <div id="tracker" class="tracker-ui" style="display:none;">
-            <div class="track-text">🛵 Pedido en camino... <span id="time">15 min</span></div>
-            <div class="progress-bg"><div id="fill" class="progress-bar"></div></div>
+        <div id="tracker" class="tracker-mini" style="display:none;">
+            <div class="t-info">🛵 Pedido en camino... <span id="eta">12 min</span></div>
+            <div class="t-bar"><div id="t-fill"></div></div>
         </div>
 
-        <div id="grid" class="product-grid"></div>
+        <div id="product-grid" class="product-grid"></div>
     </main>
 
-    <nav class="navbar">
-        <div class="nav-btn" onclick="location.reload()">🏠<span>Inicio</span></div>
-        <div class="nav-btn" onclick="App.toggleCart()">🛒<span id="badge" class="badge">0</span><span>Carrito</span></div>
-        <div class="nav-btn" onclick="App.toggleReg()">🚀<span>Vender</span></div>
+    <nav class="bottom-nav">
+        <div class="n-item" onclick="location.reload()">🏠<span>Inicio</span></div>
+        <div class="n-item" onclick="App.toggleCart()">🛒<span id="cart-count" class="badge">0</span><span>Carrito</span></div>
+        <div class="n-item" onclick="App.toggleDrawer()">🚀<span>Vender</span></div>
     </nav>
 
-    <div id="reg-drawer" class="drawer">
-        <div class="drawer-overlay" onclick="App.toggleReg()"></div>
+    <div id="side-drawer" class="drawer">
         <div class="drawer-content">
             <div class="drawer-header">
-                <h3>Registro de Socios</h3>
-                <button class="close-x" onclick="App.toggleReg()">✕</button>
+                <h3>Panel de Control</h3>
+                <button class="close-btn" onclick="App.toggleDrawer()">✕</button>
             </div>
-            <p>Controlado por Yader Vasquez</p>
-            <div class="form">
-                <input type="text" id="r-biz" placeholder="Nombre de tu Negocio o Placa">
-                <input type="text" id="r-ced" placeholder="Número de Cédula">
-                <button class="btn-main" onclick="App.saveReg()">Registrar Ahora</button>
+            <div class="drawer-body">
+                <p>Configura tu perfil de vendedor o repartidor.</p>
+                <input type="text" id="reg-name" placeholder="Tu Nombre">
+                <input type="text" id="reg-biz" placeholder="Nombre del Negocio">
+                <button class="btn-action" onclick="App.saveUser()">Guardar Cambios</button>
+                <hr>
+                <small>Propiedad Intelectual: Yader Vasquez</small>
             </div>
         </div>
     </div>
 
     <div id="cart-modal" class="modal">
-        <div class="modal-content">
-            <h3>Tu Pedido</h3>
+        <div class="modal-inner">
+            <div class="modal-header">
+                <h3>Mi Pedido</h3>
+                <button onclick="App.toggleCart()">✕</button>
+            </div>
             <div id="cart-list"></div>
-            <div class="total-box">Total: C$ <span id="total">0</span></div>
-            <button class="btn-main" onclick="App.buy()">Confirmar Compra</button>
-            <button class="btn-close" onclick="App.toggleCart()">Cerrar</button>
+            <div class="total-row">Total: C$ <span id="cart-total">0</span></div>
+            <button class="btn-buy" onclick="App.checkout()">Confirmar y Pagar</button>
         </div>
     </div>
 

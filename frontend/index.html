@@ -3,149 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NICASync Pro | Enterprise Logistics</title>
+    <title>NICASync Pro | Sistema Operativo de Logística</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
         body { 
-            font-family: 'Inter', sans-serif; 
-            background: #050505; 
-            color: #ffffff;
-            background-image: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #050505 80%);
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background: #020617; 
+            color: #f8fafc;
+            background-image: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #020617 80%);
         }
         .glass-premium {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(30px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 32px;
         }
-        .accent-gradient {
+        .accent-glow {
             background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
         }
-        .card-entry {
-            animation: cardSlide 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        .card-anim {
+            animation: slideUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards;
         }
-        @keyframes cardSlide {
-            from { opacity: 0; transform: translateY(40px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body class="p-6 md:p-12 min-h-screen">
 
-    <nav class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
-        <div class="flex items-center gap-4">
-            <div class="w-14 h-14 accent-gradient rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)]">
-                <span class="text-2xl font-black">N</span>
-            </div>
+    <header class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+        <div class="flex items-center gap-5">
+            <div class="w-14 h-14 accent-glow rounded-3xl flex items-center justify-center font-black text-2xl">N</div>
             <div>
-                <h1 class="text-4xl font-900 tracking-tighter italic">NICASYNC <span class="text-blue-500 font-normal">CORP</span></h1>
-                <p class="text-[9px] font-bold text-blue-400 tracking-[0.5em] uppercase">Blockchain Logistics Ready</p>
+                <h1 class="text-4xl font-800 tracking-tighter uppercase italic">NicaSync <span class="text-blue-500 font-normal">Pro</span></h1>
+                <p class="text-[9px] font-bold text-blue-400 tracking-[0.4em] uppercase">Regional Logistics v2.0</p>
             </div>
         </div>
 
         <div class="glass-premium px-10 py-5 flex items-center gap-10">
             <div class="text-center">
-                <p class="text-[9px] font-bold text-gray-500 uppercase">Fondo Operativo</p>
-                <p class="text-3xl font-black italic">C$ <span id="balance">45,280</span></p>
+                <p class="text-[9px] font-bold text-slate-500 uppercase">Capital Operativo</p>
+                <p class="text-3xl font-black italic">C$ <span id="balanceDisplay">50,000</span></p>
             </div>
             <div class="w-[1px] h-10 bg-white/10"></div>
-            <div class="flex flex-col">
-                <span class="text-[9px] font-bold text-blue-500 uppercase tracking-widest text-center">Terminal Activa</span>
-                <input id="terminalId" type="text" class="bg-transparent text-center font-bold text-white outline-none w-32" value="NI-CHIN-01">
-            </div>
+            <input id="userName" type="text" class="bg-transparent font-bold text-lg outline-none text-blue-400 w-32" placeholder="Agente ID">
         </div>
-    </nav>
+    </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
-        
         <div class="lg:col-span-4 space-y-8">
-            <div class="glass-premium p-10 relative overflow-hidden group">
-                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
-                <h2 class="text-sm font-black text-blue-400 uppercase tracking-widest mb-8">Consola de Despacho</h2>
-                
+            <div class="glass-premium p-10">
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-8">Nueva Orden de Carga</h2>
                 <div class="space-y-6">
-                    <div class="group">
-                        <label class="text-[10px] font-bold text-gray-500 ml-4 mb-2 block tracking-widest uppercase">Punto de Entrega</label>
-                        <input id="route" type="text" placeholder="Ej: Aduana El Guasaule" class="w-full bg-white/5 p-5 rounded-3xl outline-none border border-white/5 focus:border-blue-500/50 transition-all font-bold">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-gray-500 ml-4 mb-2 block tracking-widest uppercase">Manifiesto de Carga</label>
-                        <input id="manifest" type="text" placeholder="Contenido y Peso" class="w-full bg-white/5 p-5 rounded-3xl outline-none border border-white/5 font-bold">
-                    </div>
-                    <button onclick="submitShipment()" class="w-full accent-gradient p-6 rounded-3xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-blue-500/20">Registrar en Red</button>
+                    <input id="route" type="text" placeholder="Ruta (Ej: Chinandega -> Managua)" class="w-full bg-slate-900/50 p-5 rounded-2xl outline-none border border-slate-800 focus:border-blue-500 transition-all font-semibold">
+                    <input id="cargo" type="text" placeholder="Detalle de la Carga" class="w-full bg-slate-900/50 p-5 rounded-2xl outline-none border border-slate-800 font-semibold">
+                    <button onclick="dispatchOrder()" class="w-full accent-glow p-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] active:scale-95 transition-all">Despachar en Red</button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8">
-            <div class="flex justify-between items-end mb-8 px-4">
-                <h2 class="text-2xl font-black italic">Monitor de Tráfico Regional</h2>
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span class="text-[10px] font-bold text-green-500 uppercase tracking-widest">Enlace Satelital Activo</span>
-                </div>
-            </div>
-            
-            <div id="shipmentList" class="space-y-5">
+            <h2 class="text-xl font-800 mb-8 flex items-center gap-3">
+                Monitor de Flota Activa
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            </h2>
+            <div id="ordersGrid" class="space-y-5">
                 </div>
         </div>
     </main>
 
     <script>
-        let wallet = parseInt(localStorage.getItem('nicasync_wallet') || "45280");
-        
+        let balance = parseFloat(localStorage.getItem('ns_balance') || "50000");
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('userName').value = localStorage.getItem('ns_user') || "Admin_01";
+            updateUI();
+            fetchOrders();
+        });
+
         function updateUI() {
-            document.getElementById('balance').innerText = wallet.toLocaleString();
+            document.getElementById('balanceDisplay').innerText = balance.toLocaleString();
+            localStorage.setItem('ns_balance', balance);
         }
 
-        async function fetchSystem() {
-            const res = await fetch('/api/logistics');
+        async function fetchOrders() {
+            const res = await fetch('/api/orders');
             const data = await res.json();
-            const list = document.getElementById('shipmentList');
-            
-            list.innerHTML = data.map((item, i) => `
-                <div class="glass-premium p-8 flex flex-col md:flex-row justify-between items-center gap-6 card-entry hover:bg-white/5 transition-colors border-r-4 border-blue-500" style="animation-delay: ${i*0.1}s">
-                    <div class="flex items-center gap-8">
-                        <div class="text-4xl">🚛</div>
+            const grid = document.getElementById('ordersGrid');
+            grid.innerHTML = data.map((o, i) => `
+                <div class="glass-premium p-8 flex justify-between items-center card-anim hover:bg-white/5 transition-all" style="animation-delay: ${i*0.1}s">
+                    <div class="flex items-center gap-6">
+                        <div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-2xl shadow-inner">🚛</div>
                         <div>
-                            <h3 class="text-xl font-black tracking-tight">${item.manifest}</h3>
-                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1 italic">${item.route}</p>
+                            <h3 class="text-xl font-black tracking-tight">${o.cargo}</h3>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest italic">${o.route}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-12">
-                        <div class="text-right">
-                            <p class="text-2xl font-black italic">C$ ${item.cost}</p>
-                            <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">Costo Optmizado</p>
-                        </div>
-                        <button class="bg-white/10 p-4 rounded-2xl hover:bg-blue-500 transition-all">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
-                        </button>
+                    <div class="text-right">
+                        <p class="text-2xl font-black">C$ ${o.cost}</p>
+                        <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">En Tránsito</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function submitShipment() {
+        async function dispatchOrder() {
             const route = document.getElementById('route').value;
-            const manifest = document.getElementById('manifest').value;
-            if(!route || !manifest) return;
+            const cargo = document.getElementById('cargo').value;
+            if(!route || !cargo) return;
 
-            const cost = Math.floor(Math.random() * (1200 - 400) + 400);
-
-            await fetch('/api/logistics', {
+            const cost = Math.floor(Math.random() * (1500 - 300) + 300);
+            await fetch('/api/orders', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ route, manifest, cost })
+                body: JSON.stringify({ route, cargo, cost })
             });
 
             document.getElementById('route').value = '';
-            document.getElementById('manifest').value = '';
-            fetchSystem();
+            document.getElementById('cargo').value = '';
+            fetchOrders();
         }
-
-        updateUI();
-        fetchSystem();
     </script>
 </body>
 </html>

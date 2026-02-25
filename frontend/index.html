@@ -2,16 +2,72 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinol App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>NicaMarket Hub | Tierra Nica Pro</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header style="background:#0055b8; color:white; padding:20px; text-align:center;">
-        <h1>🎭 Pinol<b>App</b></h1>
-        <p>Saldo: <span id="saldo">C$ 0</span> (Cacaos)</p>
+
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">🎭 <span>NicaMarket</span></div>
+            <div class="cacao-badge" id="open-wallet">
+                <span id="balance-display">0</span> 🪙
+            </div>
+        </div>
     </header>
-    <main id="app" style="padding:20px;"></main>
+
+    <main class="app-container">
+        <section class="hero-banner">
+            <h1>Bienvenido a Tierra Nica Pro</h1>
+            <p>Registra tus productos y acumula Cacaos.</p>
+        </section>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('all')">Todos</button>
+            <button class="tab-btn" onclick="switchTab('Agro')">Agro</button>
+            <button class="tab-btn" onclick="switchTab('Moda')">Moda</button>
+        </div>
+
+        <div class="product-grid" id="product-list">
+            </div>
+    </main>
+
+    <nav class="bottom-bar">
+        <button class="nav-item" onclick="location.reload()">🏠</button>
+        <button class="nav-item add-btn" onclick="toggleModal('modal-reg')">＋</button>
+        <button class="nav-item" onclick="toggleModal('modal-wallet')">💰</button>
+    </nav>
+
+    <div id="modal-reg" class="modal">
+        <div class="modal-sheet">
+            <h3>Registrar Producto</h3>
+            <form id="reg-form">
+                <input type="text" id="p-name" placeholder="Nombre del producto" required>
+                <input type="number" id="p-price" placeholder="Precio C$" required>
+                <select id="p-cat">
+                    <option value="Agro">Agro-Gourmet</option>
+                    <option value="Moda">Moda Circular</option>
+                    <option value="Servicios">Servicios</option>
+                </select>
+                <button type="submit" class="btn-main">Publicar y Ganar 50 Cacaos</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-wallet" class="modal">
+        <div class="modal-sheet">
+            <div class="wallet-info">
+                <small>Saldo Total</small>
+                <h2 id="wallet-total">0 🪙</h2>
+            </div>
+            <h4>Historial de Cacaos</h4>
+            <div id="history-box"></div>
+            <button class="btn-sec" onclick="toggleModal('modal-wallet')">Cerrar</button>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>

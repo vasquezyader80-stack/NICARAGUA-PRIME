@@ -3,160 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tierra Nica | Tienda Oficial</title>
+    <title>NICASync OS | Logistics Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root { --glow: #3b82f6; }
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #fdfdfd; 
-            color: #1a1a1a;
+            background: #020617; 
+            color: #f8fafc;
+            overflow-x: hidden;
         }
-        .shop-card {
-            background: #ffffff;
-            border: 1px solid #f1f1f1;
-            border-radius: 24px;
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(25px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .neo-button {
+            background: linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%);
+            box-shadow: 0 10px 20px -5px rgba(29, 78, 216, 0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .shop-card:active { transform: scale(0.97); }
-        
-        .nav-blur {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-        }
-        
-        .btn-buy {
-            background: #000000;
-            color: #ffffff;
-            transition: all 0.2s;
-        }
-        .btn-buy:active { background: #333333; }
-
-        /* Animación de carga de productos */
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .reveal { animation: reveal 0.5s ease-out forwards; }
+        .neo-button:active { transform: scale(0.95); opacity: 0.9; }
+        .pulse-border { border: 2px solid var(--glow); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { border-color: #1e3a8a; } 50% { border-color: #3b82f6; } 100% { border-color: #1e3a8a; } }
     </style>
 </head>
-<body class="pb-32">
+<body class="p-4 md:p-10 min-h-screen">
 
-    <header class="nav-blur sticky top-0 z-50 px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+    <header class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div>
-            <h1 class="text-2xl font-800 tracking-tighter">Tienda Nica</h1>
-            <div class="flex items-center gap-1">
-                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span class="text-[10px] font-bold text-gray-400 uppercase">Mercado en vivo</span>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/30">NS</div>
+                <h1 class="text-4xl font-800 tracking-tighter">NICASync <span class="text-blue-500">Pro</span></h1>
             </div>
+            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em] mt-2">Regional Logistics Network v2.0</p>
         </div>
-        <div class="flex flex-col items-end">
-            <span class="text-[10px] font-black text-gray-300 uppercase italic">Mi Saldo</span>
-            <div class="flex items-center gap-1 font-800 text-lg">
-                <span id="balanceDisplay">0</span>
-                <span class="text-xs text-orange-600 font-black">C$</span>
+        
+        <div class="glass-panel px-8 py-4 rounded-[2rem] flex items-center gap-6">
+            <div class="text-right">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Balance Operativo</p>
+                <p class="text-2xl font-black text-white"><span id="balance">2,450.00</span> <span class="text-sm text-blue-400">C$</span></p>
             </div>
+            <div class="h-10 w-[1px] bg-slate-800"></div>
+            <input id="userName" type="text" class="bg-transparent font-bold text-lg outline-none text-blue-400 w-32" placeholder="ID Agente">
         </div>
     </header>
 
-    <main class="max-w-2xl mx-auto px-6 mt-8">
-        
-        <div class="mb-8">
-            <p class="text-gray-400 text-sm">Hola de nuevo,</p>
-            <input id="userName" type="text" class="bg-transparent text-2xl font-800 outline-none w-full" placeholder="Usuario">
-        </div>
-
-        <div class="mb-12 bg-gray-50 rounded-[2rem] p-6 border border-gray-100">
-            <h2 class="text-xs font-black uppercase tracking-widest text-gray-400 mb-4">Registrar Nuevo Artículo</h2>
-            <div class="flex flex-col gap-3">
-                <input id="pName" type="text" placeholder="Nombre del producto" class="w-full bg-white p-4 rounded-2xl border-none shadow-sm outline-none font-semibold">
-                <div class="flex gap-2">
-                    <input id="pPrice" type="number" placeholder="Precio C$" class="w-1/2 bg-white p-4 rounded-2xl shadow-sm outline-none font-bold">
-                    <button onclick="publish()" class="w-1/2 bg-orange-600 text-white font-bold rounded-2xl shadow-lg shadow-orange-200 active:scale-95 transition-all">Publicar</button>
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-4 space-y-6">
+            <div class="glass-panel p-8 rounded-[2.5rem]">
+                <h2 class="text-xs font-black text-slate-500 uppercase mb-6 tracking-widest">Nueva Orden de Carga</h2>
+                <div class="space-y-4">
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold ml-2 text-slate-400">ORIGEN / DESTINO</label>
+                        <input id="route" type="text" placeholder="Chinandega -> Managua" class="w-full bg-slate-900/50 p-4 rounded-2xl outline-none border border-slate-800 focus:border-blue-500/50 font-semibold transition-all">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="text-[10px] font-bold ml-2 text-slate-400">DESCRIPCIÓN DE CARGA</label>
+                        <input id="cargo" type="text" placeholder="Ej. 20kg Artesanías" class="w-full bg-slate-900/50 p-4 rounded-2xl outline-none border border-slate-800 font-semibold">
+                    </div>
+                    <button onclick="dispatchOrder()" class="w-full neo-button p-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] mt-4">Despachar Orden</button>
                 </div>
             </div>
         </div>
 
-        <h2 class="text-lg font-800 mb-6 flex items-center gap-2">
-            Explorar Artesanías 
-            <span class="text-[10px] bg-black text-white px-2 py-0.5 rounded-full">NUEVO</span>
-        </h2>
-        
-        <div id="shopGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="lg:col-span-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-800">Monitor de Tráfico Regional</h2>
+                <div class="flex gap-2">
+                    <span class="bg-blue-500/10 text-blue-400 text-[10px] font-bold px-4 py-1.5 rounded-full border border-blue-500/20">ESTADO: ACTIVO</span>
+                </div>
             </div>
+            
+            <div id="logisticsGrid" class="grid grid-cols-1 gap-4">
+                </div>
+        </div>
     </main>
 
-    <nav class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[90%] max-w-md nav-blur rounded-full h-20 shadow-2xl border border-white/50 flex justify-around items-center px-4 z-50">
-        <button class="p-4 text-black"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg></button>
-        <button class="p-4 text-gray-300" onclick="alert('Historial vacío')"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg></button>
-        <button class="p-4 text-gray-300" onclick="location.reload()"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg></button>
-    </nav>
-
     <script>
-        let balance = parseInt(localStorage.getItem('cordobas_db') || "1200");
+        // Persistencia Inteligente (Local Storage Sync)
+        let wallet = parseFloat(localStorage.getItem('ns_balance') || "2450.00");
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('userName').value = localStorage.getItem('user_name') || "Pedro";
-            updateUI();
-            fetchProducts();
-            
+            document.getElementById('userName').value = localStorage.getItem('ns_agent') || "Agente_01";
+            document.getElementById('balance').innerText = wallet.toLocaleString('en-US', {minimumFractionDigits: 2});
+            fetchOrders();
+
             document.getElementById('userName').addEventListener('input', (e) => {
-                localStorage.setItem('user_name', e.target.value);
+                localStorage.setItem('ns_agent', e.target.value);
             });
         });
 
-        function updateUI() {
-            document.getElementById('balanceDisplay').innerText = balance;
-        }
-
-        async function fetchProducts() {
-            const res = await fetch('/api/products');
-            const products = await res.json();
-            const grid = document.getElementById('shopGrid');
-            grid.innerHTML = products.map((p, i) => `
-                <div class="shop-card p-4 reveal" style="animation-delay: ${i * 0.1}s">
-                    <div class="aspect-square bg-gray-50 rounded-2xl mb-4 flex items-center justify-center text-5xl relative overflow-hidden">
-                        <span class="z-10">🎨</span>
-                        <div class="absolute inset-0 opacity-10 bg-gradient-to-br from-orange-400 to-transparent"></div>
+        async function fetchOrders() {
+            const res = await fetch('/api/orders');
+            const orders = await res.json();
+            const grid = document.getElementById('logisticsGrid');
+            
+            grid.innerHTML = orders.map((o, i) => `
+                <div class="glass-panel p-6 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-4 hover:border-blue-500/30 transition-all cursor-pointer group">
+                    <div class="flex items-center gap-5">
+                        <div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-slate-800">🚚</div>
+                        <div>
+                            <h3 class="font-800 text-lg group-hover:text-blue-400 transition-colors">${o.cargo}</h3>
+                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">${o.route}</p>
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-1 mb-4">
-                        <h3 class="font-800 text-gray-800 truncate">${p.name}</h3>
-                        <p class="text-[10px] font-bold text-gray-400 uppercase">Chinandega, NI</p>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-xl font-800 tracking-tighter">${p.price} C$</span>
-                        <button onclick="buy(${p.price})" class="btn-buy px-5 py-2 rounded-xl text-xs font-bold uppercase tracking-widest">Comprar</button>
+                    <div class="flex items-center gap-8">
+                        <div class="text-right">
+                            <p class="text-xl font-black text-white">${o.cost} <span class="text-xs text-blue-500 italic">C$</span></p>
+                            <p class="text-[8px] font-bold text-slate-500 uppercase">Tarifa Optimizada</p>
+                        </div>
+                        <div class="h-10 w-[2px] bg-blue-500 pulse-border rounded-full"></div>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function publish() {
-            const name = document.getElementById('pName').value;
-            const price = document.getElementById('pPrice').value;
-            if(!name || !price) return;
+        async function dispatchOrder() {
+            const route = document.getElementById('route').value;
+            const cargo = document.getElementById('cargo').value;
+            if(!route || !cargo) return;
 
-            await fetch('/api/products', {
+            const cost = Math.floor(Math.random() * (500 - 100) + 100);
+            
+            await fetch('/api/orders', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, price })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ route, cargo, cost })
             });
 
-            document.getElementById('pName').value = '';
-            document.getElementById('pPrice').value = '';
-            fetchProducts();
-        }
-
-        function buy(cost) {
-            if(balance >= cost) {
-                balance -= cost;
-                localStorage.setItem('cordobas_db', balance);
-                updateUI();
-                alert("¡Compra exitosa! Se han descontado " + cost + " C$");
-            } else {
-                alert("Saldo insuficiente en Córdobas");
-            }
+            document.getElementById('route').value = '';
+            document.getElementById('cargo').value = '';
+            fetchOrders();
         }
     </script>
 </body>

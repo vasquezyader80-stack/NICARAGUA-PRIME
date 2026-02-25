@@ -13,7 +13,7 @@
             <h1>Pinol<b>App</b></h1>
         </div>
         <div class="search-container">
-            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres, mandados..." onkeyup="filtrar()">
+            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres..." onkeyup="filtrar()">
         </div>
     </header>
 
@@ -39,12 +39,12 @@
             <h3>🎭 Unite a Pinol App</h3>
             <input type="text" id="reg-nombre" placeholder="Nombre del negocio">
             <select id="reg-tipo">
-                <option value="Comida">Comida / Fritanga</option>
-                <option value="Tienda">Pulpería / Comercio</option>
-                <option value="Servicio">Taller / Oficio</option>
-                <option value="Envio">Motorizado (Delivery)</option>
+                <option value="Comida">Fritanga</option>
+                <option value="Tienda">Pulpería</option>
+                <option value="Servicio">Taller</option>
+                <option value="Envio">Motorizado</option>
             </select>
-            <input type="text" id="reg-dir" placeholder="Dirección exacta">
+            <input type="text" id="reg-dir" placeholder="Dirección">
             <button class="btn-primary" onclick="registrar()">Registrar</button>
             <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
         </div>

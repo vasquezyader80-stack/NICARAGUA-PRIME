@@ -1,9 +1,8 @@
 {
   "version": 2,
-  "public": true,
   "name": "nicaragua-prime",
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "/backend/server.js" },
+    { "source": "/api/(.*)", "destination": "backend/server.js" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

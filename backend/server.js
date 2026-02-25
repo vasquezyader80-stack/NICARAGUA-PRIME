@@ -1,8 +1,8 @@
 const http = require('http');
 
-let db = [
-    { name: "Máscara de Güegüense", price: 85 },
-    { name: "Cajeta de Zapoyol", price: 20 }
+let products = [
+    { name: "Florero de Barro", price: 120 },
+    { name: "Sombrero de Chapa", price: 350 }
 ];
 
 const server = http.createServer((req, res) => {
@@ -11,12 +11,12 @@ const server = http.createServer((req, res) => {
 
     if (req.method === 'GET' && req.url === '/api/products') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(db));
+        res.end(JSON.stringify(products));
     } else if (req.method === 'POST' && req.url === '/api/products') {
         let body = '';
         req.on('data', c => body += c);
         req.on('end', () => {
-            db.unshift(JSON.parse(body));
+            products.unshift(JSON.parse(body));
             res.writeHead(201);
             res.end();
         });

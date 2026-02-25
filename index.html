@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tierra Nica Pro</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .header { background: #0067C6; color: white; padding: 20px; border-radius: 12px; text-align: center; }
+        button { background: #0067C6; color: white; border: none; padding: 10px; border-radius: 5px; width: 100%; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1 id="displayNombre">Cargando...</h1>
+        <p>Saldo: <span id="displayCacaos">0</span> Cacaos</p>
+    </div>
+
+    <div class="card">
+        <h3>Configurar Perfil</h3>
+        <input type="text" id="inputNombre" placeholder="Tu nombre">
+        <input type="number" id="inputCacaos" placeholder="Saldo inicial">
+        <button onclick="guardarPerfil()">Guardar en Teléfono</button>
+    </div>
+
+    <div id="listaProductos"></div>
+
+    <script>
+        // Cargar datos persistentes (LocalStorage)
+        function cargarDatos() {
+            const nombre = localStorage.getItem('user_name') || "Artesano";
+            const cacaos = localStorage.getItem('user_cacaos') || "0";
+            
+            document.getElementById('displayNombre').innerText = "Hola, " + nombre;
+            document.getElementById('displayCacaos').innerText = cacaos;
+        }
+
+        function guardarPerfil() {
+            const nom = document.getElementById('inputNombre').value;
+            const cac = document.getElementById('inputCacaos').value;
+            
+            if(nom) localStorage.setItem('user_name', nom);
+            if(cac) localStorage.setItem('user_cacaos', cac);
+            
+            alert("¡Datos guardados! No se borrarán al cerrar la página.");
+            cargarDatos();
+        }
+
+        window.onload = cargarDatos;
+    </script>
+</body>
+</html>

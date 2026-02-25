@@ -15,55 +15,60 @@
     </div>
 
     <header class="header">
-        <div class="top">
+        <div class="top-bar">
             <h2>Pinol<span>app</span></h2>
-            <button class="btn-vender" onclick="App.toggleReg()">Vender / Delivery</button>
+            <button class="btn-perfil" onclick="App.toggleReg()">👤 Cuenta</button>
         </div>
-        <input type="text" id="search" oninput="App.search()" placeholder="Buscar en toda Nicaragua...">
+        <div class="search-box">
+            <input type="text" id="search" oninput="App.search()" placeholder="Buscar en Nicaragua...">
+        </div>
     </header>
 
-    <main id="main">
-        <div class="cats">
-            <div class="cat" onclick="App.filter('todos')">🏠 Todos</div>
-            <div class="cat" onclick="App.filter('comida')">🥘 Comida</div>
-            <div class="cat" onclick="App.filter('super')">🛒 Súper</div>
-            <div class="cat" onclick="App.filter('artesania')">🏺 Artesanía</div>
+    <main>
+        <div class="categories">
+            <button onclick="App.filter('todos')">🏠 Todos</button>
+            <button onclick="App.filter('comida')">🥘 Comida</button>
+            <button onclick="App.filter('super')">🛒 Súper</button>
+            <button onclick="App.filter('artesania')">🏺 Artesanía</button>
         </div>
 
-        <div id="tracker" class="tracker" style="display:none;">
-            <p>🛵 <b>Pedido en camino...</b> <span id="time">15 min</span></p>
-            <div class="bar"><div id="fill" class="fill"></div></div>
+        <div id="tracker" class="tracker-ui" style="display:none;">
+            <div class="track-text">🛵 Pedido en camino... <span id="time">15 min</span></div>
+            <div class="progress-bg"><div id="fill" class="progress-bar"></div></div>
         </div>
 
-        <div id="grid" class="grid"></div>
+        <div id="grid" class="product-grid"></div>
     </main>
 
-    <nav class="nav">
-        <div onclick="location.reload()">🏠<br>Inicio</div>
-        <div onclick="App.toggleCart()">🛒<span id="badge">0</span><br>Carrito</div>
-        <div onclick="App.toggleReg()">👤<br>Perfil</div>
+    <nav class="navbar">
+        <div class="nav-btn" onclick="location.reload()">🏠<span>Inicio</span></div>
+        <div class="nav-btn" onclick="App.toggleCart()">🛒<span id="badge" class="badge">0</span><span>Carrito</span></div>
+        <div class="nav-btn" onclick="App.toggleReg()">🚀<span>Vender</span></div>
     </nav>
 
     <div id="reg-drawer" class="drawer">
+        <div class="drawer-overlay" onclick="App.toggleReg()"></div>
         <div class="drawer-content">
-            <button onclick="App.toggleReg()">✕ Cerrar</button>
-            <h3>Registra tu Negocio</h3>
-            <p>Datos protegidos por Yader Vasquez</p>
-            <input type="text" id="r-name" placeholder="Tu Nombre">
-            <input type="text" id="r-ced" placeholder="Cédula (001-...)">
-            <input type="text" id="r-biz" placeholder="Nombre de la Venta/Moto">
-            <button class="btn-confirm" onclick="App.saveReg()">Registrarse</button>
+            <div class="drawer-header">
+                <h3>Registro de Socios</h3>
+                <button class="close-x" onclick="App.toggleReg()">✕</button>
+            </div>
+            <p>Controlado por Yader Vasquez</p>
+            <div class="form">
+                <input type="text" id="r-biz" placeholder="Nombre de tu Negocio o Placa">
+                <input type="text" id="r-ced" placeholder="Número de Cédula">
+                <button class="btn-main" onclick="App.saveReg()">Registrar Ahora</button>
+            </div>
         </div>
     </div>
 
     <div id="cart-modal" class="modal">
-        <div class="modal-box">
+        <div class="modal-content">
             <h3>Tu Pedido</h3>
             <div id="cart-list"></div>
-            <hr>
-            <p><b>Total: C$ <span id="total">0</span></b></p>
-            <button class="btn-confirm" onclick="App.buy()">Confirmar y Pagar en Efectivo</button>
-            <button onclick="App.toggleCart()">Regresar</button>
+            <div class="total-box">Total: C$ <span id="total">0</span></div>
+            <button class="btn-main" onclick="App.buy()">Confirmar Compra</button>
+            <button class="btn-close" onclick="App.toggleCart()">Cerrar</button>
         </div>
     </div>
 

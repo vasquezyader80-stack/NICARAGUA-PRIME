@@ -1,78 +1,51 @@
 const NicaApp = {
-    // 1. CARGA DE DATOS (Persistent Data)
-    state: JSON.parse(localStorage.getItem('NicaMarket_Pro_Data')) || {
+    // Persistencia de datos en LocalStorage
+    state: JSON.parse(localStorage.getItem('NicaPrime_Pro')) || {
         userName: "Yader Stack",
         cacaos: 150,
-        products: []
+        cart: [],
+        products: [
+            { id: 1, name: "Quesillo Trenzado", price: 85, desc: "Fresco de La Paz Centro", emoji: "🧀" },
+            { id: 2, name: "Café Molido Pro", price: 120, desc: "Grano de Matagalpa", emoji: "☕" }
+        ]
     },
 
     init() {
-        this.updateUI();
         this.renderProducts();
-        console.log("🚀 Tierra Nica Pro: Sistema de persistencia listo.");
+        this.updateUI();
     },
 
-    // 2. GUARDADO AUTOMÁTICO
     save() {
-        localStorage.setItem('NicaMarket_Pro_Data', JSON.stringify(this.state));
-    },
-
-    // 3. REGISTRO DE PRODUCTOS
-    registerProduct() {
-        const nameInput = document.getElementById('p-name');
-        const priceInput = document.getElementById('p-price');
-
-        if (!nameInput.value || !priceInput.value) {
-            alert("Por favor, llena todos los campos");
-            return;
-        }
-
-        const newProduct = {
-            id: Date.now(),
-            name: nameInput.value,
-            price: priceInput.value,
-            seller: this.state.userName
-        };
-
-        this.state.products.push(newProduct);
-        this.state.cacaos += 25; // Recompensa por registro
-        
-        this.save(); // Persistencia inmediata
-        this.renderProducts();
-        this.updateUI();
-
-        // Limpiar campos
-        nameInput.value = '';
-        priceInput.value = '';
-        alert("✅ ¡Producto registrado exitosamente!");
+        localStorage.setItem('NicaPrime_Pro', JSON.stringify(this.state));
     },
 
     updateUI() {
-        document.getElementById('balance-display').innerText = this.state.cacaos;
-        document.getElementById('user-name').innerText = this.state.userName;
+        document.getElementById('cacao-bal').innerText = this.state.cacaos;
     },
 
     renderProducts() {
-        const list = document.getElementById('product-list');
-        list.innerHTML = '';
-        
-        this.state.products.forEach(p => {
-            list.innerHTML += `
-                <div class="product-card">
+        const container = document.getElementById('product-list');
+        container.innerHTML = this.state.products.map(p => `
+            <div class="product-card">
+                <div class="product-img">${p.emoji}</div>
+                <div class="product-info">
                     <h4>${p.name}</h4>
-                    <p>C$ ${p.price}</p>
-                    <small>Vendedor: ${p.seller}</small>
+                    <p>${p.desc}</p>
+                    <p class="price">C$ ${p.price}</p>
                 </div>
-            `;
-        });
+                <button onclick="NicaApp.addToCart(${p.id})" style="border:none; background:none; padding:20px; color:#e0004d; font-size:1.5rem">+</button>
+            </div>
+        `).join('');
     },
 
-    resetApp() {
-        if(confirm("¿Seguro que quieres borrar todos los datos guardados?")) {
-            localStorage.removeItem('NicaMarket_Pro_Data');
-            location.reload();
-        }
+    addToCart(id) {
+        const prod = this.state.products.find(p => p.id === id);
+        this.state.cart.push(prod);
+        this.state.cacaos += 10; // Gana cacaos por usar la app
+        this.save();
+        this.updateUI();
+        alert(🛒 ${prod.name} añadido al carrito);
     }
 };
 
-window.onload = () => NicaApp.init();
+window.onload = () => NicaApp.init(); 

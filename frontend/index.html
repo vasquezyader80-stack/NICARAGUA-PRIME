@@ -13,11 +13,43 @@
             <h1>Pinol<b>App</b></h1>
         </div>
         <div class="search-container">
-            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres..." onkeyup="filtrar()">
+            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres, mandados..." onkeyup="filtrar()">
         </div>
     </header>
+
+    <nav class="categories-scroll">
+        <div class="cat" onclick="filtrarCat('Comida')">🍲<span>Fritangas</span></div>
+        <div class="cat" onclick="filtrarCat('Tienda')">🛒<span>Pulperías</span></div>
+        <div class="cat" onclick="filtrarCat('Servicio')">🛠️<span>Oficios</span></div>
+        <div class="cat" onclick="filtrarCat('Envio')">🏍️<span>Mandaditos</span></div>
+    </nav>
+
     <main class="feed" id="feed-negocios"></main>
+
     <button class="fab-nica" onclick="abrirRegistro()">+</button>
+
+    <nav class="bottom-nav">
+        <div class="nav-item active">🏠<br>Inicio</div>
+        <div class="nav-item">📋<br>Pedidos</div>
+        <div class="nav-item">👤<br>Perfil</div>
+    </nav>
+
+    <div id="modal-registro" class="modal">
+        <div class="modal-content">
+            <h3>🎭 Unite a Pinol App</h3>
+            <input type="text" id="reg-nombre" placeholder="Nombre del negocio">
+            <select id="reg-tipo">
+                <option value="Comida">Comida / Fritanga</option>
+                <option value="Tienda">Pulpería / Comercio</option>
+                <option value="Servicio">Taller / Oficio</option>
+                <option value="Envio">Motorizado (Delivery)</option>
+            </select>
+            <input type="text" id="reg-dir" placeholder="Dirección exacta">
+            <button class="btn-primary" onclick="registrar()">Registrar</button>
+            <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
+        </div>
+    </div>
+
     <script src="aplicación.js"></script>
 </body>
 </html>

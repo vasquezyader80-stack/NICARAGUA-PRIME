@@ -3,40 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinol App | Tierra Nica Pro</title>
+    <title>Pinol App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="header-nica">
-        <div class="brand">
-            <span class="logo-gueguense">🎭</span>
-            <h1>Pinol<b>App</b></h1>
-        </div>
-        <div class="search-container">
-            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres..." onkeyup="filtrar()">
-        </div>
+    <header style="background:#0055b8; color:white; padding:20px; text-align:center;">
+        <h1>🎭 Pinol<b>App</b></h1>
+        <p>Saldo: <span id="saldo">C$ 0</span> (Cacaos)</p>
     </header>
-
-    <main class="feed" id="feed-negocios"></main>
-
-    <button class="fab-nica" onclick="abrirRegistro()">+</button>
-
-    <div id="modal-registro" class="modal">
-        <div class="modal-content">
-            <h3>🎭 Unite a Pinol App</h3>
-            <input type="text" id="reg-nombre" placeholder="Nombre del negocio">
-            <select id="reg-tipo">
-                <option value="Comida">Fritanga</option>
-                <option value="Tienda">Pulpería</option>
-                <option value="Servicio">Taller</option>
-                <option value="Envio">Motorizado</option>
-            </select>
-            <input type="text" id="reg-dir" placeholder="Dirección">
-            <button class="btn-primary" onclick="registrar()">Registrar</button>
-            <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
-        </div>
-    </div>
-
+    <main id="app" style="padding:20px;"></main>
     <script src="app.js"></script>
 </body>
 </html>

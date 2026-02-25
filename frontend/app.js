@@ -1,46 +1,38 @@
-// PERSISTENCIA TOTAL
-let db = JSON.parse(localStorage.getItem('pinol_pro')) || [
-    { nombre: "Fritanga El Güegüense", tipo: "Comida", dir: "Bo. San Antonio", icon: "🍲", envio: 30 },
-    { nombre: "Mandados El Macho Ratón", tipo: "Envio", dir: "Todo Managua", icon: "🏍️", envio: 0 },
-    { nombre: "Pulpería La Purísima", tipo: "Tienda", dir: "León", icon: "🛒", envio: 20 }
+let baseDatos = JSON.parse(localStorage.getItem('pinol_db')) || [
+    { nombre: "Fritanga Doña Josefa", tipo: "Comida", dir: "Bo. San Judas", icon: "🍲", envio: 30 },
+    { nombre: "Repuestos El Rayo", tipo: "Servicio", dir: "Pista Suburbana", icon: "⚙️", envio: 60 }
 ];
 
-const feed = document.getElementById('feed-negocios');
-
-function mostrar(lista = db) {
-    feed.innerHTML = lista.map(n => `
-        <div class="card">
-            <div class="card-icon">${n.icon}</div>
-            <div class="card-info">
-                <h4>${n.nombre}</h4>
-                <p>📍 ${n.dir}</p>
-                <small>Envío: C$ ${n.envio}</small>
-            </div>
-            <button class="btn-pedir" onclick="alert('Conectando...')">Pedir</button>
-        </div>
-    `).join('');
+function cargarFeed(filtro = "") {
+    const feed = document.getElementById('feed-negocios');
+    feed.innerHTML = "";
+    baseDatos.filter(n => n.nombre.toLowerCase().includes(filtro.toLowerCase())).forEach(n => {
+        feed.innerHTML += `
+            <div class="card-negocio">
+                <div style="font-size:40px">${n.icon}</div>
+                <div style="flex-grow:1">
+                    <h4>${n.nombre}</h4>
+                    <p style="font-size:12px;color:gray">📍 ${n.dir}</p>
+                    <b style="color:green">C$ ${n.envio}</b>
+                </div>
+                <button class="btn-pedir" onclick="alert('Pedido enviado!')">Pedir</button>
+            </div>`;
+    });
 }
 
 function registrar() {
     const nombre = document.getElementById('reg-nombre').value;
     const tipo = document.getElementById('reg-tipo').value;
     const dir = document.getElementById('reg-dir').value;
-    
     if(nombre && dir) {
-        db.push({ nombre, tipo, dir, icon: tipo === 'Envio' ? '🏍️' : '🏪', envio: 45 });
-        localStorage.setItem('pinol_pro', JSON.stringify(db)); // Persistencia
-        mostrar();
-        cerrar();
+        baseDatos.unshift({ nombre, tipo, dir, icon: tipo === 'Envio' ? '🏍️' : '🏪', envio: 40 });
+        localStorage.setItem('pinol_db', JSON.stringify(baseDatos));
+        cargarFeed();
+        cerrarRegistro();
     }
 }
 
-function filtrar() {
-    const val = document.getElementById('busqueda').value.toLowerCase();
-    mostrar(db.filter(n => n.nombre.toLowerCase().includes(val)));
-}
-
-function abrirRegistro() { document.getElementById('modal').style.display = 'flex'; }
-function cerrar() { document.getElementById('modal').style.display = 'none'; }
-
-window.onload = () => mostrar();
-
+function filtrar() { cargarFeed(document.getElementById('busqueda').value); }
+function abrirRegistro() { document.getElementById('modal-registro').style.display = 'flex'; }
+function cerrarRegistro() { document.getElementById('modal-registro').style.display = 'none'; }
+window.onload = () => cargarFeed();

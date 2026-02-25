@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol | Orgullo Nicaragüense</title>
+    <title>Pinol app | Orgullo Nicaragüense</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -12,17 +12,16 @@
     <div id="splash" class="splash-screen">
         <div class="splash-content">
             <div class="logo-circle">🇳🇮</div>
-            <h1 class="brand-name">Pinol</h1>
-            <p class="tagline">Tradición y Calidad</p>
+            <h1 class="brand-logo">Pinol<span>app</span></h1>
+            <p class="tagline">TRADICIÓN Y CALIDAD</p>
             <div class="loading-bar"><div class="progress"></div></div>
         </div>
     </div>
 
     <header class="pinol-header">
         <div class="header-top">
-            <div class="location-info">
-                <small>📍 Nicaragua</small>
-                <p>Nuestra Tierra ▾</p>
+            <div class="logo-area">
+                <h2 class="brand-logo-small">Pinol<span>app</span></h2>
             </div>
             <div class="cacao-pill" onclick="PinolApp.showWallet()">
                 <span id="cacao-count">0</span> 🪙
@@ -33,19 +32,11 @@
         </div>
     </header>
 
-    <div class="cat-strip">
-        <button class="chip active" onclick="PinolApp.filter('todos')">Todos</button>
-        <button class="chip" onclick="PinolApp.filter('lácteos')">🧀 Lácteos</button>
-        <button class="chip" onclick="PinolApp.filter('café')">☕ Café</button>
-        <button class="chip" onclick="PinolApp.filter('comida')">🍛 Comida</button>
-        <button class="chip" onclick="PinolApp.filter('artesanía')">🏺 Artesanía</button>
-    </div>
-
     <main class="main-content">
         <div id="product-grid" class="grid"></div>
         
         <footer class="pinol-footer">
-            <p>© 2026 Pinol. Todos los derechos reservados.</p>
+            <p>© 2026 Pinol app. Todos los derechos reservados.</p>
             <p>Desarrollado por <b>Yader Vasquez</b></p>
         </footer>
     </main>
@@ -59,18 +50,6 @@
         <div class="nav-tab" onclick="PinolApp.openVendor()"><span>➕</span><p>Vender</p></div>
         <div class="nav-tab"><span>👤</span><p>Perfil</p></div>
     </nav>
-
-    <div id="cart-drawer" class="drawer">
-        <div class="drawer-header">
-            <h3>Mi Pedido</h3>
-            <button onclick="PinolApp.toggleCart()">✕</button>
-        </div>
-        <div id="cart-content" class="drawer-body"></div>
-        <div class="drawer-footer">
-            <div class="summary-row"><span>Total:</span><span id="sub-total">C$ 0</span></div>
-            <button class="checkout-btn" onclick="PinolApp.checkout()">Confirmar mi Compra</button>
-        </div>
-    </div>
 
     <script src="app.js"></script>
 </body>

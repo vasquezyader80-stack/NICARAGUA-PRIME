@@ -3,52 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tierra Nica Pro</title>
-    <style>
-        body { font-family: sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
-        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .header { background: #0067C6; color: white; padding: 20px; border-radius: 12px; text-align: center; }
-        button { background: #0067C6; color: white; border: none; padding: 10px; border-radius: 5px; width: 100%; cursor: pointer; }
-    </style>
+    <title>NicaMarket Hub | Tierra Nica Pro</title>
+    <link rel="stylesheet" href="style.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
+    <header class="main-header">
+        <div class="header-content">
+            <div class="logo">🎭 <span>NicaMarket</span></div>
+            <div class="cacao-badge" id="open-wallet">
+                <span id="balance-display">0</span> 🪙
+            </div>
+        </div>
+    </header>
 
-    <div class="header">
-        <h1 id="displayNombre">Cargando...</h1>
-        <p>Saldo: <span id="displayCacaos">0</span> Cacaos</p>
-    </div>
+    <main class="app-container">
+        <div class="hero-banner">
+            <h1>Tierra Nica Pro</h1>
+            <p>Estado: <span style="color: #28a745;">Desplegado con Éxito 🚀</span></p>
+        </div>
+        <div class="product-grid" id="product-list"></div>
+    </main>
 
-    <div class="card">
-        <h3>Configurar Perfil</h3>
-        <input type="text" id="inputNombre" placeholder="Tu nombre">
-        <input type="number" id="inputCacaos" placeholder="Saldo inicial">
-        <button onclick="guardarPerfil()">Guardar en Teléfono</button>
-    </div>
+    <nav class="bottom-bar">
+        <button onclick="location.reload()">🏠</button>
+        <button class="add-btn" onclick="toggleModal('modal-reg')">＋</button>
+        <button onclick="toggleModal('modal-wallet')">💰</button>
+    </nav>
 
-    <div id="listaProductos"></div>
-
-    <script>
-        // Cargar datos persistentes (LocalStorage)
-        function cargarDatos() {
-            const nombre = localStorage.getItem('user_name') || "Artesano";
-            const cacaos = localStorage.getItem('user_cacaos') || "0";
-            
-            document.getElementById('displayNombre').innerText = "Hola, " + nombre;
-            document.getElementById('displayCacaos').innerText = cacaos;
-        }
-
-        function guardarPerfil() {
-            const nom = document.getElementById('inputNombre').value;
-            const cac = document.getElementById('inputCacaos').value;
-            
-            if(nom) localStorage.setItem('user_name', nom);
-            if(cac) localStorage.setItem('user_cacaos', cac);
-            
-            alert("¡Datos guardados! No se borrarán al cerrar la página.");
-            cargarDatos();
-        }
-
-        window.onload = cargarDatos;
-    </script>
+    <script src="app.js"></script>
 </body>
 </html>

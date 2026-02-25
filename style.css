@@ -1,27 +1,18 @@
-:root { --blue: #005aab; --red: #e60045; --bg: #f8fafc; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); }
+:root { --blue: #005aab; --red: #e60045; --bg: #f0f2f5; }
+body { font-family: sans-serif; margin: 0; background: var(--bg); color: #333; }
 
-.header { background: #fff; padding: 15px; position: sticky; top: 0; z-index: 100; border-bottom: 1px solid #eee; }
-.header-content { display: flex; justify-content: space-between; align-items: center; }
-.cacaos-pill { background: #fff9c4; color: #fbc02d; padding: 6px 12px; border-radius: 20px; font-weight: 800; font-size: 0.8rem; }
+.header { background: #fff; padding: 15px; border-bottom: 2px solid var(--blue); }
+.header-box { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.logo { margin: 0; color: var(--blue); }
+.logo span { color: var(--red); }
+.cacaos { background: #fff9c4; padding: 5px 10px; border-radius: 15px; font-weight: bold; border: 1px solid #fbc02d; }
 
-.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px; padding-bottom: 100px; }
-.product-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); border: 1px solid #eee; }
-.product-card img { width: 100%; height: 120px; object-fit: cover; }
-.product-card div { padding: 10px; font-size: 0.85rem; }
+.profile-inline input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-weight: bold; }
 
-.bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0 25px; border-top: 1px solid #eee; }
-.nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: #777; }
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; }
+.card { background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; text-align: center; padding-bottom: 10px; }
+.card img { width: 100%; height: 120px; object-fit: cover; }
+.card b { display: block; margin: 5px 0; font-size: 0.9rem; }
+.card button { background: var(--red); color: #fff; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; }
 
-/* Modal dinámico */
-.modal-overlay { 
-    position: fixed; inset: 0; background: rgba(0,0,0,0.6); 
-    display: none; align-items: center; justify-content: center; z-index: 1000; 
-}
-.modal-box { 
-    background: #fff; width: 85%; padding: 25px; border-radius: 20px; position: relative; 
-}
-.close-modal-btn { 
-    position: absolute; top: 15px; right: 15px; 
-    background: #eee; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold;
-}
+.footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; }

@@ -1,8 +1,8 @@
 {
   "name": "nicaragua-prime",
   "version": "1.0.0",
-  "description": "Pinol App - Tierra Nica Pro",
+  "private": true,
   "scripts": {
     "start": "node backend/server.js"
   }
-}
+} 

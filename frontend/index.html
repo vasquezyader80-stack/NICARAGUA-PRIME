@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pinol App | Lo Nuestro 🇳🇮</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="estilo.css">
 </head>
 <body>
-    <header class="main-header">
+    <header class="header-nica">
         <div class="brand">
-            <span class="logo-icon">🎭</span>
+            <span class="logo-gueguense">🎭</span>
             <h1>Pinol<b>App</b></h1>
         </div>
-        <div class="search-bar">
+        <div class="search-container">
             <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres, mandados..." onkeyup="filtrar()">
         </div>
     </header>
 
-    <nav class="categories">
+    <nav class="categories-scroll">
         <div class="cat" onclick="filtrarCat('Comida')">🍲<span>Fritangas</span></div>
         <div class="cat" onclick="filtrarCat('Tienda')">🛒<span>Pulperías</span></div>
         <div class="cat" onclick="filtrarCat('Servicio')">🛠️<span>Oficios</span></div>
@@ -27,30 +27,31 @@
     <main class="feed" id="feed-negocios">
         </main>
 
-    <button class="fab" onclick="abrirRegistro()">+</button>
+    <button class="fab-nica" onclick="abrirRegistro()">+</button>
 
-    <nav class="tab-bar">
-        <div class="tab active">🏠<br>Inicio</div>
-        <div class="tab">📦<br>Pedidos</div>
-        <div class="tab">👤<br>Perfil</div>
+    <nav class="bottom-nav">
+        <div class="nav-item active">🏠<br>Inicio</div>
+        <div class="nav-item">📋<br>Mis Pedidos</div>
+        <div class="nav-item">👤<br>Perfil</div>
     </nav>
 
-    <div id="modal" class="modal">
+    <div id="modal-registro" class="modal">
         <div class="modal-content">
-            <h3>¡Unite a la red Nica!</h3>
-            <input type="text" id="reg-nombre" placeholder="Nombre (Negocio o Motorizado)">
+            <h3>🎭 Unite a Pinol App</h3>
+            <p>Pequeños y grandes negocios son bienvenidos.</p>
+            <input type="text" id="reg-nombre" placeholder="Nombre de tu negocio o servicio">
             <select id="reg-tipo">
-                <option value="Comida">Fritanga / Comida</option>
+                <option value="Comida">Comida / Fritanga</option>
                 <option value="Tienda">Pulpería / Comercio</option>
-                <option value="Servicio">Taller / Oficio Técnico</option>
+                <option value="Servicio">Taller / Oficio</option>
                 <option value="Envio">Motorizado (Delivery)</option>
             </select>
-            <input type="text" id="reg-dir" placeholder="Dirección (Ej: Del arbolito 2c al lago)">
-            <button class="btn-main" onclick="registrar()">Dar de Alta</button>
-            <button class="btn-alt" onclick="cerrar()">Cancelar</button>
+            <input type="text" id="reg-dir" placeholder="Dirección (Ej: Del arbolito 2c al sur)">
+            <button class="btn-primary" onclick="registrar()">Registrar mi negocio</button>
+            <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <script src="aplicación.js"></script>
 </body>
 </html>

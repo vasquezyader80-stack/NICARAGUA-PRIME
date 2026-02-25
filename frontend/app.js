@@ -1,20 +1,23 @@
-// Cargar Cacaos y productos del teléfono
-let datos = JSON.parse(localStorage.getItem('pinol_data')) || { cacaos: 100, productos: [] };
+// Recuperar datos del teléfono al cargar
+let datosUsuario = JSON.parse(localStorage.getItem('pinol_data')) || { 
+    nombre: "Usuario Nica", 
+    cacaos: 500, 
+    inventario: [] 
+};
 
-function render() {
-    document.getElementById('saldo').innerText = `C$ ${datos.cacaos}`;
-    const app = document.getElementById('app');
-    app.innerHTML = `<h3>Tus Productos:</h3>` + 
-        (datos.productos.length ? datos.productos.map(p => `<p>📦 ${p}</p>`).join('') : '<p>No hay productos registrados.</p>') +
-        `<br><button onclick="registrarProducto()" style="padding:10px; background:#ff6b00; color:white; border:none; border-radius:5px;">Registrar Producto</button>`;
-}
-
-function registrarProducto() {
-    let p = prompt("Nombre del producto:");
-    if(p) {
-        datos.productos.push(p);
-        localStorage.setItem('pinol_data', JSON.stringify(datos)); // Guarda en memoria
-        render();
+function actualizarPantalla() {
+    // Busca los ID en tu HTML para mostrar los datos
+    if(document.getElementById('saldo')) {
+        document.getElementById('saldo').innerText = datosUsuario.cacaos;
+        localStorage.setItem('pinol_data', JSON.stringify(datosUsuario));
     }
 }
-render();
+
+// Función para registrar productos que persisten en la memoria
+function registrarProducto(nombre) {
+    datosUsuario.inventario.push(nombre);
+    actualizarPantalla(); // Guarda automáticamente
+    alert("¡Producto registrado en la memoria de tu celular! 🇳🇮");
+}
+
+window.onload = actualizarPantalla;

@@ -1,46 +1,39 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NicaMarket Hub | Tierra Nica Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tierra Nica Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <header class="main-header">
-        <div class="header-content">
-            <div class="logo">🎭 <span>NicaMarket Hub</span></div>
-            <div class="cacao-badge">
-                <span id="balance-display">0</span> 🪙
-            </div>
-        </div>
+        <div class="logo">TierraNica<span>Pro</span></div>
+        <div style="font-weight:bold"><span id="cacao-bal">0</span> 🪙</div>
     </header>
 
+    <div class="categories">
+        <div class="cat-item" style="background: #ffe0eb; color: #e0004d;">🔥 Destacados</div>
+        <div class="cat-item">🧀 Lácteos</div>
+        <div class="cat-item">☕ Café</div>
+        <div class="cat-item">🏺 Artesanías</div>
+    </div>
+
     <main class="app-container">
-        <div class="hero-banner">
-            <h1>Bienvenido, <span id="user-name">Emprendedor</span></h1>
-            <p>Estado del Servidor: <span id="status" style="color: #28a745;">● Activo</span></p>
-        </div>
-
-        <section class="add-product-form">
-            <h3>Registrar Nuevo Producto</h3>
-            <input type="text" id="p-name" placeholder="Nombre del producto (ej: Quesillo)">
-            <input type="number" id="p-price" placeholder="Precio en C$">
-            <button onclick="NicaApp.registerProduct()">Guardar en Inventario</button>
-        </section>
-
-        <div class="product-grid" id="product-list">
+        <h3 style="margin-bottom:20px">Descubrí productos Nicas</h3>
+        <div id="product-list">
             </div>
     </main>
 
-    <nav class="bottom-bar">
-        <button onclick="location.reload()">🏠 Inicio</button>
-        <button onclick="alert('Próximamente: Mapa de Entregas')">📍 Rutas</button>
-        <button onclick="NicaApp.resetApp()" style="color: #ff4444;">⚙️ Reset</button>
+    <nav class="bottom-nav">
+        <button class="nav-item active"><i>🏠</i><span>Inicio</span></button>
+        <button class="nav-item"><i>🔍</i><span>Buscar</span></button>
+        <button class="nav-item"><i>🛍️</i><span>Pedidos</span></button>
+        <button class="nav-item" onclick="alert('Configuración de Cacaos')"><i>👤</i><span>Perfil</span></button>
     </nav>
 
     <script src="app.js"></script>
 </body>
-</html>
+</html> 

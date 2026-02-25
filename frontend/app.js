@@ -5,6 +5,7 @@ let baseDatos = JSON.parse(localStorage.getItem('pinol_db')) || [
 
 function cargarFeed(filtro = "") {
     const feed = document.getElementById('feed-negocios');
+    if(!feed) return;
     feed.innerHTML = "";
     baseDatos.filter(n => n.nombre.toLowerCase().includes(filtro.toLowerCase())).forEach(n => {
         feed.innerHTML += `

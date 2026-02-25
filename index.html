@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NicaMarket Pro | Nicaragua en tus manos</title>
+    <title>Pinol | Orgullo Nicaragüense</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -11,64 +11,64 @@
 
     <div id="splash" class="splash-screen">
         <div class="splash-content">
-            <span class="logo-large">🇳🇮</span>
-            <h2>NicaMarket<span>Pro</span></h2>
-            <div class="loader"></div>
+            <div class="logo-circle">🇳🇮</div>
+            <h1 class="brand-name">Pinol</h1>
+            <p class="tagline">Tradición y Calidad</p>
+            <div class="loading-bar"><div class="progress"></div></div>
         </div>
     </div>
 
-    <header class="pro-nav">
-        <div class="nav-top">
-            <div class="loc-box">
-                <small>📍 Tu ubicación</small>
-                <p>Managua, Nicaragua ▾</p>
+    <header class="pinol-header">
+        <div class="header-top">
+            <div class="location-info">
+                <small>📍 Nicaragua</small>
+                <p>Nuestra Tierra ▾</p>
             </div>
-            <div class="wallet-btn" onclick="NicaApp.showWallet()">
+            <div class="cacao-pill" onclick="PinolApp.showWallet()">
                 <span id="cacao-count">0</span> 🪙
             </div>
         </div>
-        <div class="search-box">
-            <input type="text" id="main-search" oninput="NicaApp.search()" placeholder="Buscar quesillos, café, cuero...">
+        <div class="search-container">
+            <input type="text" id="main-search" oninput="PinolApp.search()" placeholder="Busca productos nicas...">
         </div>
     </header>
 
-    <div class="cat-slider">
-        <button class="chip active" onclick="NicaApp.filter('todos')">Todos</button>
-        <button class="chip" onclick="NicaApp.filter('lácteos')">🧀 Lácteos</button>
-        <button class="chip" onclick="NicaApp.filter('café')">☕ Café</button>
-        <button class="chip" onclick="NicaApp.filter('comida')">🍛 Comida</button>
-        <button class="chip" onclick="NicaApp.filter('artesanía')">🏺 Artesanía</button>
+    <div class="cat-strip">
+        <button class="chip active" onclick="PinolApp.filter('todos')">Todos</button>
+        <button class="chip" onclick="PinolApp.filter('lácteos')">🧀 Lácteos</button>
+        <button class="chip" onclick="PinolApp.filter('café')">☕ Café</button>
+        <button class="chip" onclick="PinolApp.filter('comida')">🍛 Comida</button>
+        <button class="chip" onclick="PinolApp.filter('artesanía')">🏺 Artesanía</button>
     </div>
 
-    <main class="content-area">
+    <main class="main-content">
         <div id="product-grid" class="grid"></div>
         
-        <footer class="pro-footer">
-            <p>© 2026 NicaMarket Pro. Todos los derechos reservados.</p>
-            <p>Desarrollado por <b>Yader Stack & Gemini AI</b></p>
+        <footer class="pinol-footer">
+            <p>© 2026 Pinol. Todos los derechos reservados.</p>
+            <p>Desarrollado por <b>Yader Vasquez</b></p>
         </footer>
     </main>
 
-    <nav class="bottom-bar">
-        <div class="tab active"><span>🏠</span><p>Inicio</p></div>
-        <div class="tab" onclick="NicaApp.toggleCart()">
-            <div class="cart-dot" id="cart-badge">0</div>
+    <nav class="nav-bottom">
+        <div class="nav-tab active"><span>🏠</span><p>Inicio</p></div>
+        <div class="nav-tab" onclick="PinolApp.toggleCart()">
+            <div class="cart-badge" id="cart-badge">0</div>
             <span>🛍️</span><p>Carrito</p>
         </div>
-        <div class="tab" onclick="NicaApp.openVendor()"><span>➕</span><p>Vender</p></div>
-        <div class="tab"><span>👤</span><p>Perfil</p></div>
+        <div class="nav-tab" onclick="PinolApp.openVendor()"><span>➕</span><p>Vender</p></div>
+        <div class="nav-tab"><span>👤</span><p>Perfil</p></div>
     </nav>
 
     <div id="cart-drawer" class="drawer">
-        <div class="drawer-head">
-            <h3>Tu Pedido</h3>
-            <button onclick="NicaApp.toggleCart()">✕</button>
+        <div class="drawer-header">
+            <h3>Mi Pedido</h3>
+            <button onclick="PinolApp.toggleCart()">✕</button>
         </div>
         <div id="cart-content" class="drawer-body"></div>
-        <div class="drawer-foot">
-            <div class="price-row"><span>Subtotal:</span><span id="sub-total">C$ 0</span></div>
-            <div class="price-row"><span>Envío:</span><span>C$ 40</span></div>
-            <button class="confirm-btn" onclick="NicaApp.checkout()">Confirmar Pedido 🚀</button>
+        <div class="drawer-footer">
+            <div class="summary-row"><span>Total:</span><span id="sub-total">C$ 0</span></div>
+            <button class="checkout-btn" onclick="PinolApp.checkout()">Confirmar mi Compra</button>
         </div>
     </div>
 

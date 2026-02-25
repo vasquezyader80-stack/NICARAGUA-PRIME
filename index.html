@@ -5,29 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pinol app | Yader Vasquez</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="header">
-        <div class="header-content">
-            <div class="user-meta">
-                <small>Propietario:</small>
-                <b id="user-name">Cargando...</b>
-            </div>
-            <div class="cacaos-pill">🪙 <span id="cacaos-val">0</span> Cacaos</div>
+        <div class="header-box">
+            <h2 class="logo">Pinol<span>app</span></h2>
+            <div class="cacaos">🪙 <span id="cacaos-val">0</span> Cacaos</div>
+        </div>
+        <div class="profile-inline">
+            <input type="text" id="user-input" onchange="App.saveName()" placeholder="Tu nombre...">
         </div>
     </header>
 
-    <main id="grid" class="shop-grid">
+    <main id="grid" class="grid">
         </main>
 
-    <nav class="bottom-nav">
-        <div class="nav-item" onclick="location.reload()">🏠<span>Inicio</span></div>
-        <div class="nav-item" onclick="App.openSettings()">⚙️<span>Ajustes</span></div>
-    </nav>
-
-    <div id="modal-container" class="modal-overlay"></div>
+    <footer class="footer">
+        <p>Propiedad Intelectual de <b>Yader Vasquez</b> © 2026</p>
+    </footer>
 
     <script src="app.js"></script>
 </body>

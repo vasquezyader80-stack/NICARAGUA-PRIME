@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +12,7 @@
     <header class="main-header">
         <div class="header-content">
             <div class="logo">🎭 <span>NicaMarket Hub</span></div>
-            <div class="cacao-badge" id="open-wallet">
+            <div class="cacao-badge">
                 <span id="balance-display">0</span> 🪙
             </div>
         </div>
@@ -19,16 +20,25 @@
 
     <main class="app-container">
         <div class="hero-banner">
-            <h1>Tierra Nica Pro</h1>
-            <p>Estado: <span id="online-status" style="color: #28a745;">✅ Conectado</span></p>
+            <h1>Bienvenido, <span id="user-name">Emprendedor</span></h1>
+            <p>Estado del Servidor: <span id="status" style="color: #28a745;">● Activo</span></p>
         </div>
-        <div class="product-grid" id="product-list"></div>
+
+        <section class="add-product-form">
+            <h3>Registrar Nuevo Producto</h3>
+            <input type="text" id="p-name" placeholder="Nombre del producto (ej: Quesillo)">
+            <input type="number" id="p-price" placeholder="Precio en C$">
+            <button onclick="NicaApp.registerProduct()">Guardar en Inventario</button>
+        </section>
+
+        <div class="product-grid" id="product-list">
+            </div>
     </main>
 
     <nav class="bottom-bar">
-        <button onclick="location.reload()">🏠</button>
-        <button class="add-btn" onclick="toggleModal('modal-reg')">＋</button>
-        <button onclick="toggleModal('modal-wallet')">💰</button>
+        <button onclick="location.reload()">🏠 Inicio</button>
+        <button onclick="alert('Próximamente: Mapa de Entregas')">📍 Rutas</button>
+        <button onclick="NicaApp.resetApp()" style="color: #ff4444;">⚙️ Reset</button>
     </nav>
 
     <script src="app.js"></script>

@@ -3,141 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NICASync OS | Logistics Engine</title>
+    <title>NICASync Pro | Enterprise Logistics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --glow: #3b82f6; }
         body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background: #020617; 
-            color: #f8fafc;
-            overflow-x: hidden;
+            font-family: 'Inter', sans-serif; 
+            background: #050505; 
+            color: #ffffff;
+            background-image: radial-gradient(circle at 50% -20%, #1e3a8a 0%, #050505 80%);
         }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(25px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        .glass-premium {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
         }
-        .neo-button {
-            background: linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%);
-            box-shadow: 0 10px 20px -5px rgba(29, 78, 216, 0.4);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .accent-gradient {
+            background: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
         }
-        .neo-button:active { transform: scale(0.95); opacity: 0.9; }
-        .pulse-border { border: 2px solid var(--glow); animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { border-color: #1e3a8a; } 50% { border-color: #3b82f6; } 100% { border-color: #1e3a8a; } }
+        .card-entry {
+            animation: cardSlide 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        @keyframes cardSlide {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
     </style>
 </head>
-<body class="p-4 md:p-10 min-h-screen">
+<body class="p-6 md:p-12 min-h-screen">
 
-    <header class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
-        <div>
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/30">NS</div>
-                <h1 class="text-4xl font-800 tracking-tighter">NICASync <span class="text-blue-500">Pro</span></h1>
+    <nav class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center mb-16 gap-8">
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 accent-gradient rounded-3xl flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.5)]">
+                <span class="text-2xl font-black">N</span>
             </div>
-            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em] mt-2">Regional Logistics Network v2.0</p>
+            <div>
+                <h1 class="text-4xl font-900 tracking-tighter italic">NICASYNC <span class="text-blue-500 font-normal">CORP</span></h1>
+                <p class="text-[9px] font-bold text-blue-400 tracking-[0.5em] uppercase">Blockchain Logistics Ready</p>
+            </div>
         </div>
+
+        <div class="glass-premium px-10 py-5 flex items-center gap-10">
+            <div class="text-center">
+                <p class="text-[9px] font-bold text-gray-500 uppercase">Fondo Operativo</p>
+                <p class="text-3xl font-black italic">C$ <span id="balance">45,280</span></p>
+            </div>
+            <div class="w-[1px] h-10 bg-white/10"></div>
+            <div class="flex flex-col">
+                <span class="text-[9px] font-bold text-blue-500 uppercase tracking-widest text-center">Terminal Activa</span>
+                <input id="terminalId" type="text" class="bg-transparent text-center font-bold text-white outline-none w-32" value="NI-CHIN-01">
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
         
-        <div class="glass-panel px-8 py-4 rounded-[2rem] flex items-center gap-6">
-            <div class="text-right">
-                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Balance Operativo</p>
-                <p class="text-2xl font-black text-white"><span id="balance">2,450.00</span> <span class="text-sm text-blue-400">C$</span></p>
-            </div>
-            <div class="h-10 w-[1px] bg-slate-800"></div>
-            <input id="userName" type="text" class="bg-transparent font-bold text-lg outline-none text-blue-400 w-32" placeholder="ID Agente">
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div class="lg:col-span-4 space-y-6">
-            <div class="glass-panel p-8 rounded-[2.5rem]">
-                <h2 class="text-xs font-black text-slate-500 uppercase mb-6 tracking-widest">Nueva Orden de Carga</h2>
-                <div class="space-y-4">
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold ml-2 text-slate-400">ORIGEN / DESTINO</label>
-                        <input id="route" type="text" placeholder="Chinandega -> Managua" class="w-full bg-slate-900/50 p-4 rounded-2xl outline-none border border-slate-800 focus:border-blue-500/50 font-semibold transition-all">
+        <div class="lg:col-span-4 space-y-8">
+            <div class="glass-premium p-10 relative overflow-hidden group">
+                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+                <h2 class="text-sm font-black text-blue-400 uppercase tracking-widest mb-8">Consola de Despacho</h2>
+                
+                <div class="space-y-6">
+                    <div class="group">
+                        <label class="text-[10px] font-bold text-gray-500 ml-4 mb-2 block tracking-widest uppercase">Punto de Entrega</label>
+                        <input id="route" type="text" placeholder="Ej: Aduana El Guasaule" class="w-full bg-white/5 p-5 rounded-3xl outline-none border border-white/5 focus:border-blue-500/50 transition-all font-bold">
                     </div>
-                    <div class="space-y-1">
-                        <label class="text-[10px] font-bold ml-2 text-slate-400">DESCRIPCIÓN DE CARGA</label>
-                        <input id="cargo" type="text" placeholder="Ej. 20kg Artesanías" class="w-full bg-slate-900/50 p-4 rounded-2xl outline-none border border-slate-800 font-semibold">
+                    <div>
+                        <label class="text-[10px] font-bold text-gray-500 ml-4 mb-2 block tracking-widest uppercase">Manifiesto de Carga</label>
+                        <input id="manifest" type="text" placeholder="Contenido y Peso" class="w-full bg-white/5 p-5 rounded-3xl outline-none border border-white/5 font-bold">
                     </div>
-                    <button onclick="dispatchOrder()" class="w-full neo-button p-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] mt-4">Despachar Orden</button>
+                    <button onclick="submitShipment()" class="w-full accent-gradient p-6 rounded-3xl font-black uppercase text-xs tracking-widest hover:scale-[1.02] active:scale-95 transition-all shadow-xl shadow-blue-500/20">Registrar en Red</button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-800">Monitor de Tráfico Regional</h2>
-                <div class="flex gap-2">
-                    <span class="bg-blue-500/10 text-blue-400 text-[10px] font-bold px-4 py-1.5 rounded-full border border-blue-500/20">ESTADO: ACTIVO</span>
+            <div class="flex justify-between items-end mb-8 px-4">
+                <h2 class="text-2xl font-black italic">Monitor de Tráfico Regional</h2>
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-[10px] font-bold text-green-500 uppercase tracking-widest">Enlace Satelital Activo</span>
                 </div>
             </div>
             
-            <div id="logisticsGrid" class="grid grid-cols-1 gap-4">
+            <div id="shipmentList" class="space-y-5">
                 </div>
         </div>
     </main>
 
     <script>
-        // Persistencia Inteligente (Local Storage Sync)
-        let wallet = parseFloat(localStorage.getItem('ns_balance') || "2450.00");
+        let wallet = parseInt(localStorage.getItem('nicasync_wallet') || "45280");
+        
+        function updateUI() {
+            document.getElementById('balance').innerText = wallet.toLocaleString();
+        }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('userName').value = localStorage.getItem('ns_agent') || "Agente_01";
-            document.getElementById('balance').innerText = wallet.toLocaleString('en-US', {minimumFractionDigits: 2});
-            fetchOrders();
-
-            document.getElementById('userName').addEventListener('input', (e) => {
-                localStorage.setItem('ns_agent', e.target.value);
-            });
-        });
-
-        async function fetchOrders() {
-            const res = await fetch('/api/orders');
-            const orders = await res.json();
-            const grid = document.getElementById('logisticsGrid');
+        async function fetchSystem() {
+            const res = await fetch('/api/logistics');
+            const data = await res.json();
+            const list = document.getElementById('shipmentList');
             
-            grid.innerHTML = orders.map((o, i) => `
-                <div class="glass-panel p-6 rounded-[2rem] flex flex-col md:flex-row justify-between items-center gap-4 hover:border-blue-500/30 transition-all cursor-pointer group">
-                    <div class="flex items-center gap-5">
-                        <div class="w-14 h-14 bg-slate-900 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-slate-800">🚚</div>
+            list.innerHTML = data.map((item, i) => `
+                <div class="glass-premium p-8 flex flex-col md:flex-row justify-between items-center gap-6 card-entry hover:bg-white/5 transition-colors border-r-4 border-blue-500" style="animation-delay: ${i*0.1}s">
+                    <div class="flex items-center gap-8">
+                        <div class="text-4xl">🚛</div>
                         <div>
-                            <h3 class="font-800 text-lg group-hover:text-blue-400 transition-colors">${o.cargo}</h3>
-                            <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">${o.route}</p>
+                            <h3 class="text-xl font-black tracking-tight">${item.manifest}</h3>
+                            <p class="text-[10px] font-bold text-gray-500 uppercase tracking-[0.2em] mt-1 italic">${item.route}</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-8">
+                    <div class="flex items-center gap-12">
                         <div class="text-right">
-                            <p class="text-xl font-black text-white">${o.cost} <span class="text-xs text-blue-500 italic">C$</span></p>
-                            <p class="text-[8px] font-bold text-slate-500 uppercase">Tarifa Optimizada</p>
+                            <p class="text-2xl font-black italic">C$ ${item.cost}</p>
+                            <p class="text-[9px] font-bold text-blue-400 uppercase tracking-widest">Costo Optmizado</p>
                         </div>
-                        <div class="h-10 w-[2px] bg-blue-500 pulse-border rounded-full"></div>
+                        <button class="bg-white/10 p-4 rounded-2xl hover:bg-blue-500 transition-all">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        async function dispatchOrder() {
+        async function submitShipment() {
             const route = document.getElementById('route').value;
-            const cargo = document.getElementById('cargo').value;
-            if(!route || !cargo) return;
+            const manifest = document.getElementById('manifest').value;
+            if(!route || !manifest) return;
 
-            const cost = Math.floor(Math.random() * (500 - 100) + 100);
-            
-            await fetch('/api/orders', {
+            const cost = Math.floor(Math.random() * (1200 - 400) + 400);
+
+            await fetch('/api/logistics', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ route, cargo, cost })
+                body: JSON.stringify({ route, manifest, cost })
             });
 
             document.getElementById('route').value = '';
-            document.getElementById('cargo').value = '';
-            fetchOrders();
+            document.getElementById('manifest').value = '';
+            fetchSystem();
         }
+
+        updateUI();
+        fetchSystem();
     </script>
 </body>
 </html>

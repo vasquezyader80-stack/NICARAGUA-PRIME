@@ -3,74 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NicaMarket Pro | El Marketplace de Nicaragua</title>
+    <title>NicaMarket Pro | Tierra Nica</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="app-header">
-        <div class="top-row">
-            <div class="location">
-                <small>📍 Nicaragua</small>
-                <p id="user-location">Seleccionar dirección ▾</p>
-            </div>
-            <div class="user-stats">
-                <div class="stat-item"><span id="cacao-balance">0</span> 🪙</div>
-                <div class="stat-item cart-icon" onclick="NicaApp.toggleCart()">
-                    🛒 <span id="cart-count">0</span>
+    <header class="pro-header">
+        <div class="header-main">
+            <div class="brand">
+                <span class="logo-icon">🇳🇮</span>
+                <div>
+                    <h1>NicaMarket</h1>
+                    <small>📍 Managua, Nicaragua</small>
                 </div>
             </div>
+            <div class="wallet" onclick="NicaApp.showWallet()">
+                <span id="cacao-bal">0</span> 🪙
+            </div>
         </div>
-        <div class="search-container">
-            <input type="text" id="search-input" oninput="NicaApp.filterProducts()" placeholder="Busca quesillos, café, artesanías...">
+        <div class="search-box">
+            <input type="text" id="main-search" oninput="NicaApp.search()" placeholder="Buscar quesillos, café, cuero...">
         </div>
     </header>
 
-    <nav class="categories-bar">
-        <button class="cat-pill active" onclick="NicaApp.filterCat('todos')">Todos</button>
-        <button class="cat-pill" onclick="NicaApp.filterCat('lácteos')">🧀 Lácteos</button>
-        <button class="cat-pill" onclick="NicaApp.filterCat('café')">☕ Café</button>
-        <button class="cat-pill" onclick="NicaApp.filterCat('comida')">🍛 Comida</button>
+    <nav class="cat-bar">
+        <div class="cat-chip active" onclick="NicaApp.filter('todos')">Todos</div>
+        <div class="cat-chip" onclick="NicaApp.filter('comida')">🍲 Comida</div>
+        <div class="cat-chip" onclick="NicaApp.filter('artesania')">🏺 Artesanía</div>
+        <div class="cat-chip" onclick="NicaApp.filter('cuero')">👞 Cuero</div>
     </nav>
 
-    <main class="app-feed">
+    <main class="feed">
         <div id="product-grid" class="product-grid"></div>
     </main>
 
-    <div id="cart-drawer" class="cart-drawer">
-        <div class="drawer-header">
-            <h3>Tu Pedido</h3>
-            <button onclick="NicaApp.toggleCart()">✕</button>
+    <nav class="tab-bar">
+        <div class="tab active"><span>🏠</span><p>Inicio</p></div>
+        <div class="tab" onclick="NicaApp.toggleCart()">
+            <div class="cart-badge" id="cart-count">0</div>
+            <span>🛒</span><p>Carrito</p>
         </div>
-        <div id="cart-items" class="cart-items-list"></div>
-        <div class="cart-footer">
-            <div class="total-row"><span>Total:</span><span id="cart-total">C$ 0</span></div>
-            <button class="btn-checkout" onclick="NicaApp.checkout()">Confirmar Pedido</button>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active"><span>🏠</span><p>Inicio</p></div>
-        <div class="nav-item" onclick="NicaApp.toggleModal()"><span>➕</span><p>Vender</p></div>
-        <div class="nav-item"><span>📋</span><p>Pedidos</p></div>
+        <div class="tab" onclick="NicaApp.toggleVender()"><span>➕</span><p>Vender</p></div>
+        <div class="tab"><span>👤</span><p>Cuenta</p></div>
     </nav>
 
-    <div id="reg-modal" class="modal">
-        <div class="modal-body">
-            <h3>Subir Producto</h3>
-            <input type="text" id="p-name" placeholder="¿Qué vendes?">
-            <input type="number" id="p-price" placeholder="Precio C$">
-            <select id="p-cat">
-                <option value="comida">Comida</option>
-                <option value="lácteos">Lácteos</option>
-                <option value="café">Café</option>
-            </select>
-            <button class="btn-primary" onclick="NicaApp.addProduct()">Publicar en NicaMarket</button>
-            <button class="btn-secondary" onclick="NicaApp.toggleModal()">Cerrar</button>
+    <div id="cart-panel" class="side-panel">
+        <div class="panel-header">
+            <h3>Tu Carrito</h3>
+            <button onclick="NicaApp.toggleCart()">✕</button>
+        </div>
+        <div id="cart-list" class="panel-body"></div>
+        <div class="panel-footer">
+            <div class="total-box">
+                <span>Subtotal:</span>
+                <span id="cart-total">C$ 0.00</span>
+            </div>
+            <button class="btn-confirm" onclick="NicaApp.checkout()">Confirmar Pedido 🚀</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
-</html> 
+</html>

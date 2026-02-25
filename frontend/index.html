@@ -12,12 +12,30 @@
             <span class="logo-gueguense">🎭</span>
             <h1>Pinol<b>App</b></h1>
         </div>
-        <input type="text" id="busqueda" placeholder="Buscar fritangas..." onkeyup="filtrar()">
+        <div class="search-container">
+            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres..." onkeyup="filtrar()">
+        </div>
     </header>
 
-    <main id="feed-negocios"></main>
+    <main class="feed" id="feed-negocios"></main>
 
-    <button class="fab" onclick="abrirRegistro()">+</button>
+    <button class="fab-nica" onclick="abrirRegistro()">+</button>
+
+    <div id="modal-registro" class="modal">
+        <div class="modal-content">
+            <h3>🎭 Unite a Pinol App</h3>
+            <input type="text" id="reg-nombre" placeholder="Nombre del negocio">
+            <select id="reg-tipo">
+                <option value="Comida">Fritanga</option>
+                <option value="Tienda">Pulpería</option>
+                <option value="Servicio">Taller</option>
+                <option value="Envio">Motorizado</option>
+            </select>
+            <input type="text" id="reg-dir" placeholder="Dirección">
+            <button class="btn-primary" onclick="registrar()">Registrar</button>
+            <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 </body>

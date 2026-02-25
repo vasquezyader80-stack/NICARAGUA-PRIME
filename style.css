@@ -1,39 +1,51 @@
 :root {
     --blue: #005aab;
     --red: #e60045;
-    --white: #ffffff;
-    --bg: #f5f7fa;
+    --gray: #f2f4f7;
+    --text-dark: #1a1e26;
+    --shadow: 0 4px 20px rgba(0,0,0,0.08);
 }
 
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; padding-bottom: 80px; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fff; margin: 0; color: var(--text-dark); -webkit-tap-highlight-color: transparent; }
 
-/* Logo Bicolor */
-.brand-logo { font-size: 3.5rem; color: var(--blue); font-weight: 800; }
+/* Splash */
+.splash-screen { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.brand-logo { font-size: 3.5rem; color: var(--blue); margin: 0; }
 .brand-logo span { color: var(--red); }
-.brand-logo-small { font-size: 1.5rem; color: var(--blue); font-weight: 800; margin: 0; }
-.brand-logo-small span { color: var(--red); }
+.auth { font-size: 0.7rem; letter-spacing: 2px; color: #aaa; margin-top: 20px; font-weight: 800; }
 
-/* Header Fijo */
-.main-header { background: var(--white); padding: 15px 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.wallet { text-align: right; background: #eef6ff; padding: 5px 12px; border-radius: 12px; border: 1px solid var(--blue); }
-.wallet span { color: var(--blue); font-weight: 800; }
+/* Header */
+.app-header { background: #fff; padding: 15px; position: sticky; top: 0; z-index: 1000; }
+.address-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; }
+.loc-icon { font-size: 1.5rem; }
+.loc-text p { margin: 0; font-weight: 800; font-size: 0.9rem; }
+.search-input-group { background: var(--gray); border-radius: 12px; padding: 12px; display: flex; align-items: center; gap: 10px; }
+.search-input-group input { border: none; background: none; width: 100%; outline: none; font-weight: 600; }
 
-.search-bar input { width: 100%; padding: 12px; border-radius: 10px; border: none; background: #f0f2f5; box-sizing: border-box; }
+/* Categorías */
+.main-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px 15px; }
+.cat-item { text-align: center; cursor: pointer; }
+.cat-icon { background: var(--gray); aspect-ratio: 1; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin-bottom: 8px; }
+.cat-item span { font-size: 0.75rem; font-weight: 700; }
 
-/* Grid y Tarjetas */
-.grid { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.card { background: var(--white); border-radius: 15px; padding: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-.card img { width: 100%; height: 100px; object-fit: cover; border-radius: 10px; }
-.card h4 { margin: 8px 0 4px; font-size: 0.9rem; }
-.card p { color: var(--red); font-weight: 800; margin: 0; }
+/* Tiendas */
+.shop-grid { padding: 0 15px; display: flex; flex-direction: column; gap: 20px; }
+.shop-card { border-radius: 20px; overflow: hidden; background: #fff; border: 1px solid #eee; position: relative; }
+.shop-img { width: 100%; height: 160px; object-fit: cover; }
+.shop-info { padding: 15px; }
+.shop-info h4 { margin: 0; font-size: 1.1rem; }
+.shop-meta { display: flex; gap: 10px; font-size: 0.8rem; color: #666; margin-top: 5px; }
+.tag { background: #eefdf3; color: #28a745; padding: 2px 8px; border-radius: 5px; font-weight: 800; }
 
-/* Modal de Registro */
-.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; align-items: center; justify-content: center; }
-.modal-content { background: #fff; padding: 25px; border-radius: 20px; width: 85%; display: flex; flex-direction: column; gap: 12px; }
-.btn-save { background: var(--blue); color: #fff; border: none; padding: 12px; border-radius: 10px; font-weight: 700; }
+/* Barra de Navegación (Dock) */
+.dock-bar { position: fixed; bottom: 0; width: 100%; background: #fff; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 10px 0 25px; z-index: 1000; }
+.dock-tab { text-align: center; color: #999; }
+.dock-tab.active { color: var(--red); }
+.dock-tab .icon { font-size: 1.4rem; position: relative; }
+.badge { position: absolute; top: -5px; right: -5px; background: var(--red); color: #fff; font-size: 0.6rem; padding: 2px 5px; border-radius: 50%; }
 
-/* Navigation */
-.tab-bar { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; }
-.drawer { position: fixed; right: -100%; top: 0; width: 80%; height: 100%; background: #fff; transition: 0.3s; z-index: 1500; }
-.drawer.open { right: 0; }
+/* Modales y Drawer */
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: flex-end; }
+.modal-inner { background: #fff; width: 100%; border-radius: 25px 25px 0 0; padding: 25px; }
+.drawer { position: fixed; right: -100%; top: 0; width: 85%; height: 100%; background: #fff; z-index: 1500; transition: 0.4s; }
+.drawer.active { right: 0; }

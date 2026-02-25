@@ -5,39 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pinol app | Yader Vasquez</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="main-header">
-        <div class="header-top">
-            <div>
-                <small>Propietario:</small><br>
+    <header class="header">
+        <div class="header-content">
+            <div class="user-meta">
+                <small>Propietario:</small>
                 <b id="user-name">Cargando...</b>
             </div>
             <div class="cacaos-pill">🪙 <span id="cacaos-val">0</span> Cacaos</div>
         </div>
     </header>
 
-    <main id="grid" class="product-grid"></main>
+    <main id="grid" class="shop-grid">
+        </main>
 
     <nav class="bottom-nav">
-        <div onclick="location.reload()">🏠<br>Inicio</div>
-        <div onclick="PinolApp.toggleDrawer()">⚙️<br>Ajustes</div>
+        <div class="nav-item" onclick="location.reload()">🏠<span>Inicio</span></div>
+        <div class="nav-item" onclick="App.openSettings()">⚙️<span>Ajustes</span></div>
     </nav>
 
-    <div id="side-drawer">
-        <div class="drawer-overlay" onclick="PinolApp.toggleDrawer()"></div>
-        <div class="drawer-content">
-            <div class="drawer-header">
-                <h3>Ajustes de Perfil</h3>
-                <button class="close-btn" onclick="PinolApp.toggleDrawer()">✕</button>
-            </div>
-            <p>Cambia tu nombre de usuario:</p>
-            <input type="text" id="input-name" placeholder="Escribe tu nombre..." style="width:100%; padding:12px; margin-bottom:15px;">
-            <button onclick="PinolApp.saveUser()" style="width:100%; padding:15px; background:var(--blue); color:#fff; border:none; border-radius:10px; font-weight:800;">Guardar Datos</button>
-            <p style="margin-top:30px; font-size:0.7rem; color:#888;">Pinol app © 2026<br>Desarrollado por Yader Vasquez</p>
-        </div>
-    </div>
+    <div id="modal-container" class="modal-overlay"></div>
 
     <script src="app.js"></script>
 </body>

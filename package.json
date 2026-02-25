@@ -1,7 +1,8 @@
 {
-  "name": "pinol-app",
+  "name": "nicaragua-prime",
   "version": "1.0.0",
+  "description": "Plataforma Pinol App",
   "scripts": {
-    "start": "echo 'App Lista'"
+    "start": "node backend/server.js"
   }
 }

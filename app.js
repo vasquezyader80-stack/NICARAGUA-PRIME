@@ -1,120 +1,105 @@
-const PinolApp = {
-    state: JSON.parse(localStorage.getItem('Pinol_Master_DB')) || {
+const App = {
+    // Base de datos expandida (Más productos nacionales)
+    data: {
         cart: [],
         shops: [
-            { id: 1, name: "Tip Top - Managua", type: "comida", img: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=500", items: [{n: "Combo Gigante", p: 250}, {n: "Pechuguitas", p: 140}] },
-            { id: 2, name: "Super Express", type: "super", img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=500", items: [{n: "Leche Parmalat 1L", p: 35}, {n: "Pan Bimbo", p: 65}] },
-            { id: 3, name: "Artesanías Masaya", type: "artesania", img: "https://images.unsplash.com/photo-1519920101044-899312b9bb82?w=500", items: [{n: "Hamaca Matrimonial", p: 1500}, {n: "Jarrón Decorado", p: 400}] },
-            { id: 4, name: "Café de Jinotega", type: "comida", img: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500", items: [{n: "Bolsa 1lb Molido", p: 130}] },
-            { id: 5, name: "Farmacia Value", type: "salud", img: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?w=500", items: [{n: "Kit de Vitaminas", p: 300}] },
-            { id: 6, name: "Quesillos La Paz Centro", type: "comida", img: "https://images.unsplash.com/photo-1585476482101-789a77490089?w=500", items: [{n: "Quesillo Trenza", p: 85}] }
+            { id: 1, n: "Tip-Top Managua", t: "comida", i: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=400", p: "Combo Clásico", price: 210 },
+            { id: 2, n: "Quesillos La Paz Centro", t: "comida", i: "https://images.unsplash.com/photo-1585476482101-789a77490089?w=400", p: "Quesillo de Trenza", price: 85 },
+            { id: 3, n: "Pulpería El Shaddai", t: "super", i: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=400", p: "Litro de Leche", price: 36 },
+            { id: 4, n: "Artesanías Masaya", t: "artesania", i: "https://images.unsplash.com/photo-1519920101044-899312b9bb82?w=400", p: "Hamaca de Hilo", price: 1200 },
+            { id: 5, n: "Café de Jinotega", t: "comida", i: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400", p: "Café Molido 1lb", price: 135 },
+            { id: 6, n: "Super Express", t: "super", i: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=400", p: "Pan Molde", price: 65 }
         ]
     },
 
     init() {
-        setTimeout(() => document.getElementById('splash').style.display = 'none', 2500);
-        this.renderShops();
-        this.updateBadge();
+        // Splash rápido
+        setTimeout(() => document.getElementById('splash').style.display='none', 1500);
+        this.render(this.data.shops);
     },
 
-    renderShops(items = this.state.shops) {
-        const grid = document.getElementById('shop-grid');
+    render(items) {
+        const grid = document.getElementById('grid');
         grid.innerHTML = items.map(s => `
-            <div class="shop-card" onclick="PinolApp.openShop(${s.id})">
-                <img src="${s.img}">
-                <div class="shop-info">
-                    <h4>${s.name}</h4>
-                    <p style="font-size:0.65rem; color:#888;">🛵 C$ 35 • Nicaragua</p>
+            <div class="card" onclick="App.addToCart('${s.p}', ${s.price})">
+                <img src="${s.i}">
+                <div class="info">
+                    <h4>${s.n}</h4>
+                    <p>${s.p}</p>
+                    <span class="price">C$ ${s.price}</span>
                 </div>
             </div>
         `).join('');
     },
 
-    openShop(id) {
-        const shop = this.state.shops.find(x => x.id === id);
-        alert(`🛒 ¡Bienvenido a ${shop.name}!\n\nHas seleccionado productos de este local. Añadiendo al carrito automáticamente.`);
-        this.state.cart.push(shop.items[0]);
-        this.updateBadge();
-    },
-
-    updateBadge() {
-        document.getElementById('badge-count').innerText = this.state.cart.length;
-        localStorage.setItem('Pinol_Master_DB', JSON.stringify(this.state));
-    },
-
-    filter(cat) {
-        const filtered = cat === 'todos' ? this.state.shops : this.state.shops.filter(s => s.type === cat);
-        this.renderShops(filtered);
-    },
-
-    search() {
-        const query = document.getElementById('main-search').value.toLowerCase();
-        const filtered = this.state.shops.filter(s => s.name.toLowerCase().includes(query));
-        this.renderShops(filtered);
+    addToCart(name, price) {
+        this.data.cart.push({name, price});
+        document.getElementById('badge').innerText = this.data.cart.length;
+        alert("Agregado: " + name);
     },
 
     toggleCart() {
-        const m = document.getElementById('cart-panel');
+        const m = document.getElementById('cart-modal');
         m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
-        this.renderCartItems();
+        this.renderCart();
     },
 
-    renderCartItems() {
-        const list = document.getElementById('cart-items-list');
+    renderCart() {
+        const list = document.getElementById('cart-list');
         let total = 0;
-        list.innerHTML = this.state.cart.map(i => {
-            total += i.p;
-            return `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;"><span>${i.n}</span><b>C$ ${i.p}</b></div>`;
-        }).join('') || '<p style="text-align:center; padding:30px;">Tu pedido está vacío</p>';
+        list.innerHTML = this.data.cart.map(i => {
+            total += i.price;
+            return `<p>${i.name} - <b>C$ ${i.price}</b></p>`;
+        }).join('') || "Vacio";
+        document.getElementById('total').innerText = total;
     },
 
-    confirmOrder() {
-        if(this.state.cart.length === 0) return;
+    buy() {
+        if(this.data.cart.length === 0) return;
         this.toggleCart();
-        this.startTracking();
-        this.state.cart = [];
-        this.updateBadge();
+        this.startTracker();
+        this.data.cart = [];
+        document.getElementById('badge').innerText = "0";
     },
 
-    startTracking() {
-        const widget = document.getElementById('global-tracker');
-        const fill = document.getElementById('progress-line');
-        const timer = document.getElementById('eta-timer');
-        
-        widget.style.display = 'block';
-        let progress = 0;
-        let minutes = 15;
-
-        const interval = setInterval(() => {
-            progress += 1;
-            fill.style.width = `${progress}%`;
-            
-            if(progress % 6 === 0) {
-                minutes--;
-                timer.innerText = `${minutes}:00 min`;
+    startTracker() {
+        const t = document.getElementById('tracker');
+        const f = document.getElementById('fill');
+        t.style.display = 'block';
+        let p = 0;
+        const int = setInterval(() => {
+            p += 1;
+            f.style.width = p + "%";
+            if(p >= 100) {
+                clearInterval(int);
+                alert("¡Tu pedido llegó! Gracias por usar Pinol app de Yader Vasquez.");
+                t.style.display = 'none';
             }
-
-            if(progress >= 100) {
-                clearInterval(interval);
-                alert("🇳🇮 ¡Pedido en tu puerta!\n\nGracias por confiar en Pinol app de Yader Vasquez.");
-                widget.style.display = 'none';
-            }
-        }, 800);
+        }, 100);
     },
 
-    openAuth() { document.getElementById('auth-drawer').classList.add('open'); },
-    closeAuth() { document.getElementById('auth-drawer').classList.remove('open'); },
+    toggleReg() {
+        const d = document.getElementById('reg-drawer');
+        d.classList.toggle('open');
+    },
 
-    processReg() {
-        const name = document.getElementById('reg-name').value;
-        const cedula = document.getElementById('reg-id').value;
-        const biz = document.getElementById('reg-biz').value;
+    saveReg() {
+        const biz = document.getElementById('r-biz').value;
+        if(!biz) return alert("Pon el nombre de tu negocio");
+        alert("✅ " + biz + " ha sido enviado a Yader Vasquez para aprobación.");
+        this.toggleReg();
+    },
 
-        if(!name || !cedula) return alert("Completa los datos para la validación de Yader Vasquez.");
-        
-        alert(`✅ ¡Registro Recibido!\n\nNegocio: ${biz}\nID: ${cedula}\n\nRevisaremos tu solicitud para activarte.`);
-        this.closeAuth();
+    filter(t) {
+        const f = (t === 'todos') ? this.data.shops : this.data.shops.filter(x => x.t === t);
+        this.render(f);
+    },
+
+    search() {
+        const q = document.getElementById('search').value.toLowerCase();
+        const f = this.data.shops.filter(x => x.n.toLowerCase().includes(q) || x.p.toLowerCase().includes(q));
+        this.render(f);
     }
 };
 
-window.onload = () => PinolApp.init();
+window.onload = () => App.init();

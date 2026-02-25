@@ -1,6 +1,7 @@
 {
   "version": 2,
   "name": "nicaragua-prime",
+  "cleanUrls": true,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "backend/server.js" },
     { "source": "/(.*)", "destination": "/index.html" }

@@ -3,78 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol app | Propiedad de Yader Vasquez</title>
+    <title>Pinol app | Yader Vasquez</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <h1 class="logo-main">Pinol<span>app</span></h1>
-        <p class="author">BY YADER VASQUEZ</p>
-    </div>
-
     <header class="main-header">
         <div class="header-top">
-            <div class="user-info">
-                <span id="display-name">Usuario</span>
-                <div class="cacaos-pill">🪙 <span id="cacaos-val">0</span> Cacaos</div>
+            <div>
+                <small>Propietario:</small><br>
+                <b id="user-name">Cargando...</b>
             </div>
-            <button class="menu-trigger" onclick="App.toggleDrawer()">☰</button>
-        </div>
-        <div class="search-bar">
-            <input type="text" id="search-input" oninput="App.search()" placeholder="Buscar en Nicaragua...">
+            <div class="cacaos-pill">🪙 <span id="cacaos-val">0</span> Cacaos</div>
         </div>
     </header>
 
-    <main id="app-content">
-        <div class="filter-row">
-            <button class="f-chip" onclick="App.filter('todos')">Todos</button>
-            <button class="f-chip" onclick="App.filter('comida')">🥘 Comida</button>
-            <button class="f-chip" onclick="App.filter('super')">🛒 Súper</button>
-            <button class="f-chip" onclick="App.filter('artesania')">🏺 Nica</button>
-        </div>
-
-        <div id="tracker" class="tracker-mini" style="display:none;">
-            <div class="t-info">🛵 Pedido en camino... <span id="eta">12 min</span></div>
-            <div class="t-bar"><div id="t-fill"></div></div>
-        </div>
-
-        <div id="product-grid" class="product-grid"></div>
-    </main>
+    <main id="grid" class="product-grid"></main>
 
     <nav class="bottom-nav">
-        <div class="n-item" onclick="location.reload()">🏠<span>Inicio</span></div>
-        <div class="n-item" onclick="App.toggleCart()">🛒<span id="cart-count" class="badge">0</span><span>Carrito</span></div>
-        <div class="n-item" onclick="App.toggleDrawer()">🚀<span>Vender</span></div>
+        <div onclick="location.reload()">🏠<br>Inicio</div>
+        <div onclick="PinolApp.toggleDrawer()">⚙️<br>Ajustes</div>
     </nav>
 
-    <div id="side-drawer" class="drawer">
+    <div id="side-drawer">
+        <div class="drawer-overlay" onclick="PinolApp.toggleDrawer()"></div>
         <div class="drawer-content">
             <div class="drawer-header">
-                <h3>Panel de Control</h3>
-                <button class="close-btn" onclick="App.toggleDrawer()">✕</button>
+                <h3>Ajustes de Perfil</h3>
+                <button class="close-btn" onclick="PinolApp.toggleDrawer()">✕</button>
             </div>
-            <div class="drawer-body">
-                <p>Configura tu perfil de vendedor o repartidor.</p>
-                <input type="text" id="reg-name" placeholder="Tu Nombre">
-                <input type="text" id="reg-biz" placeholder="Nombre del Negocio">
-                <button class="btn-action" onclick="App.saveUser()">Guardar Cambios</button>
-                <hr>
-                <small>Propiedad Intelectual: Yader Vasquez</small>
-            </div>
-        </div>
-    </div>
-
-    <div id="cart-modal" class="modal">
-        <div class="modal-inner">
-            <div class="modal-header">
-                <h3>Mi Pedido</h3>
-                <button onclick="App.toggleCart()">✕</button>
-            </div>
-            <div id="cart-list"></div>
-            <div class="total-row">Total: C$ <span id="cart-total">0</span></div>
-            <button class="btn-buy" onclick="App.checkout()">Confirmar y Pagar</button>
+            <p>Cambia tu nombre de usuario:</p>
+            <input type="text" id="input-name" placeholder="Escribe tu nombre..." style="width:100%; padding:12px; margin-bottom:15px;">
+            <button onclick="PinolApp.saveUser()" style="width:100%; padding:15px; background:var(--blue); color:#fff; border:none; border-radius:10px; font-weight:800;">Guardar Datos</button>
+            <p style="margin-top:30px; font-size:0.7rem; color:#888;">Pinol app © 2026<br>Desarrollado por Yader Vasquez</p>
         </div>
     </div>
 

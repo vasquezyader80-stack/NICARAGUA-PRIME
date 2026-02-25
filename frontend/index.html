@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinol App | Lo Nuestro 🇳🇮</title>
-    <link rel="stylesheet" href="estilo.css">
+    <title>Pinol App | Tierra Nica Pro</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header class="header-nica">
@@ -12,44 +12,13 @@
             <span class="logo-gueguense">🎭</span>
             <h1>Pinol<b>App</b></h1>
         </div>
-        <div class="search-container">
-            <input type="text" id="busqueda" placeholder="Buscar fritangas, talleres..." onkeyup="filtrar()">
-        </div>
+        <input type="text" id="busqueda" placeholder="Buscar fritangas..." onkeyup="filtrar()">
     </header>
 
-    <nav class="categories-scroll">
-        <div class="cat" onclick="filtrarCat('Comida')">🍲<span>Fritangas</span></div>
-        <div class="cat" onclick="filtrarCat('Tienda')">🛒<span>Pulperías</span></div>
-        <div class="cat" onclick="filtrarCat('Servicio')">🛠️<span>Oficios</span></div>
-        <div class="cat" onclick="filtrarCat('Envio')">🏍️<span>Mandaditos</span></div>
-    </nav>
+    <main id="feed-negocios"></main>
 
-    <main class="feed" id="feed-negocios"></main>
+    <button class="fab" onclick="abrirRegistro()">+</button>
 
-    <button class="fab-nica" onclick="abrirRegistro()">+</button>
-
-    <nav class="bottom-nav">
-        <div class="nav-item active">🏠<br>Inicio</div>
-        <div class="nav-item">📋<br>Pedidos</div>
-        <div class="nav-item">👤<br>Perfil</div>
-    </nav>
-
-    <div id="modal-registro" class="modal">
-        <div class="modal-content">
-            <h3>🎭 Unite a Pinol App</h3>
-            <input type="text" id="reg-nombre" placeholder="Nombre del negocio">
-            <select id="reg-tipo">
-                <option value="Comida">Fritanga</option>
-                <option value="Tienda">Pulpería</option>
-                <option value="Servicio">Taller</option>
-                <option value="Envio">Motorizado</option>
-            </select>
-            <input type="text" id="reg-dir" placeholder="Dirección">
-            <button class="btn-primary" onclick="registrar()">Registrar</button>
-            <button class="btn-cancel" onclick="cerrarRegistro()">Cancelar</button>
-        </div>
-    </div>
-
-    <script src="aplicación.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>

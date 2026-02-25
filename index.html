@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol app | Innovación Nicaragüense</title>
+    <title>Pinol app | By Yader Vasquez</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -12,105 +12,94 @@
     <div id="splash" class="splash-screen">
         <div class="splash-content">
             <h1 class="brand-logo">Pinol<span>app</span></h1>
-            <p class="tagline">BY YADER VASQUEZ</p>
-            <div class="loader-container"><div class="loader-bar"></div></div>
+            <p class="tagline">INNOVACIÓN LOCAL</p>
+            <div class="loader-track"><div class="loader-fill"></div></div>
         </div>
     </div>
 
     <header class="app-header">
-        <div class="top-row">
-            <div class="location">
-                <small>📍 Tu ubicación actual</small>
+        <div class="header-top">
+            <div class="location-box">
+                <small>📍 Entregas en</small>
                 <p>Managua, Nicaragua ▾</p>
             </div>
-            <button class="auth-trigger" onclick="PinolApp.openAuth()">
-                <span>Vender o Entregar</span> ➔
-            </button>
+            <button class="btn-join" onclick="PinolApp.openAuth()">Vender / Delivery</button>
         </div>
-        <div class="search-wrapper">
-            <input type="text" id="global-search" oninput="PinolApp.search()" placeholder="Busca en pulperías, asados o farmacias...">
+        <div class="search-container">
+            <input type="text" id="global-search" oninput="PinolApp.search()" placeholder="Busca productos, negocios o marcas...">
         </div>
     </header>
 
-    <main class="main-viewport">
-        <div id="delivery-tracker" class="tracker-card" style="display:none;">
-            <div class="tracker-header">
-                <span class="status-pill">En camino</span>
-                <span id="eta-timer">12 min</span>
+    <main class="main-content">
+        <div id="tracking-widget" class="tracking-card" style="display:none;">
+            <div class="track-head">
+                <span class="status">🛵 Pedido en curso</span>
+                <span id="eta-display" class="timer">15 min</span>
             </div>
-            <div class="tracker-body">
-                <p>🛵 <b>Juan Pérez</b> lleva tu pedido</p>
-                <div class="progress-track"><div id="progress-fill" class="fill"></div></div>
-            </div>
+            <div class="track-bar"><div id="progress-line" class="fill"></div></div>
+            <p id="track-msg">El motorizado está retirando tu pedido...</p>
         </div>
 
-        <section id="shop-view" class="view">
-            <div class="category-scroll">
-                <div class="cat-pill active" onclick="PinolApp.filter('todos')">Todos</div>
-                <div class="cat-pill" onclick="PinolApp.filter('comida')">🍔 Comida</div>
-                <div class="cat-pill" onclick="PinolApp.filter('super')">🛒 Súper</div>
-                <div class="cat-pill" onclick="PinolApp.filter('farmacia')">💊 Farmacia</div>
+        <section id="shop-view">
+            <div class="category-pills">
+                <button class="pill active" onclick="PinolApp.filter('todos')">Todos</button>
+                <button class="pill" onclick="PinolApp.filter('comida')">🍟 Comida</button>
+                <button class="pill" onclick="PinolApp.filter('super')">🛒 Súper</button>
+                <button class="pill" onclick="PinolApp.filter('farmacia')">💊 Farmacia</button>
             </div>
-            <div id="shop-list" class="shop-grid"></div>
+            <div id="shop-grid" class="shop-grid"></div>
         </section>
 
-        <section id="menu-view" class="view" style="display:none;">
-            <div class="menu-nav">
-                <button class="back-btn" onclick="PinolApp.closeMenu()">← Atrás</button>
-                <h3 id="shop-title-display">Nombre del Negocio</h3>
-            </div>
+        <section id="menu-view" style="display:none;">
+            <button class="btn-back" onclick="PinolApp.closeMenu()">← Volver a Negocios</button>
+            <div id="shop-header"></div>
             <div id="product-list" class="product-grid"></div>
         </section>
     </main>
 
-    <nav class="bottom-dock">
-        <div class="dock-item active" onclick="PinolApp.closeMenu()">🏠<span>Explorar</span></div>
+    <nav class="dock-bar">
+        <div class="dock-item active" onclick="PinolApp.closeMenu()">🏠<span>Inicio</span></div>
         <div class="dock-item" onclick="PinolApp.toggleCart()">
-            <div class="cart-icon-wrap">🛒<span id="cart-badge" class="badge">0</span></div>
-            <span>Mi Pedido</span>
+            <div class="cart-wrap">🛒<span id="cart-badge" class="badge">0</span></div>
+            <span>Pedido</span>
         </div>
-        <div class="dock-item">👤<span>Cuenta</span></div>
+        <div class="dock-item">👤<span>Perfil</span></div>
     </nav>
 
     <div id="auth-drawer" class="drawer-right">
-        <div class="drawer-content">
-            <button class="drawer-close" onclick="PinolApp.closeAuth()">×</button>
-            <h2 class="drawer-title">Únete a la Red</h2>
-            <p>Registra tu negocio o tu moto para empezar a ganar con **Pinol app**.</p>
+        <div class="drawer-inner">
+            <button class="close-drawer" onclick="PinolApp.closeAuth()">×</button>
+            <h3>Únete a Pinol<span>app</span></h3>
+            <p>Registra tu negocio o tu unidad de delivery para empezar.</p>
             
-            <div class="form-group">
-                <label>¿Qué quieres ser?</label>
-                <select id="reg-role" onchange="PinolApp.updateForm()">
-                    <option value="vendedor">Quiero Vender (Negocio)</option>
-                    <option value="delivery">Quiero Entregar (Repartidor)</option>
+            <div class="auth-form">
+                <label>Tipo de Registro</label>
+                <select id="reg-role">
+                    <option value="Negocio">Dueño de Negocio</option>
+                    <option value="Repartidor">Delivery (Motorizado)</option>
                 </select>
-            </div>
-
-            <div class="form-box">
-                <input type="text" id="reg-full-name" placeholder="Nombre completo">
-                <input type="text" id="reg-id" placeholder="Cédula (Ej: 001-XXXXXX-XXXXX)">
-                <input type="text" id="reg-biz-name" placeholder="Nombre del Negocio o Placa">
-                <button class="btn-submit" onclick="PinolApp.processRegistration()">Registrarme Ahora</button>
+                <input type="text" id="reg-name" placeholder="Nombre completo">
+                <input type="text" id="reg-id" placeholder="N° de Cédula (001-...)">
+                <input type="text" id="reg-biz" placeholder="Nombre del local o Placa">
+                <button class="btn-submit" onclick="PinolApp.processRegistration()">Enviar para Validación</button>
+                <small>Yader Vasquez validará tus datos en 24h.</small>
             </div>
         </div>
     </div>
 
     <div id="cart-modal" class="full-modal">
-        <div class="modal-body">
-            <div class="modal-top">
-                <h3>Finalizar Pedido</h3>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Resumen de Pedido</h3>
                 <button onclick="PinolApp.toggleCart()">✕</button>
             </div>
-            <div id="cart-items-list"></div>
-            <div class="payment-methods">
+            <div id="cart-items-box"></div>
+            <div class="payment-section">
                 <h4>Método de Pago</h4>
                 <div class="pay-option"><input type="radio" name="pay" checked> 💵 Efectivo (Córdobas)</div>
-                <div class="pay-option"><input type="radio" name="pay"> 💳 Tarjeta (Local/Internacional)</div>
+                <div class="pay-option"><input type="radio" name="pay"> 💳 Tarjeta Local</div>
             </div>
-            <div class="total-bar">
-                <span>Total: C$ <b id="cart-total-val">0</b></span>
-                <button class="btn-order" onclick="PinolApp.placeOrder()">Confirmar y Rastrear</button>
-            </div>
+            <button class="btn-order" onclick="PinolApp.placeOrder()">Confirmar Pedido</button>
         </div>
     </div>
 

@@ -3,63 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>NicaMarket Pro | Tierra Nica</title>
+    <title>NicaMarket Pro | La App de Nicaragua</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="pro-header">
-        <div class="header-main">
-            <div class="brand">
-                <span class="logo-icon">🇳🇮</span>
-                <div>
-                    <h1>NicaMarket</h1>
-                    <small>📍 Managua, Nicaragua</small>
-                </div>
+    <header class="main-nav">
+        <div class="header-top">
+            <div class="user-loc">
+                <small>Entrega en</small>
+                <p>📍 Managua, Nicaragua ▾</p>
             </div>
-            <div class="wallet" onclick="NicaApp.showWallet()">
+            <div class="wallet-pill" onclick="NicaApp.showWallet()">
                 <span id="cacao-bal">0</span> 🪙
             </div>
         </div>
-        <div class="search-box">
-            <input type="text" id="main-search" oninput="NicaApp.search()" placeholder="Buscar quesillos, café, cuero...">
+        <div class="search-wrap">
+            <input type="text" id="search-input" oninput="NicaApp.search()" placeholder="Buscar quesillos, café, cuero...">
         </div>
     </header>
 
-    <nav class="cat-bar">
-        <div class="cat-chip active" onclick="NicaApp.filter('todos')">Todos</div>
-        <div class="cat-chip" onclick="NicaApp.filter('comida')">🍲 Comida</div>
-        <div class="cat-chip" onclick="NicaApp.filter('artesania')">🏺 Artesanía</div>
-        <div class="cat-chip" onclick="NicaApp.filter('cuero')">👞 Cuero</div>
-    </nav>
+    <div class="category-strip">
+        <button class="chip active" onclick="NicaApp.filter('todos')">Todos</button>
+        <button class="chip" onclick="NicaApp.filter('lácteos')">🧀 Lácteos</button>
+        <button class="chip" onclick="NicaApp.filter('café')">☕ Café</button>
+        <button class="chip" onclick="NicaApp.filter('artesanía')">🏺 Artesanía</button>
+        <button class="chip" onclick="NicaApp.filter('comida')">🍛 Comida</button>
+    </div>
 
-    <main class="feed">
-        <div id="product-grid" class="product-grid"></div>
+    <main class="app-feed">
+        <div id="product-grid" class="grid-container"></div>
+        
+        <footer class="legal-footer">
+            <p>© 2026 NicaMarket Pro. Todos los derechos reservados.</p>
+            <p>Un proyecto de <b>Yader Stack</b> con tecnología de <b>Gemini AI</b></p>
+        </footer>
     </main>
 
-    <nav class="tab-bar">
-        <div class="tab active"><span>🏠</span><p>Inicio</p></div>
-        <div class="tab" onclick="NicaApp.toggleCart()">
-            <div class="cart-badge" id="cart-count">0</div>
-            <span>🛒</span><p>Carrito</p>
+    <nav class="bottom-tabs">
+        <div class="tab-item active"><span>🏠</span><p>Inicio</p></div>
+        <div class="tab-item" onclick="NicaApp.toggleCart()">
+            <div class="badge" id="cart-count">0</div>
+            <span>🛍️</span><p>Carrito</p>
         </div>
-        <div class="tab" onclick="NicaApp.toggleVender()"><span>➕</span><p>Vender</p></div>
-        <div class="tab"><span>👤</span><p>Cuenta</p></div>
+        <div class="tab-item" onclick="NicaApp.openVendor()"><span>💎</span><p>Vender</p></div>
+        <div class="tab-item"><span>👤</span><p>Perfil</p></div>
     </nav>
 
-    <div id="cart-panel" class="side-panel">
-        <div class="panel-header">
-            <h3>Tu Carrito</h3>
+    <div id="cart-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Tu Pedido</h3>
             <button onclick="NicaApp.toggleCart()">✕</button>
         </div>
-        <div id="cart-list" class="panel-body"></div>
-        <div class="panel-footer">
-            <div class="total-box">
-                <span>Subtotal:</span>
-                <span id="cart-total">C$ 0.00</span>
-            </div>
-            <button class="btn-confirm" onclick="NicaApp.checkout()">Confirmar Pedido 🚀</button>
+        <div id="cart-list" class="drawer-body"></div>
+        <div class="drawer-footer">
+            <div class="row"><span>Subtotal</span><span id="subtotal">C$ 0</span></div>
+            <div class="row"><span>Envío</span><span>C$ 40</span></div>
+            <button class="btn-order" onclick="NicaApp.checkout()">Confirmar Pedido</button>
         </div>
     </div>
 

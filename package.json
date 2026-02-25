@@ -1,5 +1,5 @@
 {
-  "name": "pinol-app",
+  "name": "nicaragua-prime",
   "version": "1.0.0",
   "main": "backend/servidor.js",
   "scripts": { "start": "node backend/servidor.js" },

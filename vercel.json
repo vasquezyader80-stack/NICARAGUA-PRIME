@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "name": "nicasync-global-logistics",
   "builds": [
     { "src": "backend/server.js", "use": "@vercel/node" },
     { "src": "frontend/index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/api/logistics", "dest": "backend/server.js" },
+    { "src": "/api/orders", "dest": "backend/server.js" },
     { "src": "/(.*)", "dest": "frontend/index.html" }
   ]
 }

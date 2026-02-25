@@ -1,27 +1,22 @@
 const http = require('http');
 
-let activeShipments = [
-    { manifest: "30 Sacos de Granos Básicos", route: "Chinandega -> Puerto Corinto", cost: 1450 },
-    { manifest: "Maquinaria Agrícola", route: "Managua -> Estelí", cost: 3200 }
+let db_orders = [
+    { cargo: "50 Sacos de Maíz", route: "Chinandega -> León", cost: 1200 },
+    { cargo: "Mobiliario Artesanal", route: "Masaya -> Managua", cost: 850 }
 ];
 
 const server = http.createServer((req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') { res.writeHead(204); res.end(); return; }
-
-    if (req.url === '/api/logistics' && req.method === 'GET') {
+    if (req.method === 'GET' && req.url === '/api/orders') {
         res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(activeShipments));
-    } 
-    
-    else if (req.url === '/api/logistics' && req.method === 'POST') {
+        res.end(JSON.stringify(db_orders));
+    } else if (req.method === 'POST' && req.url === '/api/orders') {
         let body = '';
         req.on('data', chunk => body += chunk.toString());
         req.on('end', () => {
-            activeShipments.unshift(JSON.parse(body));
+            db_orders.unshift(JSON.parse(body));
             res.writeHead(201);
             res.end();
         });

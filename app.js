@@ -1,98 +1,151 @@
 const App = {
-    // Memoria persistente de Yader
-    store: {
-        get: () => JSON.parse(localStorage.getItem('PinolPro_DB')) || { user: null, orders: [], registered: false },
-        save: (data) => localStorage.setItem('PinolPro_DB', JSON.stringify(data))
+    // 1. BASE DE DATOS LOCAL (Persistencia de Yader)
+    state: {
+        dbName: 'PinolApp_Enterprise_v1',
+        get: () => JSON.parse(localStorage.getItem(App.state.dbName)) || { 
+            user: "Invitado", 
+            isSocio: false, 
+            orders: [], 
+            bizName: "" 
+        },
+        save: (data) => localStorage.setItem(App.state.dbName, JSON.stringify(data))
     },
 
-    db: [
-        { id: 1, n: "Tip-Top Metrocentro", t: "comida", i: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=400", p: "C$ 210" },
-        { id: 2, n: "Super La Colonia", t: "mercado", i: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=400", p: "C$ 450" },
-        { id: 3, n: "Fritanga Doña Tania", t: "comida", i: "https://images.unsplash.com/photo-1544025162-d76694265947?w=400", p: "C$ 120" },
-        { id: 4, n: "Farmacia Value", t: "farma", i: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?w=400", p: "C$ 300" }
+    // 2. INVENTARIO COMERCIAL
+    inventory: [
+        { id: 101, name: "Tip-Top Los Robles", cat: "comida", img: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=600", fee: 40 },
+        { id: 102, name: "La Colonia Altamira", cat: "super", img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=600", fee: 60 },
+        { id: 103, name: "Fritanga Doña Tania", cat: "comida", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600", fee: 35 },
+        { id: 104, name: "Oriental Online", cat: "super", img: "https://images.unsplash.com/photo-1519920101044-899312b9bb82?w=600", fee: 85 }
     ],
 
     init() {
-        const data = this.store.get();
-        if(data.user) {
-            document.getElementById('user-display').innerText = `¡Hola, ${data.user}!`;
-            document.getElementById('status-tag').innerText = data.registered ? "Socio Vendedor" : "Cliente Pro";
-            document.getElementById('prof-name').innerText = data.user;
-            document.getElementById('prof-role').innerText = data.registered ? "Gestión de Negocio" : "Usuario Estándar";
-        }
+        // Cargar Datos Guardados
+        const session = this.state.get();
+        this.updateProfileUI(session);
 
-        setTimeout(() => document.getElementById('splash').style.display = 'none', 2000);
-        this.renderStores(this.db);
+        // Despertar la App tras el Splash
+        setTimeout(() => {
+            document.getElementById('splash').style.transform = 'scale(1.1)';
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('app-core').style.display = 'block';
+            }, 600);
+        }, 2200);
+
+        this.renderStores(this.inventory);
         this.renderOrders();
     },
 
-    renderStores(items) {
-        const list = document.getElementById('store-list');
-        list.innerHTML = items.map(s => `
-            <div class="store-item" onclick="App.createOrder('${s.n}', '${s.p}')" style="display:flex; background:white; margin-bottom:12px; border-radius:15px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,0.05)">
-                <img src="${s.i}" style="width:100px; height:100px; object-fit:cover;">
-                <div style="padding:15px;">
-                    <b style="font-size:1rem;">${s.n}</b><br>
-                    <small style="color:#888;">Nicaragua Delivery</small><br>
-                    <b style="color:var(--p);">${s.p}</b>
+    // 3. SISTEMA DE NAVEGACIÓN ACTIVA
+    navigate(viewId, btn) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(`view-${viewId}`).classList.add('active');
+
+        document.querySelectorAll('.dock-link').forEach(l => l.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+    },
+
+    // 4. MOTOR DE RENDERIZADO
+    renderStores(data) {
+        const grid = document.getElementById('store-grid');
+        grid.innerHTML = data.map(s => `
+            <div class="card-store" onclick="App.placeOrder('${s.name}', ${s.fee})">
+                <img src="${s.img}" alt="${s.name}">
+                <div class="card-content">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <b>${s.name}</b>
+                        <span style="color:green; font-weight:800; font-size:12px;">C$ ${s.fee} Envío</span>
+                    </div>
                 </div>
             </div>
         `).join('');
     },
 
-    toggleView(viewId) {
-        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
-        
-        document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
-        // Lógica simple de activación de botones de navegación
-    },
+    // 5. SISTEMA DE PEDIDOS (DESPIERTO ✅)
+    placeOrder(storeName, fee) {
+        const data = this.state.get();
+        const orderId = Math.floor(1000 + Math.random() * 9000);
+        const newOrder = { 
+            id: orderId, 
+            store: storeName, 
+            status: "Confirmando...", 
+            time: "25-30 min" 
+        };
 
-    createOrder(name, price) {
-        const data = this.store.get();
-        const newOrder = { id: Date.now(), name, price, status: 'En preparación 🍳' };
-        data.orders.push(newOrder);
-        this.store.save(data);
-        alert(`Pedido confirmado en ${name}. ¡Revisa la pestaña de Pedidos!`);
+        data.orders.unshift(newOrder);
+        this.state.save(data);
         this.renderOrders();
+        this.navigate('orders');
+        
+        // Simulación de respuesta de servidor
+        setTimeout(() => {
+            const current = this.state.get();
+            current.orders[0].status = "En preparación 👨‍🍳";
+            this.state.save(current);
+            this.renderOrders();
+        }, 3000);
     },
 
     renderOrders() {
-        const data = this.store.get();
-        const container = document.getElementById('active-orders');
+        const container = document.getElementById('active-orders-container');
+        const data = this.state.get();
         if(data.orders.length === 0) {
-            container.innerHTML = "<p style='text-align:center; color:#999;'>No tienes pedidos activos.</p>";
+            container.innerHTML = `<div style="text-align:center; padding:40px; color:#94a3b8;">No tienes pedidos activos hoy.</div>`;
             return;
         }
         container.innerHTML = data.orders.map(o => `
-            <div class="order-card">
-                <div style="display:flex; justify-content:space-between;">
-                    <b>#${o.id.toString().slice(-5)}</b>
-                    <span class="order-status">${o.status}</span>
-                </div>
-                <h4 style="margin:10px 0;">${o.name}</h4>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <span>Total: <b>${o.price}</b></span>
-                    <button style="border:none; background:#f1f3f5; padding:5px 10px; border-radius:5px;">Ver Mapa 📍</button>
+            <div class="card-store" style="margin-bottom:12px; border-left: 5px solid var(--primary);">
+                <div class="card-content">
+                    <div style="display:flex; justify-content:space-between;">
+                        <b>ORDEN #${o.id}</b>
+                        <span style="color:var(--primary); font-weight:800;">${o.status}</span>
+                    </div>
+                    <p style="margin:5px 0;">Tienda: ${o.store}</p>
+                    <small>Llega en: ${o.time}</small>
                 </div>
             </div>
         `).join('');
     },
 
-    showReg() { document.getElementById('reg-modal').style.display = 'flex'; },
-    closeReg() { document.getElementById('reg-modal').style.display = 'none'; },
+    // 6. SISTEMA DE SOCIOS (REGISTRO ✅)
+    openAuth() { document.getElementById('auth-modal').style.display = 'flex'; },
+    closeAuth() { document.getElementById('auth-modal').style.display = 'none'; },
 
-    processReg() {
-        const name = document.getElementById('reg-name').value;
+    handleAuth() {
+        const user = document.getElementById('reg-user').value;
         const biz = document.getElementById('reg-biz').value;
-        if(!name || !biz) return alert("Completa los datos");
+        if(!user || !biz) return alert("Por favor complete todos los campos de socio.");
 
-        const data = this.store.get();
-        data.user = name;
-        data.registered = true;
-        this.store.save(data);
+        const data = this.state.get();
+        data.user = user;
+        data.bizName = biz;
+        data.isSocio = true;
+        this.state.save(data);
+        
+        alert("¡Solicitud enviada! Tu cuenta de Socio ha sido activada en este dispositivo.");
+        this.closeAuth();
         location.reload();
+    },
+
+    updateProfileUI(session) {
+        document.getElementById('display-name').innerText = session.user;
+        if(session.isSocio) {
+            document.getElementById('display-role').innerText = "SOCIO VENDEDOR";
+            document.getElementById('display-role').style.background = "#005aab";
+            document.getElementById('display-role').style.color = "white";
+            document.getElementById('profile-title').innerText = `Panel de: ${session.bizName}`;
+        }
+    },
+
+    resetAll() {
+        if(confirm("¿Estás seguro de restablecer la App? Se borrarán tus datos de socio y pedidos.")) {
+            localStorage.removeItem(this.state.dbName);
+            location.reload();
+        }
     }
 };
 
-window.onload = () => App.init();    
+window.onload = () => App.init();
+              

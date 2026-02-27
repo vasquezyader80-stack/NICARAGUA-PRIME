@@ -50,4 +50,4 @@ const App = {
     }
 };
 
-window.onload = () => App.init();
+window.onload = () => App.init();    

@@ -3,110 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp Enterprise | Business Hub</title>
+    <title>PinolApp Business v5.0</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <div class="splash-core">
-            <h1 class="main-logo">Pinol<span>App</span></h1>
-            <div class="spinner"></div>
-            <p id="splash-status">INICIALIZANDO SISTEMA...</p>
-        </div>
+    <div id="splash" class="splash-full">
+        <h1 class="logo-text">Pinol<span>App</span></h1>
+        <div class="loader-bar"><div class="fill"></div></div>
     </div>
 
-    <div id="app" style="display:none;">
-        <header class="app-bar">
-            <div class="bar-content">
-                <div class="brand-zone">
-                    <small id="role-tag">Visitante</small>
-                    <h2 id="user-welcome">¡Hola, Nica!</h2>
-                </div>
-                <div class="actions">
-                    <button class="icon-btn" onclick="App.navigate('cart')">🛒<span id="cart-count">0</span></button>
-                    <button class="icon-btn" onclick="App.navigate('settings')">👤</button>
+    <div id="main-app" style="display:none;">
+        <header class="navbar">
+            <div class="user-meta">
+                <div class="avatar-circle" id="user-initials">YN</div>
+                <div>
+                    <b id="user-name-display">Cargando...</b>
+                    <small id="user-status-display">Socio Verificado</small>
                 </div>
             </div>
-            <div class="search-engine">
-                <input type="text" id="q" placeholder="Buscar en Managua, León, Granada..." oninput="App.liveSearch()">
-            </div>
+            <button class="cart-trigger" onclick="App.navigate('orders')">📦 Pedidos</button>
         </header>
 
-        <main class="main-stage">
-            
+        <main class="viewport">
             <section id="view-home" class="view active">
-                <div class="hero-card">
-                    <div class="badge-live">EN VIVO</div>
-                    <h3>Feria del Marisco 🦐</h3>
-                    <p>Directo de Bluefields a tu mesa.</p>
+                <div class="promo-box">
+                    <h3>¡Nuevos Comercios! 🇳🇮</h3>
+                    <p>Apoyando el emprendimiento local.</p>
                 </div>
-
-                <div class="filter-scroll">
-                    <button class="chip active" onclick="App.setCat('all', this)">Todos</button>
-                    <button class="chip" onclick="App.setCat('comida', this)">Fritangas</button>
-                    <button class="chip" onclick="App.setCat('super', this)">Súper</button>
-                    <button class="chip" onclick="App.setCat('farma', this)">Farmacia</button>
+                <div class="cat-nav">
+                    <button class="tab active" onclick="App.filter('all', this)">Todos</button>
+                    <button class="tab" onclick="App.filter('comida', this)">Comida</button>
+                    <button class="tab" onclick="App.filter('super', this)">Súper</button>
                 </div>
+                <div id="global-grid" class="grid"></div>
+            </section>
 
-                <div id="store-grid" class="store-grid"></div>
+            <section id="view-inventory" class="view">
+                <div class="panel-header">
+                    <h3>Gestión de Productos</h3>
+                    <p>Tus artículos aparecerán en el Marketplace.</p>
+                </div>
+                <div class="inventory-form">
+                    <input type="text" id="inv-name" placeholder="Nombre del producto">
+                    <input type="number" id="inv-price" placeholder="Precio C$">
+                    <select id="inv-cat">
+                        <option value="comida">Categoría: Comida</option>
+                        <option value="super">Categoría: Súper</option>
+                    </select>
+                    <button class="btn-add" onclick="App.addItem()">PUBLICAR PRODUCTO</button>
+                </div>
+                <div id="my-products" class="my-items-list"></div>
             </section>
 
             <section id="view-orders" class="view">
-                <div class="view-title">
-                    <h3>Logística de Pedidos</h3>
-                    <p>Seguimiento GPS en tiempo real</p>
-                </div>
-                <div id="live-orders" class="orders-stack"></div>
-            </section>
-
-            <section id="view-settings" class="view">
-                <div class="profile-header">
-                    <div class="avatar-lg">YN</div>
-                    <h3 id="prof-name">Cuenta Global</h3>
-                    <p id="prof-type">Usuario Estándar</p>
-                </div>
-
-                <div class="action-list">
-                    <button class="action-item" onclick="App.modal('reg')">
-                        <span>🚀</span> <b>Convertirse en Socio Vendedor</b>
-                        <small>Sube tus productos y genera ingresos</small>
-                    </button>
-                    <button class="action-item" onclick="window.open('https://wa.me/50588888888')">
-                        <span>💬</span> <b>Soporte Técnico 24/7</b>
-                        <small>Chat directo con operaciones</small>
-                    </button> 
-                    <button class="action-item red" onclick="App.clearData()">
-                        <span>⚠️</span> <b>Restablecer Terminal</b>
-                    </button>
-                </div>
+                <h3>Seguimiento Logístico</h3>
+                <div id="order-stack" class="stack"></div>
             </section>
         </main>
 
-        <nav class="nav-bar">
-            <button class="nav-link active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></button>
-            <button class="nav-link" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></button>
-            <button class="nav-link" onclick="App.navigate('settings', this)">⚙️<span>Ajustes</span></button>
+        <nav class="dock">
+            <button class="dock-btn active" onclick="App.navigate('home', this)">🏠<span>Tienda</span></button>
+            <button id="nav-inv-btn" class="dock-btn" onclick="App.navigate('inventory', this)" style="display:none;">🚀<span>Gestionar</span></button>
+            <button class="dock-btn" onclick="App.navigate('orders', this)">📋<span>Rastreo</span></button>
+            <button class="dock-btn" onclick="App.openReg()">⚙️<span>Perfil</span></button>
         </nav>
-    </div> 
+    </div>
 
-    <div id="modal-reg" class="modal-overlay">
-        <div class="modal-sheet">
-            <h2>Alta de Nuevo Socio</h2>
-            <div class="input-form">
-                <input type="text" id="biz-owner" placeholder="Nombre del Representante">
-                <input type="text" id="biz-name" placeholder="Nombre Legal del Negocio">
-                <select id="biz-type">
-                    <option value="comida">Restaurante / Bar</option>
-                    <option value="super">Comercio / Súper</option>
-                </select>
-                <button class="btn-confirm" onclick="App.beSocio()">ACTIVAR MI EMPRESA</button>
-                <button class="btn-close" onclick="App.modal('reg', false)">CANCELAR</button>
-            </div>
+    <div id="modal-reg" class="overlay">
+        <div class="modal">
+            <h2>Registro de Socio</h2>
+            <input type="text" id="reg-name" placeholder="Tu Nombre">
+            <input type="text" id="reg-biz" placeholder="Nombre del Negocio">
+            <button class="btn-primary" onclick="App.saveReg()">ACTIVAR CUENTA</button>
+            <button class="btn-flat" onclick="App.closeReg()">CERRAR</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
 </html>
+         

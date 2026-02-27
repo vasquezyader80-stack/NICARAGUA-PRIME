@@ -1,45 +1,59 @@
-:root { --blue: #005aab; --red: #e60045; --white: #ffffff; --bg: #f8fafc; }
+:root {
+    --brand: #e60045; /* Rojo Vibrante Delivery */
+    --accent: #005aab; /* Azul Nicaragüense */
+    --bg: #f8f9fa;
+    --text: #1a1d23;
+}
 
-body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; color: #1a1e26; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); }
 
-/* Splash Screen */
-.splash-screen { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; align-items: center; justify-content: center; flex-direction: column; }
-.brand-logo { font-size: 3.5rem; color: var(--blue); font-weight: 800; margin: 0; }
-.brand-logo span { color: var(--red); }
-.copyright-tag { margin-top: 20px; font-weight: 800; font-size: 0.7rem; color: #bbb; letter-spacing: 2px; }
-.loader-pulse { width: 50px; height: 50px; background: var(--red); border-radius: 50%; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.5); opacity: 0; } }
+/* Splash Profesional */
+.splash-view {
+    position: fixed; inset: 0; background: white; z-index: 10000;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.7, 0, 0.3, 1);
+}
+.brand-logo { font-size: 3.5rem; font-weight: 800; color: var(--accent); }
+.brand-logo span { color: var(--brand); }
+.loading-ring { 
+    width: 30px; height: 30px; border: 3px solid #eee; 
+    border-top: 3px solid var(--brand); border-radius: 50%; 
+    animation: spin 0.8s linear infinite; margin: 15px auto;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
 
-/* Header */
-.super-header { background: #fff; padding: 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
-.nav-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.btn-partner-mode { background: var(--blue); color: #fff; border: none; padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 0.7rem; }
-.search-engine input { width: 100%; padding: 15px; border-radius: 15px; border: none; background: #f0f2f5; box-sizing: border-box; font-weight: 600; }
+/* App Shell */
+.main-nav { background: white; padding: 15px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 900; }
+.nav-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.user-loc { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+.search-wrap input {
+    width: 100%; padding: 14px 20px; border: none; background: #f1f3f5;
+    border-radius: 12px; font-weight: 600; outline: none;
+}
 
-/* Categorías */
-.mega-categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; padding: 20px; }
-.cat-card { background: #fff; text-align: center; padding: 15px 5px; border-radius: 18px; font-size: 0.7rem; font-weight: 800; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+/* Grids & Cards */
+.stores-grid { padding: 15px; display: grid; gap: 20px; padding-bottom: 120px; }
+.store-card { 
+    background: white; border-radius: 20px; overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05); transition: 0.3s;
+}
+.store-card:active { transform: scale(0.97); }
+.store-card img { width: 100%; height: 180px; object-fit: cover; }
+.store-details { padding: 15px; }
+.badge-rate { background: #ffc107; padding: 4px 8px; border-radius: 8px; font-weight: bold; font-size: 0.8rem; }
 
-/* Grid de Tiendas */
-.shop-grid { padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.shop-card { background: #fff; border-radius: 20px; overflow: hidden; border: 1px solid #eee; transition: 0.3s; }
-.shop-card:active { transform: scale(0.96); }
-.shop-card img { width: 100%; height: 110px; object-fit: cover; }
-.shop-info { padding: 12px; }
-.shop-info h4 { margin: 0; font-size: 0.85rem; }
+/* Dock Bar */
+.dock { 
+    position: fixed; bottom: 0; width: 100%; background: white;
+    display: flex; justify-content: space-around; padding: 12px 0 30px;
+    border-top: 1px solid #eee; box-shadow: 0 -5px 20px rgba(0,0,0,0.03);
+}
+.dock-item { color: #94a3b8; font-size: 0.7rem; text-align: center; display: flex; flex-direction: column; }
+.dock-item.active { color: var(--brand); font-weight: 700; }
+.dot { background: var(--brand); color: white; border-radius: 50%; padding: 2px 6px; font-size: 10px; position: absolute; margin-top: -5px; margin-left: 15px; }
 
-/* Tracker */
-.tracker-card { background: var(--blue); color: #fff; margin: 20px; padding: 20px; border-radius: 25px; }
-.progress-container { background: rgba(255,255,255,0.2); height: 6px; border-radius: 10px; margin-top: 15px; overflow: hidden; }
-.progress-fill { background: #fff; height: 100%; width: 0%; transition: 1s linear; }
-
-/* Navigation */
-.dock-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 15px 0 30px; border-top: 1px solid #eee; }
-.dock-btn { text-align: center; color: #999; font-size: 0.7rem; display: flex; flex-direction: column; gap: 5px; }
-.dock-btn.active { color: var(--red); }
-.badge { background: var(--red); color: #fff; padding: 2px 6px; border-radius: 50%; font-size: 0.6rem; position: absolute; top: -5px; right: -5px; border: 2px solid #fff; }
-
-/* Drawer Derecho */
-.drawer-right { position: fixed; right: -100%; top: 0; width: 85%; height: 100%; background: #fff; z-index: 2000; transition: 0.4s cubic-bezier(0.1, 0.7, 0.1, 1); }
-.drawer-right.open { right: 0; }
-.drawer-content { padding: 50px 25px; }.  
+/* Modales Full Screen */
+.full-modal { position: fixed; inset: 0; background: white; z-index: 2000; transform: translateY(100%); transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.full-modal.active { transform: translateY(0); }
+.modal-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+.btn-block { width: 100%; background: var(--brand); color: white; border: none; padding: 18px; border-radius: 15px; font-weight: 800; font-size: 1rem; margin-top: 20px; }. 

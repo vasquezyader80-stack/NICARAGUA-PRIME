@@ -3,101 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Nicaragua Delivery Service</title>
+    <title>PinolApp Pro | El App de Nicaragua</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-view">
-        <div class="splash-content">
-            <h1 class="brand-logo">Pinol<span>App</span></h1>
-            <div class="loading-ring"></div>
-            <p>EL APP DE LOS NICAS</p>
-        </div>
+    <div id="splash" class="splash-screen">
+        <h1 class="logo">Pinol<span>App</span></h1>
+        <div class="loader-line"></div>
     </div>
 
-    <div id="app-shell">
-        <header class="main-nav">
-            <div class="nav-top">
-                <div class="user-loc" onclick="App.changeLoc()">
-                    <span class="pin">📍</span>
-                    <div>
-                        <small>Entregar en</small>
-                        <b id="loc-current">Managua, Nicaragua</b>
-                    </div>
+    <div id="main-app">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="user-greeting">
+                    <small id="status-tag">Visitante</small>
+                    <h2 id="user-display">¡Hola, Nica!</h2>
                 </div>
-                <div class="profile-circle" onclick="App.showProfile()">👤</div>
+                <div class="avatar" onclick="App.toggleView('profile')">👤</div>
             </div>
-            <div class="search-wrap">
-                <input type="text" id="global-search" placeholder="Busca en Tip-Top, La Colonia, Farmacias..." oninput="App.search()">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar fritangas, súper, medicinas..." oninput="App.search()">
             </div>
         </header>
 
-        <main class="viewport">
-            <section class="horizontal-scroll cats">
-                <div class="cat-pill active" onclick="App.filter('all')">Todos</div>
-                <div class="cat-pill" onclick="App.filter('comida')">🥘 Comida</div>
-                <div class="cat-pill" onclick="App.filter('super')">🛒 Súper</div>
-                <div class="cat-pill" onclick="App.filter('bebida')">🍻 Bebidas</div>
-                <div class="cat-pill" onclick="App.filter('farma')">💊 Farmacia</div>
+        <main class="viewport" id="viewport">
+            
+            <section id="view-home" class="app-view active">
+                <div class="hero-promo">
+                    <h3>Mercado Oriental 🍍</h3>
+                    <p>Precios de feria hasta tu puerta.</p>
+                </div>  
+                
+                <div class="categories-grid">
+                    <div class="cat-item" onclick="App.filter('comida')">🥘<span>Comida</span></div>
+                    <div class="cat-item" onclick="App.filter('mercado')">🧺<span>Mercados</span></div>
+                    <div class="cat-item" onclick="App.filter('farma')">💊<span>Farmacia</span></div>
+                    <div class="cat-item" onclick="App.filter('licor')">🍺<span>Licorería</span></div>
+                </div>
+
+                <h3 class="title">Negocios en Tendencia</h3>
+                <div id="store-list" class="store-list"></div>
             </section>
 
-            <div class="hero-banner">
-                <div class="banner-card orange">
-                    <h3>¡Envío Gratis! 🛵</h3>
-                    <p>En tu primera compra del día.</p>
-                </div>
-            </div>
-
-            <section class="store-section">
-                <div class="section-head">
-                    <h3>Comercios Destacados</h3>
-                    <span>Ver más</span>
-                </div>
-                <div id="stores-grid" class="stores-grid">
+            <section id="view-orders" class="app-view">
+                <h2 class="title">Mis Pedidos</h2>
+                <div id="active-orders" class="orders-container">
                     </div>
             </section>
+
+            <section id="view-profile" class="app-view">
+                <h2 class="title">Mi Cuenta</h2>
+                <div class="profile-card">
+                    <div class="profile-info">
+                        <b id="prof-name">Invitado</b>
+                        <p id="prof-role">Acceso Limitado</p>
+                    </div>
+                </div>
+                
+                <div class="settings-list">
+                    <div class="set-item" onclick="App.showReg()">🚀 Registrarme como Vendedor</div>
+                    <div class="set-item">💳 Métodos de Pago (BAC/BANPRO)</div>
+                    <div class="set-item">🏠 Direcciones Guardadas</div>
+                    <div class="set-item" onclick="App.logout()">🚪 Cerrar Sesión</div>
+                </div>
+            </section>
+
         </main>
 
-        <nav class="dock">
-            <div class="dock-item active" onclick="App.view('home')">🏠<span>Inicio</span></div>
-            <div class="dock-item" onclick="App.view('orders')">📋<span>Pedidos</span></div>
-            <div class="dock-item" onclick="App.view('cart')">🛒<span id="cart-count" class="dot">0</span><span>Carrito</span></div>
-            <div class="dock-item" onclick="App.openSellerPortal()">🚀<span>Socio</span></div>
+        <nav class="bottom-dock">
+            <div class="dock-btn active" onclick="App.toggleView('home')">🏠<span>Inicio</span></div>
+            <div class="dock-btn" onclick="App.toggleView('home')">🛒<span>Mercados</span></div>
+            <div class="dock-btn" onclick="App.toggleView('orders')">📋<span>Pedidos</span></div>
+            <div class="dock-btn" onclick="App.toggleView('profile')">⚙️<span>Config</span></div>
         </nav>
     </div>
 
-    <div id="seller-portal" class="full-modal">
-        <div class="modal-header">
-            <h2>Panel de Socio</h2>
-            <button class="close-x" onclick="App.closeSellerPortal()">✕</button>
-        </div>
-        <div class="modal-content">
-            <div class="seller-card">
-                <h3>Vende en PinolApp</h3>
-                <p>Únete a la red de delivery más grande de Nicaragua.</p>
-                <div class="input-group">
-                    <label>Nombre del Negocio</label>
-                    <input type="text" id="biz-name" placeholder="Ej: Fritanga La Bendición">
-                </div>
-                <div class="input-group">
-                    <label>Categoría</label>
-                    <select id="biz-cat">
-                        <option value="comida">Comida / Restaurante</option>
-                        <option value="super">Mini Súper</option>
-                        <option value="bebida">Licorería</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Requisitos (Documentación)</label>
-                    <div class="file-upload">Subir Cédula / RUC 📄</div>
-                </div>
-                <button class="btn-block" onclick="App.registerStore()">Activar mi Tienda</button>
-            </div>
+    <div id="reg-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h3>Únete a la Red Pinol</h3>
+            <p>Vende tus productos con nuestro delivery.</p>
+            <input type="text" id="reg-name" placeholder="Nombre completo">
+            <input type="text" id="reg-biz" placeholder="Nombre de tu Negocio">
+            <button class="btn-main" onclick="App.processReg()">Comenzar a Vender</button>
+            <button class="btn-sec" onclick="App.closeReg()">Ahora no</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
-</html>.  
+</html>

@@ -1,94 +1,93 @@
 const App = {
-    // 1. DATABASE LOCAL
+    // MEMORIA PERSISTENTE (LOCALSTORAGE)
     db: {
-        get: () => JSON.parse(localStorage.getItem('Pinol_DB')) || {
-            user: "Yader",
-            myProducts: [] // Productos creados por vos
-        },
-        save: (data) => localStorage.setItem('Pinol_DB', JSON.stringify(data))
+        get: () => JSON.parse(localStorage.getItem('Pinol_Store_v1')) || { user: "Yader", store: [] },
+        save: (data) => localStorage.setItem('Pinol_Store_v1', JSON.stringify(data))
     },
 
-    // 2. PRODUCTOS FIJOS (RED NACIONAL)
+    // PRODUCTOS POR DEFECTO (RED NACIONAL)
     network: [
         { id: 1, n: "Cerveza Toña Pack", p: 245, m: "Cervecera Nacional", c: "bebidas", i: "🍺" },
-        { id: 2, n: "Tip-Top Combo", p: 485, m: "Tip-Top Nicaragua", c: "comida", i: "🍗" },
-        { id: 3, n: "Leche Eskimo 1L", p: 38, m: "Eskimo", c: "super", i: "🥛" },
-        { id: 4, n: "Flor de Caña 7", p: 480, m: "SER Licorera", c: "bebidas", i: "🥃" }
+        { id: 2, n: "Tip-Top Familiar", p: 485, m: "Tip-Top Nicaragua", c: "comida", i: "🍗" },
+        { id: 3, n: "Ron Flor de Caña 7", p: 480, m: "SER Licorera", c: "bebidas", i: "🥃" },
+        { id: 4, n: "Gallo Pinto c/ Carne", p: 150, m: "Fritanga Local", c: "comida", i: "🥘" }
     ],
 
     init() {
         const data = this.db.get();
-        document.getElementById('prof-name').innerText = data.user;
+        document.getElementById('u-name').innerText = data.user;
         
         setTimeout(() => {
             document.getElementById('splash').style.display = 'none';
             document.getElementById('app').style.display = 'block';
         }, 1500);
 
-        this.renderAll();
-    },
+        this.renderHome();
+    }, 
 
-    // 3. NAVEGACIÓN ENTRE BOTONES
+    // NAVEGACIÓN ENTRE BOTONES
     navigate(viewId, el) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`view-${viewId}`).classList.add('active');
         
-        document.querySelectorAll('.d-item').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.d-btn').forEach(d => d.classList.remove('active'));
         if(el) el.classList.add('active');
 
-        if(viewId === 'socio') this.renderSocioList();
+        if(viewId === 'socio') this.renderSocio();
     },
 
-    // 4. PANEL DE SOCIO (AGREGAR PRODUCTOS)
-    addItem() {
-        const name = document.getElementById('new-n').value;
-        const price = document.getElementById('new-p').value;
-        const cat = document.getElementById('new-c').value;
+    // PANEL DE SOCIO (AGREGAR)
+    addProd() {
+        const n = document.getElementById('p-name').value;
+        const p = document.getElementById('p-price').value;
+        const c = document.getElementById('p-cat').value;
 
-        if(!name || !price) return alert("Por favor completá los datos.");
+        if(!n || !p) return alert("¡Ey! Llená los campos.");
 
         const data = this.db.get();
-        data.myProducts.unshift({ id: Date.now(), n: name, p: parseInt(price), c: cat, m: "Socio Local", i: "🏪" });
+        data.store.unshift({ id: Date.now(), n, p: parseInt(p), c, m: "Socio Local", i: "🏪" });
         this.db.save(data);
 
-        alert("¡Producto publicado en PinolApp!");
-        document.getElementById('new-n').value = "";
-        document.getElementById('new-p').value = "";
-        this.renderAll();
-        this.renderSocioList();
+        alert("¡Producto publicado!");
+        document.getElementById('p-name').value = "";
+        document.getElementById('p-price').value = "";
+        this.renderHome();
+        this.renderSocio();
     },
 
-    renderSocioList() {
+    renderSocio() {
         const data = this.db.get();
-        const list = document.getElementById('admin-list');
-        list.innerHTML = data.myProducts.map(p => `
-            <div style="padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between">
+        const list = document.getElementById('inventory-list');
+        list.innerHTML = data.store.map(p => `
+            <div style="padding:15px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; background:white;">
                 <span><b>${p.n}</b> (C$ ${p.p})</span>
-                <button onclick="App.deleteItem(${p.id})" style="color:red; background:none; border:none; font-weight:800">Borrar</button>
+                <button onclick="App.deleteItem(${p.id})" style="color:red; border:none; background:none; font-weight:800">Borrar</button>
             </div>
         `).join('');
     },
 
     deleteItem(id) {
         let data = this.db.get();
-        data.myProducts = data.myProducts.filter(p => p.id !== id);
+        data.store = data.store.filter(p => p.id !== id);
         this.db.save(data);
-        this.renderSocioList();
-        this.renderAll();
+        this.renderSocio();
+        this.renderHome();
     },
 
-    // 5. MARKETPLACE DINÁMICO
-    renderAll() {
+    // MARKETPLACE PRINCIPAL
+    renderHome() {
         const data = this.db.get();
         const grid = document.getElementById('grid');
-        const total = [...data.myProducts, ...this.network];
+        const all = [...data.store, ...this.network];
         
-        grid.innerHTML = total.map(p => `
+        grid.innerHTML = all.map(p => `
             <div class="p-card">
-                <div class="p-icon">${p.i}</div>
-                <b>${p.n}</b><br>
-                <small>${p.m}</small><br>
-                <span class="p-price">C$ ${p.p}</span>
+                <div class="p-img-box">${p.i}</div>
+                <div class="p-txt-box">
+                    <b>${p.n}</b>
+                    <small>${p.m}</small>
+                    <span class="p-price">C$ ${p.p}</span>
+                </div>
             </div>
         `).join('');
     }

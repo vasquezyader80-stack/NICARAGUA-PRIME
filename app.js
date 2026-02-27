@@ -1,106 +1,67 @@
 const App = {
-    // 1. EL GRAN CATÁLOGO DE NICARAGUA (RED INTEGRADA)
+    // BASE DE DATOS MASIVA DE PRODUCTOS NICARAGÜENSES
     products: [
-        { id: 1, n: "Cerveza Toña 12oz", p: 45, m: "Compañía Cervecera", c: "bebidas", i: "🍺", b: "Nacional" },
-        { id: 2, n: "Ron Flor de Caña 7 Años", p: 480, m: "SER Licorera", c: "bebidas", i: "🍾", b: "Premium" },
-        { id: 3, n: "Leche Eskimo Entera", p: 38, m: "Lala", c: "super", i: "🥛", b: "Popular" },
-        { id: 4, n: "Carne Asada con Gallopinto", p: 160, m: "Fritanga Nica", c: "comida", i: "🥘", b: "Top" },
-        { id: 5, n: "Gaseosa Roja 12oz", p: 25, m: "Coca-Cola", c: "bebidas", i: "🥤", b: "Nacional" },
-        { id: 6, n: "Café Presto 200g", p: 115, m: "Nestlé", c: "super", i: "☕", b: "Indispensable" },
-        { id: 7, n: "Vigorón Granadino", p: 120, m: "Doña Elba", c: "comida", i: "🍽️", b: "Tradición" },
-        { id: 8, n: "Acetaminofén 500mg", p: 15, m: "Ramos", c: "farmacia", i: "💊", b: "Salud" }
+        { id: 1, n: "Toña 12oz Pack", p: 240, m: "Cervecera Nacional", c: "bebidas", i: "🍺" },
+        { id: 2, n: "Queso Seco (Libra)", p: 98, m: "Lácteos Chontales", c: "super", i: "🧀" },
+        { id: 3, n: "Gallo Pinto c/ Carne", p: 145, m: "Fritanga Don Gilberto", c: "restaurante", i: "🥘" },
+        { id: 4, n: "Leche Eskimo 1L", p: 36, m: "Eskimo", c: "super", i: "🥛" },
+        { id: 5, n: "Flor de Caña 7 Años", p: 460, m: "SER Licorera", c: "bebidas", i: "🥃" },
+        { id: 6, n: "Pan de Molde Enano", p: 65, m: "Panadería Enano", c: "super", i: "🍞" },
+        { id: 7, n: "Vigorón Granadino", p: 110, m: "El Kioskito", c: "restaurante", i: "🍽️" },
+        { id: 8, n: "Jabón El Trébol", p: 25, m: "E. Chamorro", c: "super", i: "🧼" }
     ],
 
-    cart: [],
-
     init() {
-        // Simulación de carga de servidores corporativos
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
             }, 500);
-        }, 2200);
+        }, 2000);    
 
-        this.renderProducts(this.products);
+        this.renderGrid(this.products);
     },
 
-    // RENDERIZADO VISUAL "QUE ENAMORA"
-    renderProducts(items) {
+    renderGrid(items) {
         const grid = document.getElementById('product-grid');
         grid.innerHTML = items.map(p => `
-            <div class="p-card" onclick="App.addToCart(${p.id})">
-                <span class="p-badge">${p.b}</span>
-                <div class="p-img">${p.i}</div>
-                <div class="p-info">
-                    <b>${p.n}</b>
-                    <small>${p.m}</small>
-                    <span class="p-price">C$ ${p.p}</span>
-                </div>
+            <div class="p-card" onclick="App.quickBuy('${p.n}', ${p.p})">
+                <div class="img-box">${p.i}</div>
+                <b>${p.n}</b>
+                <small>${p.m}</small>
+                <span class="p-price">C$ ${p.p}</span>
             </div>
         `).join('');
-    },   
+    },
 
-    // LÓGICA DE CARRITO (REGISTRO NO OBLIGATORIO)
-    addToCart(id) {
-        const item = this.products.find(p => p.id === id);
-        this.cart.push(item);
-        document.getElementById('cart-count').innerText = this.cart.length;
+    navigate(viewId, el) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(`view-${viewId}`).classList.add('active');
         
-        // Animación de feedback
-        const btn = document.querySelector('.cart-btn');
-        btn.classList.add('bump');
-        setTimeout(() => btn.classList.remove('bump'), 300);
+        document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+        if(el) el.classList.add('active');
     },
 
-    toggleCart() {
-        const modal = document.getElementById('modal-checkout');
-        modal.classList.toggle('active');
-        this.renderCart();
-    },
-
-    renderCart() {
-        const list = document.getElementById('cart-items');
-        let sub = 0;
-        list.innerHTML = this.cart.map(i => {
-            sub += i.p;
-            return `<div class="cart-row"><span>${i.n}</span><b>C$ ${i.p}</b></div>`;
-        }).join('');
-        
-        document.getElementById('sub-val').innerText = `C$ ${sub}`;
-        document.getElementById('total-val').innerText = `C$ ${sub + 40}`;
-    },
-
-    showLogin() {
-        // AQUÍ es donde pedimos registro, solo cuando va a soltar la plata
-        const name = prompt("Para confirmar el pedido, ingresa tu nombre y dirección de entrega:");
-        if(name) {
-            alert(`¡Gracias ${name}! Tu pedido de PinolApp está siendo procesado por nuestros motorizados.`);
-            this.cart = [];
-            this.toggleCart();
-            location.reload();
-        }
-    },
-
-    // NAVEGACIÓN SPA
-    navigate(to) {
-        if(to === 'config') {
-            document.getElementById('view-config').classList.add('active');
-        } else {
-            document.getElementById('view-config').classList.remove('active');
-        }
-        
-        // Cambiar iconos activos
-        document.querySelectorAll('.dock-link').forEach(l => l.classList.remove('active'));
-    },
-
-    liveSearch(val) {
+    search(val) {
         const filtered = this.products.filter(p => 
             p.n.toLowerCase().includes(val.toLowerCase()) || 
             p.m.toLowerCase().includes(val.toLowerCase())
         );
-        this.renderProducts(filtered);
+        this.renderGrid(filtered);
+    },
+
+    openSocio() {
+        const biz = prompt("Nombre de tu Negocio/Marca:");
+        if(biz) alert(`¡Gracias! Nuestro equipo comercial te contactará para afiliar a ${biz} a la red.`);
+    },
+
+    openDelivery() {
+        alert("Cargando formulario de reclutamiento para motorizados en Nicaragua...");
+    },
+
+    quickBuy(name, price) {
+        alert(`¡Añadido al carrito! ${name} por C$ ${price}. Registrate al finalizar para pagar.`);
     }
 };
 

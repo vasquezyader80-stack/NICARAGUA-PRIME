@@ -3,81 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Servicios y Delivery Nicaragua</title>
+    <title>PinolApp | Nicaragua Delivery Service</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <div class="logo-anim">
-            <h1 class="brand">Pinol<span>App</span></h1>
-            <div class="loader"></div>
-            <p>CONECTANDO NICARAGUA</p>
+    <div id="splash" class="splash-view">
+        <div class="splash-content">
+            <h1 class="brand-logo">Pinol<span>App</span></h1>
+            <div class="loading-ring"></div>
+            <p>EL APP DE LOS NICAS</p>
         </div>
     </div>
 
-    <header class="app-header">
-        <div class="location-bar">
-            <span class="icon">📍</span>
-            <div class="loc-text">
-                <small>Entregar en</small>
-                <b id="user-location">Managua, Nicaragua</b>
+    <div id="app-shell">
+        <header class="main-nav">
+            <div class="nav-top">
+                <div class="user-loc" onclick="App.changeLoc()">
+                    <span class="pin">📍</span>
+                    <div>
+                        <small>Entregar en</small>
+                        <b id="loc-current">Managua, Nicaragua</b>
+                    </div>
+                </div>
+                <div class="profile-circle" onclick="App.showProfile()">👤</div>
             </div>
-        </div>
-        <div class="search-container">
-            <input type="text" id="main-search" placeholder="Busca comida, farmacias, mandados..." oninput="App.search()">
-        </div>
-    </header>
-
-    <main class="content">
-        <section class="quick-cats">
-            <div class="cat-card" onclick="App.filter('restaurante')">🍴<span>Restaurantes</span></div>
-            <div class="cat-card" onclick="App.filter('super')">🛒<span>Súper</span></div>
-            <div class="cat-card" onclick="App.filter('bebida')">🍺<span>Bebidas</span></div>
-            <div class="cat-card" onclick="App.filter('envio')">📦<span>Envíos</span></div>
-        </section>
-
-        <div class="promo-banner">
-            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" alt="Promos">
-            <div class="promo-overlay">
-                <h2>Fritanga Fest 🥘</h2>
-                <p>20% de descuento hoy</p>
+            <div class="search-wrap">
+                <input type="text" id="global-search" placeholder="Busca en Tip-Top, La Colonia, Farmacias..." oninput="App.search()">
             </div>
-        </div>
+        </header>
 
-        <h3 class="section-title">Comercios destacados</h3>
-        <div id="shop-grid" class="shop-grid">
+        <main class="viewport">
+            <section class="horizontal-scroll cats">
+                <div class="cat-pill active" onclick="App.filter('all')">Todos</div>
+                <div class="cat-pill" onclick="App.filter('comida')">🥘 Comida</div>
+                <div class="cat-pill" onclick="App.filter('super')">🛒 Súper</div>
+                <div class="cat-pill" onclick="App.filter('bebida')">🍻 Bebidas</div>
+                <div class="cat-pill" onclick="App.filter('farma')">💊 Farmacia</div>
+            </section>
+
+            <div class="hero-banner">
+                <div class="banner-card orange">
+                    <h3>¡Envío Gratis! 🛵</h3>
+                    <p>En tu primera compra del día.</p>
+                </div>
             </div>
-    </main>
 
-    <nav class="bottom-nav">
-        <div class="nav-btn active" onclick="App.view('home')">🏠<span>Inicio</span></div>
-        <div class="nav-btn" onclick="App.view('orders')">📋<span>Pedidos</span></div>
-        <div class="nav-btn" onclick="App.view('cart')">🛒<span id="cart-badge" class="badge">0</span><span>Carrito</span></div>
-        <div class="nav-btn" onclick="App.toggleSellerModal()">🚀<span>Vender</span></div>
-    </nav>
+            <section class="store-section">
+                <div class="section-head">
+                    <h3>Comercios Destacados</h3>
+                    <span>Ver más</span>
+                </div>
+                <div id="stores-grid" class="stores-grid">
+                    </div>
+            </section>
+        </main>
 
-    <div id="seller-modal" class="modal">
+        <nav class="dock">
+            <div class="dock-item active" onclick="App.view('home')">🏠<span>Inicio</span></div>
+            <div class="dock-item" onclick="App.view('orders')">📋<span>Pedidos</span></div>
+            <div class="dock-item" onclick="App.view('cart')">🛒<span id="cart-count" class="dot">0</span><span>Carrito</span></div>
+            <div class="dock-item" onclick="App.openSellerPortal()">🚀<span>Socio</span></div>
+        </nav>
+    </div>
+
+    <div id="seller-portal" class="full-modal">
+        <div class="modal-header">
+            <h2>Panel de Socio</h2>
+            <button class="close-x" onclick="App.closeSellerPortal()">✕</button>
+        </div>
         <div class="modal-content">
-            <div class="modal-header">
-                <h2>Registra tu Negocio</h2>
-                <button onclick="App.toggleSellerModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <p class="req-text">Requisitos: Cédula RUC (opcional), Foto del Local y Menú.</p>
-                <input type="text" id="biz-name" placeholder="Nombre del Comercio">
-                <select id="biz-cat">
-                    <option value="restaurante">Restaurante / Fritanga</option>
-                    <option value="super">Pulpería / Mini Super</option>
-                    <option value="bebida">Licorería</option>
-                </select>
-                <input type="file" id="biz-img" accept="image/*">
-                <button class="btn-primary" onclick="App.registerSeller()">Solicitar Activación</button>
+            <div class="seller-card">
+                <h3>Vende en PinolApp</h3>
+                <p>Únete a la red de delivery más grande de Nicaragua.</p>
+                <div class="input-group">
+                    <label>Nombre del Negocio</label>
+                    <input type="text" id="biz-name" placeholder="Ej: Fritanga La Bendición">
+                </div>
+                <div class="input-group">
+                    <label>Categoría</label>
+                    <select id="biz-cat">
+                        <option value="comida">Comida / Restaurante</option>
+                        <option value="super">Mini Súper</option>
+                        <option value="bebida">Licorería</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Requisitos (Documentación)</label>
+                    <div class="file-upload">Subir Cédula / RUC 📄</div>
+                </div>
+                <button class="btn-block" onclick="App.registerStore()">Activar mi Tienda</button>
             </div>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
-</html>.   
+</html>.  

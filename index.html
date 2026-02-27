@@ -3,106 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Orgullo Nicaragüense</title>
+    <title>PinolApp | 100% Orgullo Nicaragüense</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="logo-box">
-            <h1>Pinol<span>App</span></h1>
-            <p>100% Orgullo Nicaragüense 🇳🇮</p>
+        <div class="logo-group">
+            <h1 class="logo">Pinol<span>App</span></h1>
+            <p>Orgullo Nicaragüense 🇳🇮</p>
+            <div class="loader-line"></div>
         </div>
     </div>
 
     <div id="app" style="display:none;">
         
         <section id="view-home" class="view active">
-            <header class="home-header">
-                <div class="location-bar">
+            <header class="home-nav">
+                <div class="loc-header">
                     <small>Entrega en</small>
                     <b>Mi Casa, Managua 📍</b>
                 </div>
-                <div class="search-container">
-                    <input type="text" placeholder="Busca marcas, productos o servicios..." oninput="App.search(this.value)">
+                <div class="search-wrap">
+                    <input type="text" placeholder="Busca Toña, Tip-Top o lo que querrás..." oninput="App.search(this.value)">
                 </div>
             </header>
 
-            <div class="scroll-content">
-                <div class="categories-row">
-                    <div class="cat-card" onclick="App.filter('restaurante')"><div class="circle">🍔</div><span>Comida</span></div>
-                    <div class="cat-card" onclick="App.filter('super')"><div class="circle">🛒</div><span>Súper</span></div>
-                    <div class="cat-card" onclick="App.filter('bebidas')"><div class="circle">🍺</div><span>Bebidas</span></div>
-                    <div class="cat-card" onclick="App.filter('farmacia')"><div class="circle">💊</div><span>Salud</span></div>
-                    <div class="cat-card" onclick="App.filter('mandados')"><div class="circle">🛵<span>Express</span></div></div>
-                </div> 
+            <div class="content-scroll">
+                <div class="bubble-nav">
+                    <div class="b-cat" onclick="App.filter('restaurante')">
+                        <div class="b-icon">🥘</div><span>Fritangas</span>
+                    </div>
+                    <div class="b-cat" onclick="App.filter('super')">
+                        <div class="b-icon">🛒</div><span>Súper</span></div>
+                    <div class="b-cat" onclick="App.filter('bebidas')">
+                        <div class="b-icon">🍺</div><span>Bebidas</span></div>
+                    <div class="b-cat" onclick="App.filter('farmacia')">
+                        <div class="b-icon">💊</div><span>Salud</span></div>
+                    <div class="b-cat" onclick="App.filter('servicios')">
+                        <div class="b-icon">🛵</div><span>Mandados</span></div>
+                </div>
 
-                <div class="promo-slider">
-                    <div class="promo-item nica-bg">
-                        <h3>Feria del Gallo Pinto</h3>
-                        <p>Descuentos en comercios locales</p>
+                <div class="promo-card-nica">
+                    <div class="p-txt">
+                        <h3>Nica-Promos de Hoy</h3>
+                        <p>Aprovechá envíos a C$ 30</p>
                     </div>
                 </div>
 
-                <h3 class="section-title">Marcas Líderes en Nicaragua</h3>
-                <div id="product-grid" class="grid-container"></div>
+                <h3 class="grid-title">Marcas y Comercios Locales</h3>
+                <div id="main-grid" class="product-grid"></div>
             </div>
         </section>
 
         <section id="view-orders" class="view">
             <div class="view-header"><h3>Mis Pedidos</h3></div>
-            <div id="orders-list" class="orders-list">
-                <div class="empty-state">No hay pedidos activos</div>
+            <div id="order-stack" class="order-stack">
+                <p class="empty">No tenés pedidos activos ahorita.</p>
             </div>
         </section>
 
         <section id="view-profile" class="view">
-            <div class="profile-top">
-                <div class="profile-avatar">Y</div>
-                <div class="profile-meta">
-                    <h2 id="prof-name">Invitado</h2>
-                    <p>nicaragua.app@pinol.com</p>
+            <div class="user-card-premium">
+                <div class="u-avatar">YN</div>
+                <div class="u-info">
+                    <h2 id="user-display">Yader N.</h2>
+                    <p>yader.nica@pinolapp.com.ni</p>
                 </div>
+                <button class="edit-btn">✏️</button>
             </div>
 
-            <div class="profile-menu">
-                <div class="menu-group">
-                    <div class="menu-item" onclick="App.openSocio()">
-                        <div class="m-icon">🏢</div>
-                        <div class="m-text"><b>Registrar mi Tienda</b><p>Afiliá tu negocio a la red PinolApp</p></div>
-                        <span>❯</span>
+            <div class="menu-container">
+                <div class="m-group">
+                    <div class="m-row" onclick="App.regBiz()">
+                        <div class="ri">🏢</div>
+                        <div class="rt"><b>Registrar mi Negocio</b><p>Empezá a vender en la red PinolApp</p></div>
+                        <div class="ra">❯</div>
                     </div>
-                    <div class="menu-item" onclick="App.openDelivery()">
-                        <div class="m-icon">🛵</div>
-                        <div class="m-text"><b>Quiero ser Delivery</b><p>Ganar dinero con tu propia moto</p></div>
-                        <span>❯</span>
-                    </div>
-                </div>
-
-                <div class="menu-group">
-                    <div class="menu-item">
-                        <div class="m-icon">💳</div>
-                        <div class="m-text"><b>Métodos de pago</b><p>Tarjetas guardadas</p></div>
-                        <span>❯</span>
-                    </div>
-                    <div class="menu-item">
-                        <div class="m-icon">📍</div>
-                        <div class="m-text"><b>Direcciones</b><p>Casa, Trabajo, Otros</p></div>
-                        <span>❯</span>
+                    <div class="m-row" onclick="App.regRider()">
+                        <div class="ri">🛵</div>
+                        <div class="rt"><b>Quiero ser Delivery</b><p>Ganá dinero con tu propia moto</p></div>
+                        <div class="ra">❯</div>
                     </div>
                 </div>
 
-                <div class="menu-group">
-                    <button class="logout-btn" onclick="location.reload()">Cerrar Sesión</button>
+                <div class="m-group">
+                    <div class="m-row">
+                        <div class="ri">💳</div>
+                        <div class="rt"><b>Métodos de Pago</b><p>Tarjetas BAC o Banpro guardadas</p></div>
+                        <div class="ra">❯</div>
+                    </div>
+                    <div class="m-row">
+                        <div class="ri">📍</div>
+                        <div class="rt"><b>Mis Direcciones</b><p>Casa, Oficina, Fritanga favorita</p></div>
+                        <div class="ra">❯</div>
+                    </div>
                 </div>
+
+                <div class="m-group">
+                    <div class="m-row">
+                        <div class="ri">📜</div>
+                        <div class="rt"><b>Ayuda y Soporte</b><p>Chateá con un asesor Nica</p></div>
+                        <div class="ra">❯</div>
+                    </div>
+                </div>
+
+                <button class="btn-exit" onclick="location.reload()">Cerrar Sesión</button>
             </div>
         </section>
 
-        <nav class="bottom-dock">
-            <div class="dock-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
-            <div class="dock-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
-            <div class="dock-item" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
+        <nav class="main-dock">
+            <div class="d-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
+            <div class="d-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
+            <div class="d-item" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
         </nav>
     </div>
 

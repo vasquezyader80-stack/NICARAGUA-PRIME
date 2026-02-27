@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | 100% Orgullo Nicaragüense</title>
+    <title>PinolApp | 100% Nica</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -17,95 +17,86 @@
     <div id="app" style="display:none;">
         
         <section id="view-home" class="view active">
-            <header class="main-header">
-                <div class="loc">
+            <header class="header-main">
+                <div class="user-loc">
                     <small>Entrega en</small>
                     <b>📍 Managua, Nicaragua</b>
                 </div>
-                <div class="search-bar">
+                <div class="search-container">
                     <input type="text" placeholder="Buscar Fritanga, Toña, Tip-Top..." oninput="App.search(this.value)">
                 </div>
             </header>
 
-            <div class="scroll-content">
-                <div class="cat-strip">
-                    <div class="cat-item active" onclick="App.filter('all', this)">✨ Todo</div>
-                    <div class="cat-item" onclick="App.filter('fritanga', this)">🥘 Fritangas</div>
-                    <div class="cat-item" onclick="App.filter('bebidas', this)">🍺 Bebidas</div>
-                    <div class="cat-item" onclick="App.filter('super', this)">🛒 Súper</div>
+            <div class="main-content">
+                <div class="cat-pills">
+                    <div class="pill active" onclick="App.filter('all', this)">✨ Todo</div>
+                    <div class="pill" onclick="App.filter('fritanga', this)">🥘 Fritangas</div>
+                    <div class="pill" onclick="App.filter('bebidas', this)">🍺 Bebidas</div>
                 </div>
 
-                <h3 class="title-label">Lo más pedido en el país</h3>
-                <div id="product-grid" class="product-grid"></div>
+                <h3 class="section-label">Lo mejor de Nicaragua</h3>
+                <div id="product-grid" class="grid-layout"></div>
             </div>
-        </section>
+        </section> 
 
         <section id="view-orders" class="view">
-            <div class="header-simple"><h2>Mis Pedidos</h2></div>
-            <div id="order-list" class="order-list">
-                <p class="empty-txt">No tenés pedidos activos ahora mismo.</p>
+            <div class="page-title"><h2>Mis Pedidos</h2></div>
+            <div class="empty-orders">
+                <p>No tenés pedidos en curso ahorita.</p>
             </div>
         </section>
 
         <section id="view-profile" class="view">
-            <div class="profile-banner">
-                <div class="p-avatar">YN</div>
-                <div class="p-info">
-                    <h2 id="user-display">Yader</h2>
+            <div class="user-profile-card">
+                <div class="avatar-circle">YN</div>
+                <div class="user-text">
+                    <h2 id="name-tag">Yader</h2>
                     <p>nicaragua@pinolapp.com</p>
                 </div>
             </div>
 
-            <div class="menu-sections">
-                <div class="m-group">
-                    <div class="m-item" onclick="App.navigate('socio')">
-                        <span class="m-icon">🏢</span>
-                        <div class="m-content"><b>Registrar mi Tienda</b><p>Afiliá tu negocio y empezá a vender</p></div>
-                        <span class="m-arrow">❯</span>
-                    </div>
-                    <div class="m-item">
-                        <span class="m-icon">🛵</span>
-                        <div class="m-content"><b>Quiero ser Delivery</b><p>Ganá dinero con tu propia moto</p></div>
-                        <span class="m-arrow">❯</span>
+            <div class="profile-menu">
+                <div class="group-box">
+                    <div class="menu-item" onclick="App.navigate('socio')">
+                        <span class="icon-m">🏢</span>
+                        <div class="text-m"><b>Registrar mi Tienda</b><p>Publicá tus productos aquí</p></div>
+                        <span class="chevron">❯</span>
                     </div>
                 </div>
 
-                <div class="m-group">
-                    <div class="m-item">
-                        <span class="m-icon">💳</span>
-                        <div class="m-content"><b>Métodos de pago</b><p>Córdobas y Tarjetas</p></div>
-                        <span class="m-arrow">❯</span>
+                <div class="group-box">
+                    <div class="menu-item">
+                        <span class="icon-m">💳</span>
+                        <div class="text-m"><b>Métodos de pago</b><p>C$ Córdobas y Tarjetas</p></div>
+                        <span class="chevron">❯</span>
                     </div>
-                    <div class="m-item">
-                        <span class="m-icon">📍</span>
-                        <div class="m-content"><b>Mis Direcciones</b><p>Casa, Trabajo, Fritanga favorita</p></div>
-                        <span class="m-arrow">❯</span>
+                    <div class="menu-item">
+                        <span class="icon-m">📍</span>
+                        <div class="text-m"><b>Direcciones</b><p>Casa, Trabajo, Otros</p></div>
+                        <span class="chevron">❯</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <section id="view-socio" class="view">
-            <div class="header-simple"><h2>Panel del Negocio</h2></div>
-            <div class="socio-form">
-                <p>Ingresá los datos de tu producto:</p>
-                <input type="text" id="new-name" placeholder="Ej: Pollo Asado con Tajadas">
-                <input type="number" id="new-price" placeholder="Precio en C$">
-                <select id="new-cat">
-                    <option value="fritanga">Fritanga / Comida</option>
+            <div class="page-title"><h2>Panel de Socio</h2></div>
+            <div class="add-product-form">
+                <input type="text" id="p-name" placeholder="Nombre del producto">
+                <input type="number" id="p-price" placeholder="Precio en C$">
+                <select id="p-cat">
+                    <option value="fritanga">Comida / Fritanga</option>
                     <option value="bebidas">Bebidas / Licores</option>
-                    <option value="super">Súper / Mercado</option>
                 </select>
-                <button class="btn-post" onclick="App.postProduct()">Publicar en Marketplace</button>
+                <button class="btn-save" onclick="App.saveToDB()">Publicar en la App</button>
             </div>
-            <hr>
-            <div id="socio-inventory" class="inventory-grid"></div>
+            <div id="my-products" class="inventory-list"></div>
         </section>
 
-        <nav class="dock">
-            <div class="d-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
-            <div class="d-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
-            <div class="d-item" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
+        <nav class="bottom-dock">
+            <div class="dock-btn active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
+            <div class="dock-btn" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
+            <div class="dock-btn" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
         </nav>
     </div>
 

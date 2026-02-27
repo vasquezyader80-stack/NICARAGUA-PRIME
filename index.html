@@ -12,6 +12,7 @@
     <div id="splash" class="splash-full">
         <h1 class="logo-text">Pinol<span>App</span></h1>
         <div class="loader-bar"><div class="fill"></div></div>
+        <p>CONECTANDO NICARAGUA</p>
     </div>
 
     <div id="main-app" style="display:none;">
@@ -19,53 +20,54 @@
             <div class="user-meta">
                 <div class="avatar-circle" id="user-initials">YN</div>
                 <div>
-                    <b id="user-name-display">Cargando...</b>
-                    <small id="user-status-display">Socio Verificado</small>
+                    <b id="user-name-display">Visitante</b>
+                    <small id="user-status-display">Modo Lectura</small>
                 </div>
             </div>
-            <button class="cart-trigger" onclick="App.navigate('orders')">📦 Pedidos</button>
-        </header>
+            <button class="cart-trigger" onclick="App.navigate('orders')">📦 Mis Pedidos</button>
+        </header> 
 
         <main class="viewport">
             <section id="view-home" class="view active">
                 <div class="promo-box">
-                    <h3>¡Nuevos Comercios! 🇳🇮</h3>
-                    <p>Apoyando el emprendimiento local.</p>
+                    <h3>¡Mercado Central Online! 🇳🇮</h3>
+                    <p>Fritangas, mandados y más a un click.</p>
                 </div>
                 <div class="cat-nav">
                     <button class="tab active" onclick="App.filter('all', this)">Todos</button>
-                    <button class="tab" onclick="App.filter('comida', this)">Comida</button>
-                    <button class="tab" onclick="App.filter('super', this)">Súper</button>
+                    <button class="tab" onclick="App.filter('comida', this)">🥘 Comida</button>
+                    <button class="tab" onclick="App.filter('servicio', this)">🛵 Servicios</button>
                 </div>
                 <div id="global-grid" class="grid"></div>
             </section>
 
             <section id="view-inventory" class="view">
                 <div class="panel-header">
-                    <h3>Gestión de Productos</h3>
-                    <p>Tus artículos aparecerán en el Marketplace.</p>
+                    <h3>Panel de Control del Socio</h3>
+                    <p>Añade productos para vender en todo el país.</p>
                 </div>
                 <div class="inventory-form">
-                    <input type="text" id="inv-name" placeholder="Nombre del producto">
-                    <input type="number" id="inv-price" placeholder="Precio C$">
+                    <input type="text" id="inv-name" placeholder="Nombre del producto o servicio">
+                    <input type="number" id="inv-price" placeholder="Precio en Córdobas (C$)">
                     <select id="inv-cat">
                         <option value="comida">Categoría: Comida</option>
-                        <option value="super">Categoría: Súper</option>
+                        <option value="servicio">Categoría: Servicio/Mandado</option>
                     </select>
-                    <button class="btn-add" onclick="App.addItem()">PUBLICAR PRODUCTO</button>
+                    <button class="btn-add" onclick="App.addItem()">PUBLICAR EN PINOLAPP</button>
                 </div>
+                <h4>Tus Publicaciones Activas</h4>
                 <div id="my-products" class="my-items-list"></div>
             </section>
 
             <section id="view-orders" class="view">
-                <h3>Seguimiento Logístico</h3>
+                <h3>Rastreo de Pedidos Activos</h3>
                 <div id="order-stack" class="stack"></div>
             </section>
         </main>
 
         <nav class="dock">
             <button class="dock-btn active" onclick="App.navigate('home', this)">🏠<span>Tienda</span></button>
-            <button id="nav-inv-btn" class="dock-btn" onclick="App.navigate('inventory', this)" style="display:none;">🚀<span>Gestionar</span></button>
+            <button id="nav-inv-btn" class="dock-btn" onclick="App.navigate('inventory', this)" style="display:none;">🚀<span>Socio</span></button>
             <button class="dock-btn" onclick="App.navigate('orders', this)">📋<span>Rastreo</span></button>
             <button class="dock-btn" onclick="App.openReg()">⚙️<span>Perfil</span></button>
         </nav>
@@ -74,14 +76,14 @@
     <div id="modal-reg" class="overlay">
         <div class="modal">
             <h2>Registro de Socio</h2>
+            <p>Al registrarte podrás subir tus propios productos.</p>
             <input type="text" id="reg-name" placeholder="Tu Nombre">
-            <input type="text" id="reg-biz" placeholder="Nombre del Negocio">
-            <button class="btn-primary" onclick="App.saveReg()">ACTIVAR CUENTA</button>
-            <button class="btn-flat" onclick="App.closeReg()">CERRAR</button>
+            <input type="text" id="reg-biz" placeholder="Nombre de tu Negocio">
+            <button class="btn-primary" onclick="App.saveReg()">ACTIVAR CUENTA SOCIO</button>
+            <button class="btn-flat" onclick="App.closeReg()">CANCELAR</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
 </html>
-         

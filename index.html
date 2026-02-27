@@ -3,98 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp Enterprise | Business Edition</title>
+    <title>PinolApp Enterprise | Business Hub</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-layer">
-        <div class="splash-box">
-            <h1 class="logo-main">Pinol<span>App</span></h1>
-            <div class="progress-bar"><div class="progress-fill"></div></div>
-            <p>VERIFICANDO CREDENCIALES...</p>
+    <div id="splash" class="splash-screen">
+        <div class="splash-core">
+            <h1 class="main-logo">Pinol<span>App</span></h1>
+            <div class="spinner"></div>
+            <p id="splash-status">INICIALIZANDO SISTEMA...</p>
         </div>
     </div>
 
-    <div id="app-core">
-        <header class="smart-header">
-            <div class="top-row">
-                <div class="user-meta">
-                    <b id="display-name">Invitado</b>
-                    <span id="display-role" class="badge-guest">Modo Cliente</span>
+    <div id="app" style="display:none;">
+        <header class="app-bar">
+            <div class="bar-content">
+                <div class="brand-zone">
+                    <small id="role-tag">Visitante</small>
+                    <h2 id="user-welcome">¡Hola, Nica!</h2>
                 </div>
-                <button class="btn-icon" onclick="App.navigate('profile')">👤</button>
+                <div class="actions">
+                    <button class="icon-btn" onclick="App.navigate('cart')">🛒<span id="cart-count">0</span></button>
+                    <button class="icon-btn" onclick="App.navigate('settings')">👤</button>
+                </div>
             </div>
             <div class="search-engine">
-                <input type="text" id="global-search" placeholder="¿Qué necesitas hoy?" oninput="App.liveSearch()">
+                <input type="text" id="q" placeholder="Buscar en Managua, León, Granada..." oninput="App.liveSearch()">
             </div>
         </header>
 
-        <main class="active-viewport">
+        <main class="main-stage">
             
             <section id="view-home" class="view active">
-                <div class="hero-slider">
-                    <div class="slide">
-                        <h3>Delivery Masaya y Granada 🛵</h3>
-                        <p>Tarifa fija de envío C$ 45</p>
-                    </div>
+                <div class="hero-card">
+                    <div class="badge-live">EN VIVO</div>
+                    <h3>Feria del Marisco 🦐</h3>
+                    <p>Directo de Bluefields a tu mesa.</p>
                 </div>
 
-                <div class="filter-bar">
-                    <button class="f-pill active" onclick="App.filter('all', this)">Todos</button>
-                    <button class="f-pill" onclick="App.filter('comida', this)">🥘 Comida</button>
-                    <button class="f-pill" onclick="App.filter('super', this)">🛒 Súper</button>
-                    <button class="f-pill" onclick="App.filter('farma', this)">💊 Salud</button>
+                <div class="filter-scroll">
+                    <button class="chip active" onclick="App.setCat('all', this)">Todos</button>
+                    <button class="chip" onclick="App.setCat('comida', this)">Fritangas</button>
+                    <button class="chip" onclick="App.setCat('super', this)">Súper</button>
+                    <button class="chip" onclick="App.setCat('farma', this)">Farmacia</button>
                 </div>
 
                 <div id="store-grid" class="store-grid"></div>
             </section>
 
             <section id="view-orders" class="view">
-                <div class="view-header">
-                    <h2>Mis Pedidos Activos</h2>
-                    <p>Rastreo en tiempo real</p>
+                <div class="view-title">
+                    <h3>Logística de Pedidos</h3>
+                    <p>Seguimiento GPS en tiempo real</p>
                 </div>
-                <div id="active-orders-container" class="orders-list">
-                    </div>
+                <div id="live-orders" class="orders-stack"></div>
             </section>
 
-            <section id="view-profile" class="view">
-                <div class="business-card">
-                    <h3 id="profile-title">Configuración de Cuenta</h3>
-                    <p>Gestiona tus pagos y estatus de socio.</p>
+            <section id="view-settings" class="view">
+                <div class="profile-header">
+                    <div class="avatar-lg">YN</div>
+                    <h3 id="prof-name">Cuenta Global</h3>
+                    <p id="prof-type">Usuario Estándar</p>
                 </div>
 
-                <div class="menu-options">
-                    <button class="menu-btn" onclick="App.openAuth()">🚀 Convertirme en Socio Vendedor</button>
-                    <button class="menu-btn" onclick="App.openChatSupport()">💬 Chat Soporte Técnico</button>
-                    <button class="menu-btn" onclick="App.resetAll()">⚠️ Restablecer App</button>
+                <div class="action-list">
+                    <button class="action-item" onclick="App.modal('reg')">
+                        <span>🚀</span> <b>Convertirse en Socio Vendedor</b>
+                        <small>Sube tus productos y genera ingresos</small>
+                    </button>
+                    <button class="action-item" onclick="window.open('https://wa.me/50588888888')">
+                        <span>💬</span> <b>Soporte Técnico 24/7</b>
+                        <small>Chat directo con operaciones</small>
+                    </button> 
+                    <button class="action-item red" onclick="App.clearData()">
+                        <span>⚠️</span> <b>Restablecer Terminal</b>
+                    </button>
                 </div>
             </section>
         </main>
 
-        <nav class="navigation-dock">
-            <button class="dock-link active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></button>
-            <button class="dock-link" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></button>
-            <button class="dock-link" onclick="App.navigate('profile', this)">⚙️<span>Ajustes</span></button>
+        <nav class="nav-bar">
+            <button class="nav-link active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></button>
+            <button class="nav-link" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></button>
+            <button class="nav-link" onclick="App.navigate('settings', this)">⚙️<span>Ajustes</span></button>
         </nav>
-    </div>
+    </div> 
 
-    <div id="auth-modal" class="overlay">
-        <div class="modal-box">
-            <h2>Registro de Negocio</h2>
-            <p>Completa los requisitos para activar tu tienda.</p>
-            <div class="form">
-                <input type="text" id="reg-user" placeholder="Nombre del Propietario">
-                <input type="text" id="reg-biz" placeholder="Nombre de la Empresa">
-                <select id="reg-cat">
-                    <option value="comida">Restaurante / Fritanga</option>
-                    <option value="super">Súper / Pulpería</option>
-                    <option value="farma">Farmacia</option>
+    <div id="modal-reg" class="modal-overlay">
+        <div class="modal-sheet">
+            <h2>Alta de Nuevo Socio</h2>
+            <div class="input-form">
+                <input type="text" id="biz-owner" placeholder="Nombre del Representante">
+                <input type="text" id="biz-name" placeholder="Nombre Legal del Negocio">
+                <select id="biz-type">
+                    <option value="comida">Restaurante / Bar</option>
+                    <option value="super">Comercio / Súper</option>
                 </select>
-                <button class="btn-action" onclick="App.handleAuth()">SOLICITAR ACTIVACIÓN</button>
-                <button class="btn-cancel" onclick="App.closeAuth()">Cerrar</button>
+                <button class="btn-confirm" onclick="App.beSocio()">ACTIVAR MI EMPRESA</button>
+                <button class="btn-close" onclick="App.modal('reg', false)">CANCELAR</button>
             </div>
         </div>
     </div>

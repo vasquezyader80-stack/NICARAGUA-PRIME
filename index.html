@@ -3,92 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Nicaragua Delivery</title>
+    <title>PinolApp | 100% Orgullo Nicaragüense</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <h1 class="logo-pro">Pinol<span>App</span></h1>
+        <h1 class="logo">Pinol<span>App</span></h1>
         <p>100% Orgullo Nicaragüense 🇳🇮</p>
     </div>
 
     <div id="app" style="display:none;">
         
-        <header class="main-header">
-            <div class="user-bar">
-                <div class="loc">
-                    <small>Entrega en</small>
-                    <b>Managua, Nicaragua 📍</b>
-                </div>
-                <div class="cacaos-badge">
-                    <span id="user-cacaos">0</span> 🍫 Cacaos
+        <header class="header">
+            <div class="top-nav">
+                <div class="loc-info">
+                    <small>Entregar en</small>
+                    <b>📍 Managua, Nicaragua</b>
                 </div>
             </div>
-            <div class="search-wrap">
-                <input type="text" placeholder="¿Qué se te antoja?" oninput="App.search(this.value)">
+            <div class="search-box">
+                <input type="text" placeholder="Buscar productos, marcas o servicios..." oninput="App.search(this.value)">
             </div>
         </header>
-  
-        <section id="view-home" class="view active">
-            <div class="cat-scroll">
-                <div class="pill active" onclick="App.filter('all', this)">✨ Todo</div>
-                <div class="pill" onclick="App.filter('fritanga', this)">🥘 Fritangas</div>
-                <div class="pill" onclick="App.filter('bebidas', this)">🍺 Bebidas</div>
-                <div class="pill" onclick="App.filter('super', this)">🛒 Súper</div>
-            </div>
-            <div id="grid" class="grid-layout"></div>
-        </section>
 
-        <section id="view-orders" class="view">
-            <h2 class="section-title">Rastreo de Pedido</h2>
-            <div id="live-tracking" class="tracking-card">
-                <p class="empty">No hay pedidos en curso.</p>
-            </div>
-        </section>
-
-        <section id="view-profile" class="view">
-            <div class="profile-header">
-                <div class="avatar">Y</div>
-                <div>
-                    <h2 id="p-name">Cargando...</h2>
-                    <p>Socio Fundador</p>
+        <main class="content">
+            
+            <section id="view-home" class="view active">
+                <div class="cat-bar">
+                    <div class="cat-pill active" onclick="App.filter('all', this)">Todo</div>
+                    <div class="cat-pill" onclick="App.filter('comida', this)">🥘 Fritangas</div>
+                    <div class="cat-pill" onclick="App.filter('bebidas', this)">🍺 Bebidas</div>
+                    <div class="cat-pill" onclick="App.filter('super', this)">🛒 Súper</div>
                 </div>
-            </div>
 
-            <div class="menu-sections">
-                <div class="m-card">
-                    <div class="m-item" onclick="App.toggleBusinessPanel()">
-                        <span>🏢</span> <b>Mi Negocio (Panel Socio)</b>
-                        <span class="arrow">❯</span>
+                <div id="product-grid" class="product-grid">
+                    </div>
+            </section>
+
+            <section id="view-profile" class="view">
+                <div class="profile-card">
+                    <div class="avatar">YN</div>
+                    <div class="details">
+                        <h2 id="display-user-name">Yader</h2>
+                        <p>Nicaragua</p>
                     </div>
                 </div>
-                <div class="m-card">
-                    <div class="m-item"><span>💳</span> <b>Métodos de Pago</b> <span class="arrow">❯</span></div>
-                    <div class="m-item"><span>📍</span> <b>Mis Direcciones</b> <span class="arrow">❯</span></div>
+  
+                <div class="menu-sections">
+                    <div class="section-box">
+                        <div class="menu-item" onclick="App.showSocioForm()">
+                            <span class="m-icon">🏢</span>
+                            <div class="m-txt"><b>Registrar mi Tienda</b><p>Vende tus productos en PinolApp</p></div>
+                            <span class="arrow">❯</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="m-icon">🛵</span>
+                            <div class="m-txt"><b>Quiero ser Delivery</b><p>Únete a nuestra flota</p></div>
+                            <span class="arrow">❯</span>
+                        </div>
+                    </div>
+
+                    <div class="section-box">
+                        <div class="menu-item">
+                            <span class="m-icon">💳</span>
+                            <div class="m-txt"><b>Métodos de pago</b><p>Córdobas y Tarjetas</p></div>
+                            <span class="arrow">❯</span>
+                        </div>
+                        <div class="menu-item">
+                            <span class="m-icon">📍</span>
+                            <div class="m-txt"><b>Direcciones</b><p>Casa, Trabajo, etc.</p></div>
+                            <span class="arrow">❯</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+
+            <section id="view-socio" class="view">
+                <div class="socio-panel">
+                    <h3>Panel de Vendedor</h3>
+                    <div class="form-add">
+                        <input type="text" id="new-p-name" placeholder="Nombre del producto">
+                        <input type="number" id="new-p-price" placeholder="Precio C$">
+                        <select id="new-p-cat">
+                            <option value="comida">Fritanga/Comida</option>
+                            <option value="bebidas">Bebidas</option>
+                            <option value="super">Súper</option>
+                        </select>
+                        <button class="btn-primary" onclick="App.saveProduct()">Publicar Producto</button>
+                    </div>
+                    <hr>
+                    <div id="my-inventory" class="inventory-list"></div>
+                </div>
+            </section>
+
+        </main>
 
         <nav class="dock">
             <div class="d-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
-            <div class="d-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
             <div class="d-item" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
+            <div class="d-item" onclick="App.navigate('socio', this)">🚀<span>Negocio</span></div>
         </nav>
-    </div>
-
-    <div id="modal-checkout" class="modal">
-        <div class="modal-content">
-            <h3>Finalizar Pedido</h3>
-            <div class="sim-map">
-                <div class="pin">📍</div>
-                <p>Ubicación detectada por GPS</p>
-            </div>
-            <div id="order-summary" class="summary"></div>
-            <button class="btn-confirm" onclick="App.processOrder()">PEDIR AHORA</button>
-            <button class="btn-cancel" onclick="App.closeModal()">Cancelar</button>
-        </div>
     </div>
 
     <script src="app.js"></script>

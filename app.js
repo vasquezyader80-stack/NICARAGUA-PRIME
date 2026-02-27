@@ -1,141 +1,175 @@
 const App = {
-    // 1. NÚCLEO DE DATOS (Check ✅)
-    data: {
-        get: () => JSON.parse(localStorage.getItem('Pinol_Master_v4')) || { user: 'Invitado', socio: false, orders: [], biz: '' },
-        save: (d) => localStorage.setItem('Pinol_Master_v4', JSON.stringify(d))
+    // 1. BASE DE DATOS CENTRALIZADA
+    db: {
+        get: () => JSON.parse(localStorage.getItem('PinolApp_v5_Core')) || {
+            user: "Invitado",
+            biz: "N/A",
+            isSocio: false,
+            orders: [],
+            myItems: [] // Productos creados por el socio
+        },
+        save: (data) => localStorage.setItem('PinolApp_v5_Core', JSON.stringify(data))
     },
 
-    // 2. CATÁLOGO DE COMERCIOS
-    stores: [
-        { id: 1, n: "Tip-Top Los Robles", c: "comida", i: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=600", fee: 35 },
-        { id: 2, n: "Súper La Unión", c: "super", i: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=600", fee: 55 },
-        { id: 3, n: "Fritanga El Madroño", c: "comida", i: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600", fee: 25 },
-        { id: 4, n: "Farmacia Médica", c: "farma", i: "https://images.unsplash.com/photo-1587854692152-cbe660dbbb88?w=600", fee: 40 }
+    // 2. PRODUCTOS DE FÁBRICA
+    baseProducts: [
+        { id: 1, name: "Cena Típica Nica", price: 180, cat: "comida", store: "Fritanga Doña Tania" },
+        { id: 2, name: "Pollo Entero Rostizado", price: 450, cat: "comida", store: "Tip-Top" },
+        { id: 3, name: "Arroz 10 Lbs", price: 165, cat: "super", store: "La Colonia" }
     ],
 
     init() {
-        const session = this.data.get();
-        this.syncUI(session);
+        const session = this.db.get();
+        this.updateUI(session);
 
-        // Simulación de carga de red
+        // Splash Anim
         setTimeout(() => {
-            document.getElementById('splash-status').innerText = "CONEXIÓN ESTABLECIDA...";
+            document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash').style.display = 'none';
-                    document.getElementById('app').style.display = 'block';
-                }, 500);
-            }, 1000);
-        }, 1500);
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('main-app').style.display = 'block';
+            }, 500);
+        }, 2200);
 
-        this.renderStores(this.stores);
-        this.renderOrders();
+        this.renderMarketplace();
     },
 
-    // 3. NAVEGACIÓN ACTIVA
+    // 3. LÓGICA DE INVENTARIO (Nivel Socio)
+    addItem() {
+        const name = document.getElementById('inv-name').value;
+        const price = document.getElementById('inv-price').value;
+        const cat = document.getElementById('inv-cat').value;
+
+        if(!name || !price) return alert("Por favor completa los detalles del producto.");
+
+        const session = this.db.get();
+        const newItem = { id: Date.now(), name, price, cat, store: session.biz };
+        
+        session.myItems.unshift(newItem);
+        this.db.save(session);
+        
+        alert("¡Producto publicado exitosamente!");
+        this.renderMarketplace();
+        this.renderMyInventory();
+        
+        // Limpiar campos
+        document.getElementById('inv-name').value = "";
+        document.getElementById('inv-price').value = "";
+    },
+
+    renderMarketplace() {
+        const session = this.db.get();
+        const grid = document.getElementById('global-grid');
+        // Unir productos base con los creados por el usuario
+        const allItems = [...session.myItems, ...this.baseProducts];
+        
+        grid.innerHTML = allItems.map(p => `
+            <div class="card-item" onclick="App.buy('${p.name}', ${p.price})">
+                <div>
+                    <b style="font-size:1.1rem">${p.name}</b><br>
+                    <small style="color:#888">${p.store}</small>
+                </div>
+                <b style="color:var(--p)">C$ ${p.price}</b>
+            </div>
+        `).join('');
+    },
+
+    renderMyInventory() {
+        const session = this.db.get();
+        const container = document.getElementById('my-products');
+        container.innerHTML = session.myItems.map(p => `
+            <div class="card-item" style="margin-bottom:10px; background:#f9f9f9;">
+                <span>${p.name} - C$ ${p.price}</span>
+                <button onclick="App.deleteItem(${p.id})" style="color:red; background:none; border:none; font-weight:800;">X</button>
+            </div>
+        `).join('');
+    },
+
+    // 4. LÓGICA DE PEDIDOS
+    buy(name, price) {
+        const session = this.db.get();
+        const order = { 
+            id: Math.floor(1000 + Math.random() * 9000), 
+            product: name, 
+            status: "Procesando ⏳", 
+            total: price + 40 // + Envío
+        };
+        session.orders.unshift(order);
+        this.db.save(session);
+        this.renderOrders();
+        this.navigate('orders');
+        
+        setTimeout(() => {
+            const cur = this.db.get();
+            cur.orders[0].status = "En camino 🛵";
+            this.db.save(cur);
+            this.renderOrders();
+        }, 5000);
+    },
+
+    renderOrders() {
+        const container = document.getElementById('order-stack');
+        const session = this.db.get();
+        if(session.orders.length === 0) {
+            container.innerHTML = "<p style='text-align:center; padding:50px; color:#aaa;'>Sin pedidos activos.</p>";
+            return;
+        }
+        container.innerHTML = session.orders.map(o => `
+            <div class="card-item" style="border-left: 5px solid orange; margin-bottom:12px;">
+                <div>
+                    <b>ORDEN #${o.id}</b><br>
+                    <small>${o.product}</small>
+                </div>
+                <div style="text-align:right">
+                    <b style="color:orange">${o.status}</b><br>
+                    <small>Total: C$ ${o.total}</small>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    // 5. UTILIDADES DE SISTEMA
     navigate(id, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`view-${id}`).classList.add('active');
         if(btn) {
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
+        if(id === 'inventory') this.renderMyInventory();
     },
 
-    // 4. LÓGICA DE NEGOCIO (DESPIERTA)
-    renderStores(items) {
-        const grid = document.getElementById('store-grid');
-        grid.innerHTML = items.map(s => `
-            <div class="card" onclick="App.createOrder('${s.n}', ${s.fee})">
-                <img src="${s.i}">
-                <div class="card-body">
-                    <div style="display:flex; justify-content:space-between">
-                        <b>${s.n}</b>
-                        <span style="color:green; font-weight:800">C$ ${s.fee}</span>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    },
+    openReg() { document.getElementById('modal-reg').style.display = 'flex'; },
+    closeReg() { document.getElementById('modal-reg').style.display = 'none'; },
 
-    createOrder(store, fee) {
-        const session = this.data.get();
-        const orderId = Math.floor(10000 + Math.random() * 90000);
-        const newOrder = { id: orderId, name: store, status: 'Confirmando...', time: '25 min' };
-        
-        session.orders.unshift(newOrder);
-        this.data.save(session);
-        
-        this.renderOrders();
-        this.navigate('orders');
-        
-        // Simulación de respuesta de restaurante
-        setTimeout(() => {
-            const current = this.data.get();
-            current.orders[0].status = "En camino 🛵";
-            this.data.save(current);
-            this.renderOrders();
-        }, 4000);    
-    },
+    saveReg() {
+        const name = document.getElementById('reg-name').value;
+        const biz = document.getElementById('reg-biz').value;
+        if(!name || !biz) return alert("Completa los datos.");
 
-    renderOrders() {
-        const container = document.getElementById('live-orders');
-        const session = this.data.get();
-        if(session.orders.length === 0) {
-            container.innerHTML = `<p style="text-align:center; padding:50px; color:#888;">No tienes pedidos hoy.</p>`;
-            return;
-        }
-        container.innerHTML = session.orders.map(o => `
-            <div class="card" style="margin-bottom:15px; border-left: 6px solid var(--p);">
-                <div class="card-body">
-                    <div style="display:flex; justify-content:space-between">
-                        <b style="color:var(--s)">ORDEN #${o.id}</b>
-                        <span style="color:orange; font-weight:900;">${o.status}</span>
-                    </div>
-                    <p style="margin:10px 0;">Origen: ${o.name}</p>
-                    <div style="display:flex; gap:10px;">
-                        <button class="chip active" style="padding:5px 10px">Mapa 📍</button>
-                        <button class="chip" onclick="alert('Conectando con motorizado...')">Chat 💬</button>
-                    </div>
-                </div>
-            </div>
-        `).join('');
-    },
-
-    // 5. MÓDULO DE SOCIO
-    modal(id, open = true) {
-        document.getElementById(`modal-${id}`).style.display = open ? 'flex' : 'none';
-    },
-
-    beSocio() {
-        const name = document.getElementById('biz-owner').value;
-        const biz = document.getElementById('biz-name').value;
-        if(!name || !biz) return alert("Error: Datos incompletos para activación.");
-
-        const session = this.data.get();
+        const session = this.db.get();
         session.user = name;
         session.biz = biz;
-        session.socio = true;
-        this.data.save(session);
-
-        alert("¡Nivel de Socio Activado! Reiniciando terminal...");
+        session.isSocio = true;
+        this.db.save(session);
         location.reload();
     },
 
-    syncUI(s) {
-        document.getElementById('user-welcome').innerText = `¡Hola, ${s.user}!`;
-        document.getElementById('role-tag').innerText = s.socio ? 'SOCIO VENDEDOR' : 'VISITANTE';
-        document.getElementById('prof-name').innerText = s.user;
-        document.getElementById('prof-type').innerText = s.socio ? `Empresa: ${s.biz}` : 'Usuario Estándar';
+    updateUI(s) {
+        document.getElementById('user-name-display').innerText = s.user;
+        document.getElementById('user-status-display').innerText = s.isSocio ? `Socio de: ${s.biz}` : "Cliente Visitante";
+        document.getElementById('user-initials').innerText = s.user.charAt(0).toUpperCase();
+        if(s.isSocio) document.getElementById('nav-inv-btn').style.display = 'flex';
     },
 
-    clearData() {
-        if(confirm("¿Borrar todos los datos de esta terminal?")) {
-            localStorage.clear();
-            location.reload();
-        }
+    deleteItem(id) {
+        const session = this.db.get();
+        session.myItems = session.myItems.filter(p => p.id !== id);
+        this.db.save(session);
+        this.renderMyInventory();
+        this.renderMarketplace();
     }
 };
 
 window.onload = () => App.init();
+       

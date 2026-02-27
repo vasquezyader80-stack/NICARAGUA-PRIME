@@ -1,43 +1,47 @@
-:root { --blue: #005aab; --light-blue: #f0f7ff; --text: #1a202c; --gray: #f7fafc; --red: #e60045; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: white; color: var(--text); overflow: hidden; }
+:root { --blue: #005aab; --red: #e60045; --bg: #f5f8fa; --white: #ffffff; --text: #1a202c; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--white); color: var(--text); overflow: hidden; }
 
 /* Splash */
-.splash { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; transition: 0.5s; }
-.logo-box h1 { font-size: 3rem; font-weight: 800; color: var(--blue); margin: 0; }
-.logo-box h1 span { color: var(--red); }
-.logo-box p { font-weight: 700; color: #718096; margin-top: 5px; }
+.splash { position: fixed; inset: 0; background: var(--white); z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; }
+.logo { font-size: 3.5rem; font-weight: 800; color: var(--blue); margin: 0; }
+.logo span { color: var(--red); }
+.loader-line { width: 140px; height: 4px; background: #eee; border-radius: 10px; margin: 15px auto; overflow: hidden; position: relative; }
+.loader-line::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: var(--blue); animation: load 2s infinite; }
+@keyframes load { 100% { left: 100%; } }
 
-/* Header PedidosYa Style */
-.home-header { padding: 20px; background: white; border-bottom: 1px solid #edf2f7; position: sticky; top: 0; z-index: 100; }
-.location-bar b { display: block; font-size: 1rem; color: var(--blue); }
-.search-container input { width: 100%; padding: 14px; border: none; background: #f1f5f9; border-radius: 12px; margin-top: 15px; font-weight: 600; box-sizing: border-box; }
+/* Home & Search */
+.home-nav { padding: 20px; border-bottom: 1px solid #edf2f7; position: sticky; top: 0; background: white; z-index: 50; }
+.loc-header b { color: var(--blue); display: block; font-size: 1.1rem; }
+.search-wrap input { width: 100%; padding: 15px; border: none; background: #f1f5f9; border-radius: 12px; margin-top: 15px; box-sizing: border-box; font-weight: 600; }
 
-/* Categories & Grid */
-.categories-row { display: flex; overflow-x: auto; padding: 20px; gap: 15px; scrollbar-width: none; }
-.cat-card { text-align: center; min-width: 70px; cursor: pointer; }
-.circle { width: 60px; height: 60px; background: var(--light-blue); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 8px; }
-.cat-card span { font-size: 0.75rem; font-weight: 700; }
+/* Bubble Nav */
+.bubble-nav { display: flex; overflow-x: auto; padding: 20px; gap: 18px; scrollbar-width: none; }
+.b-cat { text-align: center; min-width: 75px; }
+.b-icon { width: 65px; height: 65px; background: #f0f7ff; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 8px; }
+.b-cat span { font-size: 0.8rem; font-weight: 700; }
 
-.grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 100px; }
-.p-card { background: white; border: 1px solid #edf2f7; border-radius: 20px; padding: 12px; transition: 0.3s; }
-.p-card img-box { width: 100%; height: 100px; background: #f8fafc; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
-.p-card b { display: block; font-size: 0.9rem; margin-top: 8px; }
-.p-card small { color: #a0aec0; font-size: 0.75rem; }
-.p-price { color: var(--blue); font-weight: 800; display: block; margin-top: 5px; }
+/* Grid de Productos */
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 120px; }
+.p-card { background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
+.p-img { width: 100%; height: 100px; background: #f8fafc; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
+.p-card b { display: block; margin-top: 10px; font-size: 0.95rem; }
+.p-card small { color: #94a3b8; font-size: 0.75rem; }
+.price-tag { display: block; margin-top: 5px; color: var(--blue); font-weight: 800; font-size: 1.1rem; }
 
-/* Profile View (Copia de PedidosYa) */
-.profile-top { padding: 40px 20px; display: flex; align-items: center; gap: 20px; background: var(--light-blue); }
-.profile-avatar { width: 70px; height: 70px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-weight: 800; }
-.profile-menu { padding: 20px; background: var(--gray); min-height: 100vh; }
-.menu-group { background: white; border-radius: 20px; padding: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
-.menu-item { display: flex; align-items: center; padding: 15px 10px; border-bottom: 1px solid #f1f5f9; gap: 15px; }
-.m-icon { font-size: 1.2rem; }
-.m-text { flex: 1; }
-.m-text b { font-size: 0.95rem; display: block; }
-.m-text p { font-size: 0.75rem; color: #718096; margin: 0; }
+/* Vista Perfil (PedidosYa Clone) */
+.user-card-premium { padding: 40px 20px; display: flex; align-items: center; gap: 15px; background: #f0f7ff; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+.u-avatar { width: 65px; height: 65px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; }
+.menu-container { padding: 20px; background: #f8fafc; height: 100vh; }
+.m-group { background: white; border-radius: 20px; padding: 8px; margin-bottom: 20px; }
+.m-row { display: flex; align-items: center; padding: 15px 10px; border-bottom: 1px solid #f1f5f9; gap: 15px; }
+.ri { font-size: 1.3rem; }
+.rt { flex: 1; }
+.rt b { font-size: 0.9rem; display: block; }
+.rt p { font-size: 0.75rem; color: #718096; margin: 0; }
+.ra { color: #cbd5e0; font-size: 0.8rem; }
 
-/* Dock */
-.bottom-dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid #eee; }
-.dock-item { color: #a0aec0; font-size: 0.7rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-.dock-item.active { color: var(--blue); }
+/* Bottom Dock */
+.main-dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid #f1f5f9; }
+.d-item { color: #cbd5e0; font-size: 0.75rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.d-item.active { color: var(--blue); }
    

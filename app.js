@@ -1,129 +1,132 @@
 const App = {
-    // 1. DATA PERSISTENTE (LOCALSTORAGE)
-    db: {
-        get: () => JSON.parse(localStorage.getItem('PinolApp_v11')) || {
-            user: "Yader",
-            cacaos: 500, // Saldo inicial de cortesía
-            orders: [],
-            inventory: [
-                { id: 101, n: "Gallo Pinto c/ Carne", p: 150, c: "fritanga", i: "🥘", m: "Doña Tania" },
-                { id: 102, n: "Toña 12oz Pack", p: 240, c: "bebidas", i: "🍺", m: "Cervecera" },
-                { id: 103, n: "Queso Chontaleño", p: 95, c: "super", i: "🧀", m: "Lácteos" }
-            ]
+    // 1. CARGA DE DATOS (PERSISTENCIA)
+    state: {
+        get: () => {
+            const saved = localStorage.getItem('PinolApp_Data');
+            return saved ? JSON.parse(saved) : {
+                user: "Yader",
+                myProducts: [] // Productos registrados por el socio
+            };
         },
-        save: (data) => localStorage.setItem('PinolApp_v11', JSON.stringify(data))
+        save: (data) => localStorage.setItem('PinolApp_Data', JSON.stringify(data))
     },
 
+    // 2. PRODUCTOS DE LA RED (MARCAS NACIONALES)
+    networkProducts: [
+        { id: 1, n: "Toña 12oz Pack", p: 245, c: "bebidas", m: "Cervecera Nacional", i: "🍺" },
+        { id: 2, n: "Cerdo Asado con Gallo Pinto", p: 160, c: "comida", m: "Fritanga Doña Tania", i: "🥘" },
+        { id: 3, n: "Leche Eskimo 1L", p: 38, m: "Eskimo Nicaragua", c: "super", i: "🥛" },
+        { id: 4, n: "Flor de Caña 7 Años", p: 480, m: "SER Licorera", c: "bebidas", i: "🥃" },
+        { id: 5, n: "Queso Seco (Libra)", p: 95, m: "Lácteos Chontales", c: "super", i: "🧀" }
+    ],
+
     init() {
-        const data = this.db.get();
-        document.getElementById('user-cacaos').innerText = data.cacaos;
-        document.getElementById('p-name').innerText = data.user;
+        const data = this.state.get();
+        document.getElementById('display-user-name').innerText = data.user;
         
+        // Simulación de carga fluida
         setTimeout(() => {
             document.getElementById('splash').style.display = 'none';
             document.getElementById('app').style.display = 'block';
         }, 1500);
 
-        this.renderGrid(data.inventory);
+        this.renderAll();
     },
 
-    // 2. MARKETPLACE & FILTROS
-    renderGrid(items) {
-        const grid = document.getElementById('grid');
-        grid.innerHTML = items.map(p => `
-            <div class="p-card" onclick="App.openCheckout('${p.n}', ${p.p})">
-                <div class="p-img">${p.i}</div>
-                <b>${p.n}</b><br>
-                <small>${p.m}</small><br>
-                <span style="color:var(--blue); font-weight:800">C$ ${p.p}</span>
+    // 3. RENDERIZADO DEL MARKETPLACE
+    renderAll() {
+        const data = this.state.get();
+        const grid = document.getElementById('product-grid');
+        // Unimos productos de la red + productos del socio
+        const all = [...data.myProducts, ...this.networkProducts];
+        
+        grid.innerHTML = all.map(p => `
+            <div class="p-card">
+                <div class="p-img">${p.i || '📦'}</div>
+                <div class="p-info">
+                    <b>${p.n}</b>
+                    <small>${p.m || 'Socio Local'}</small>
+                    <span class="price">C$ ${p.p}</span>
+                </div>
             </div>
         `).join('');
     },
 
-    filter(cat, el) {
-        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
-        el.classList.add('active');
-        const data = this.db.get();
-        const filtered = cat === 'all' ? data.inventory : data.inventory.filter(p => p.c === cat);
-        this.renderGrid(filtered);
-    },
+    // 4. FUNCIONALIDAD DEL SOCIO (VENDEDOR)
+    saveProduct() {
+        const name = document.getElementById('new-p-name').value;
+        const price = document.getElementById('new-p-price').value;
+        const cat = document.getElementById('new-p-cat').value;
 
-    // 3. PROCESO DE PEDIDO Y RASTREO (TIEMPO REAL)
-    openCheckout(name, price) {
-        this.tempOrder = { name, price };
-        document.getElementById('order-summary').innerHTML = `
-            <div style="display:flex; justify-content:space-between; padding: 10px 0">
-                <span>${name}</span>
-                <b>C$ ${price}</b>
-            </div>
-        `;
-        document.getElementById('modal-checkout').classList.add('active');
-    },
-  
-    processOrder() {
-        let data = this.db.get();
-        const cost = this.tempOrder.price;
-        
-        // Descontar saldo de Cacaos (simulación de pago)
-        data.cacaos -= 5; // Gana puntos por compra o gasta
-        const newOrder = {
-            id: Math.floor(1000 + Math.random() * 9000),
-            name: this.tempOrder.name,
-            status: "Iniciando..."
+        if(!name || !price) return alert("Por favor llena los datos");
+
+        const data = this.state.get();
+        const newProd = {
+            id: Date.now(),
+            n: name,
+            p: parseInt(price),
+            c: cat,
+            m: `Tienda de ${data.user}`,
+            i: "🏪"
         };
-        data.orders.unshift(newOrder);
-        this.db.save(data);
 
-        this.closeModal();
-        this.navigate('orders', document.querySelectorAll('.d-item')[1]);
-        this.startLiveTracking(newOrder.id);
-    },
-
-    startLiveTracking(orderId) {
-        const container = document.getElementById('live-tracking');
-        container.innerHTML = `
-            <div class="tracking-content">
-                <b>Orden #${orderId}</b>
-                <p id="track-status">Confirmando con el restaurante...</p>
-                <div class="progress-container">
-                    <div id="p-bar" class="progress-bar"></div>
-                </div>
-                <small id="track-step">Paso 1 de 4</small>
-            </div>
-        `;
-
-        let progress = 0;
-        const steps = ["Confirmado ✔️", "En Cocina 👨‍🍳", "Motorizado en camino 🛵", "¡Ya llegó! 🏠"];
+        data.myProducts.unshift(newProd);
+        this.state.save(data);
         
-        const interval = setInterval(() => {
-            progress += 25;
-            document.getElementById('p-bar').style.width = progress + "%";
-            const stepIdx = (progress / 25) - 1;
-            document.getElementById('track-status').innerText = steps[stepIdx];
-            document.getElementById('track-step').innerText = `Paso ${stepIdx + 1} de 4`;
-
-            if(progress >= 100) {
-                clearInterval(interval);
-                alert("¡Tu pedido ha llegado!");
-            }
-        }, 3000); // Cambia cada 3 segundos para la demo
+        // Reset y actualización
+        document.getElementById('new-p-name').value = "";
+        document.getElementById('new-p-price').value = "";
+        alert("¡Producto registrado en tu memoria local!");
+        this.renderAll();
+        this.renderInventory();
     },
 
-    // 4. UTILIDADES
-    navigate(viewId, el) {
+    renderInventory() {
+        const data = this.state.get();
+        const container = document.getElementById('my-inventory');
+        container.innerHTML = data.myProducts.map(p => `
+            <div class="inv-item">
+                <span>${p.n} - C$ ${p.p}</span>
+                <button onclick="App.deleteProduct(${p.id})">Eliminar</button>
+            </div>
+        `).join('');
+    },
+
+    deleteProduct(id) {
+        let data = this.state.get();
+        data.myProducts = data.myProducts.filter(p => p.id !== id);
+        this.state.save(data);
+        this.renderAll();
+        this.renderInventory();
+    },
+
+    // 5. NAVEGACIÓN
+    navigate(viewId, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`view-${viewId}`).classList.add('active');
+        
         document.querySelectorAll('.d-item').forEach(d => d.classList.remove('active'));
-        if(el) el.classList.add('active');
+        if(btn) btn.classList.add('active');
+
+        if(viewId === 'socio') this.renderInventory();
     },
 
-    closeModal() {
-        document.getElementById('modal-checkout').classList.remove('active');
-    },
-
-    toggleBusinessPanel() {
-        const name = prompt("Nombre de tu Negocio para el Panel:");
-        if(name) alert(`Bienvenido al Panel de Socio de ${name}. Aquí verás tus ventas del día.`);
+    search(val) {
+        const data = this.state.get();
+        const all = [...data.myProducts, ...this.networkProducts];
+        const filtered = all.filter(p => p.n.toLowerCase().includes(val.toLowerCase()));
+        
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = filtered.map(p => `
+            <div class="p-card">
+                <div class="p-img">${p.i || '📦'}</div>
+                <div class="p-info">
+                    <b>${p.n}</b>
+                    <small>${p.m || 'Socio Local'}</small>
+                    <span class="price">C$ ${p.p}</span>
+                </div>
+            </div>
+        `).join('');
     }
 };
 

@@ -3,107 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol app | Propiedad de Yader Vasquez</title>
+    <title>PinolApp | Servicios y Delivery Nicaragua</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash-screen">
-        <div class="splash-content">
-            <h1 class="brand-logo">Pinol<span>app</span></h1>
-            <div class="loader-pulse"></div>
-            <p class="copyright-tag">© 2026 DESIGNED BY YADER VASQUEZ</p>
+        <div class="logo-anim">
+            <h1 class="brand">Pinol<span>App</span></h1>
+            <div class="loader"></div>
+            <p>CONECTANDO NICARAGUA</p>
         </div>
     </div>
 
-    <header class="super-header">
-        <div class="nav-row">
-            <div class="user-loc">
-                <small>Enviando a</small>
-                <p>Nicaragua ▾</p>
+    <header class="app-header">
+        <div class="location-bar">
+            <span class="icon">📍</span>
+            <div class="loc-text">
+                <small>Entregar en</small>
+                <b id="user-location">Managua, Nicaragua</b>
             </div>
-            <button class="btn-partner-mode" onclick="PinolApp.openAuth()">Panel de Socios</button>
         </div>
-        <div class="search-engine">
-            <input type="text" id="main-search" oninput="PinolApp.search()" placeholder="Buscar en Tip-Top, Eskimo, Artesanías...">
+        <div class="search-container">
+            <input type="text" id="main-search" placeholder="Busca comida, farmacias, mandados..." oninput="App.search()">
         </div>
     </header>
 
-    <main class="app-body">
-        <div id="global-tracker" class="tracker-card" style="display:none;">
-            <div class="tracker-info">
-                <span class="badge-live">EN VIVO</span>
-                <p>🛵 Tu repartidor está cerca</p>
-                <h4 id="eta-timer">00:00</h4>
+    <main class="content">
+        <section class="quick-cats">
+            <div class="cat-card" onclick="App.filter('restaurante')">🍴<span>Restaurantes</span></div>
+            <div class="cat-card" onclick="App.filter('super')">🛒<span>Súper</span></div>
+            <div class="cat-card" onclick="App.filter('bebida')">🍺<span>Bebidas</span></div>
+            <div class="cat-card" onclick="App.filter('envio')">📦<span>Envíos</span></div>
+        </section>
+
+        <div class="promo-banner">
+            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800" alt="Promos">
+            <div class="promo-overlay">
+                <h2>Fritanga Fest 🥘</h2>
+                <p>20% de descuento hoy</p>
             </div>
-            <div class="progress-container"><div id="progress-line" class="progress-fill"></div></div>
         </div>
 
-        <section class="mega-categories">
-            <div class="cat-card" onclick="PinolApp.filter('comida')">🍔<br>Comida</div>
-            <div class="cat-card" onclick="PinolApp.filter('super')">🛒<br>Súper</div>
-            <div class="cat-card" onclick="PinolApp.filter('artesania')">🎭<br>Nica</div>
-            <div class="cat-card" onclick="PinolApp.filter('salud')">💊<br>Salud</div>
-        </section>
-
-        <section class="feed-section">
-            <div class="section-head">
-                <h3>Comercios destacados</h3>
-                <span onclick="PinolApp.filter('todos')">Ver todos</span>
+        <h3 class="section-title">Comercios destacados</h3>
+        <div id="shop-grid" class="shop-grid">
             </div>
-            <div id="shop-grid" class="shop-grid"></div>
-        </section>
     </main>
 
-    <nav class="dock-nav">
-        <div class="dock-btn active" onclick="location.reload()">🏠<span>Inicio</span></div>
-        <div class="dock-btn" onclick="PinolApp.toggleCart()">
-            <div class="cart-icon">🛒<span id="badge-count" class="badge">0</span></div>
-            <span>Pedido</span>
-        </div>
-        <div class="dock-btn" onclick="PinolApp.openAuth()">🚀<span>Vender</span></div>
-    </nav>.  
+    <nav class="bottom-nav">
+        <div class="nav-btn active" onclick="App.view('home')">🏠<span>Inicio</span></div>
+        <div class="nav-btn" onclick="App.view('orders')">📋<span>Pedidos</span></div>
+        <div class="nav-btn" onclick="App.view('cart')">🛒<span id="cart-badge" class="badge">0</span><span>Carrito</span></div>
+        <div class="nav-btn" onclick="App.toggleSellerModal()">🚀<span>Vender</span></div>
+    </nav>
 
-    <div id="auth-drawer" class="drawer-right">
-        <div class="drawer-content">
-            <button class="close-btn" onclick="PinolApp.closeAuth()">✕</button>
-            <h2 class="logo-small">Pinol<span>app</span></h2>
-            <h3>Registro de Socios</h3>
-            <p>Formaliza tu venta o unidad de entrega.</p>
-            
-            <div class="form-container">
-                <select id="reg-role">
-                    <option value="Negocio">Tienda / Restaurante</option>
-                    <option value="Delivery">Repartidor (Motorizado)</option>
-                </select>
-                <input type="text" id="reg-name" placeholder="Nombre completo">
-                <input type="text" id="reg-id" placeholder="Cédula de Identidad">
-                <input type="text" id="reg-biz" placeholder="Nombre del Local o Placa">
-                <button class="btn-activate" onclick="PinolApp.processReg()">Solicitar Activación</button>
-            </div>
-            <div class="drawer-footer">
-                <small>Seguridad de datos por <b>Yader Vasquez</b></small>
-            </div>
-        </div>
-    </div>
-
-    <div id="cart-panel" class="modal-full">
-        <div class="modal-inner">
+    <div id="seller-modal" class="modal">
+        <div class="modal-content">
             <div class="modal-header">
-                <h3>Mi Carrito</h3>
-                <button onclick="PinolApp.toggleCart()">✕</button>
+                <h2>Registra tu Negocio</h2>
+                <button onclick="App.toggleSellerModal()">✕</button>
             </div>
-            <div id="cart-items-list" class="cart-list"></div>
-            <div class="payment-box">
-                <h4>Pago al recibir</h4>
-                <div class="pay-method"><input type="radio" checked> 💵 Efectivo (C$)</div>
-                <div class="pay-method"><input type="radio"> 💳 Tarjeta Local</div>
+            <div class="modal-body">
+                <p class="req-text">Requisitos: Cédula RUC (opcional), Foto del Local y Menú.</p>
+                <input type="text" id="biz-name" placeholder="Nombre del Comercio">
+                <select id="biz-cat">
+                    <option value="restaurante">Restaurante / Fritanga</option>
+                    <option value="super">Pulpería / Mini Super</option>
+                    <option value="bebida">Licorería</option>
+                </select>
+                <input type="file" id="biz-img" accept="image/*">
+                <button class="btn-primary" onclick="App.registerSeller()">Solicitar Activación</button>
             </div>
-            <button class="btn-checkout" onclick="PinolApp.confirmOrder()">Confirmar Orden</button>
         </div>
     </div>
 
     <script src="app.js"></script>
 </body>
-</html>
+</html>.   

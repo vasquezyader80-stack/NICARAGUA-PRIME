@@ -3,85 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp Business v5.0</title>
+    <title>PinolApp | Compra y Recibe</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-full">
-        <h1 class="logo-text">Pinol<span>App</span></h1>
-        <div class="loader-bar"><div class="fill"></div></div>
-        <p>CONECTANDO NICARAGUA</p>
+    <div id="splash" class="splash">
+        <h1 class="logo">Pinol<span>App</span></h1>
+        <div class="loader"></div>
     </div>
 
-    <div id="main-app" style="display:none;">
-        <header class="navbar">
-            <div class="user-meta">
-                <div class="avatar-circle" id="user-initials">YN</div>
-                <div>
-                    <b id="user-name-display">Visitante</b>
-                    <small id="user-status-display">Modo Lectura</small>
+    <div id="app" style="display:none;">
+        <header class="main-header">
+            <div class="top-bar">
+                <div class="location">
+                    <small>Entrega en:</small>
+                    <b id="current-city">Managua, Nicaragua 📍</b>
                 </div>
+                <div class="user-control" onclick="App.navigate('profile')">👤</div>
             </div>
-            <button class="cart-trigger" onclick="App.navigate('orders')">📦 Mis Pedidos</button>
+            <div class="search-engine">
+                <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.liveSearch(this.value)">
+            </div> 
         </header> 
 
-        <main class="viewport">
+        <main class="content">
+            
             <section id="view-home" class="view active">
-                <div class="promo-box">
-                    <h3>¡Mercado Central Online! 🇳🇮</h3>
-                    <p>Fritangas, mandados y más a un click.</p>
+                <div class="banner-slider">
+                    <div class="slide">Envío GRATIS en tu primera compra 🎁</div>
                 </div>
-                <div class="cat-nav">
-                    <button class="tab active" onclick="App.filter('all', this)">Todos</button>
-                    <button class="tab" onclick="App.filter('comida', this)">🥘 Comida</button>
-                    <button class="tab" onclick="App.filter('servicio', this)">🛵 Servicios</button>
+
+                <div class="categories">
+                    <div class="cat-card" onclick="App.filter('comida')">🥘<span>Comida</span></div>
+                    <div class="cat-card" onclick="App.filter('super')">🛒<span>Súper</span></div>
+                    <div class="cat-card" onclick="App.filter('mandados')">🛵<span>Mandados</span></div>
+                    <div class="cat-card" onclick="App.filter('pagos')">📄<span>Pagos</span></div>
                 </div>
-                <div id="global-grid" class="grid"></div>
+
+                <h3 class="section-title">Comercios Afiliados</h3>
+                <div id="store-grid" class="store-grid"></div>
             </section>
 
-            <section id="view-inventory" class="view">
-                <div class="panel-header">
-                    <h3>Panel de Control del Socio</h3>
-                    <p>Añade productos para vender en todo el país.</p>
+            <section id="view-checkout" class="view">
+                <h3 class="section-title">Resumen de Compra</h3>
+                <div id="checkout-details" class="checkout-card"></div>
+                
+                <div class="payment-methods">
+                    <h4>Método de Pago</h4>
+                    <label class="pay-option">
+                        <input type="radio" name="pay" value="Efectivo" checked> 💵 Efectivo
+                    </label>
+                    <label class="pay-option">
+                        <input type="radio" name="pay" value="Tarjeta"> 💳 Tarjeta (BAC/Banpro)
+                    </label>
                 </div>
-                <div class="inventory-form">
-                    <input type="text" id="inv-name" placeholder="Nombre del producto o servicio">
-                    <input type="number" id="inv-price" placeholder="Precio en Córdobas (C$)">
-                    <select id="inv-cat">
-                        <option value="comida">Categoría: Comida</option>
-                        <option value="servicio">Categoría: Servicio/Mandado</option>
-                    </select>
-                    <button class="btn-add" onclick="App.addItem()">PUBLICAR EN PINOLAPP</button>
+
+                <div class="price-breakdown">
+                    <div class="row"><span>Subtotal</span><span id="sub-price">C$ 0</span></div>
+                    <div class="row"><span>Envío</span><span id="delivery-price">C$ 45</span></div>
+                    <div class="row"><span>Comisión App</span><span id="fee-price">C$ 10</span></div>
+                    <hr>
+                    <div class="row total"><span>Total</span><span id="total-price">C$ 0</span></div>
                 </div>
-                <h4>Tus Publicaciones Activas</h4>
-                <div id="my-products" class="my-items-list"></div>
+
+                <button class="btn-confirm-order" onclick="App.processOrder()">CONFIRMAR PEDIDO</button>
+            </section>
+
+            <section id="view-socio" class="view">
+                <div class="socio-panel">
+                    <h3>Panel de Comercio</h3>
+                    <p>Gestiona los productos que ven los clientes.</p>
+                    <div class="add-product-form">
+                        <input type="text" id="p-name" placeholder="Nombre del Producto (Ej: Carne Asada)">
+                        <input type="number" id="p-price" placeholder="Precio C$">
+                        <textarea id="p-desc" placeholder="Descripción (Ej: Incluye gallopinto y tajadas)"></textarea>
+                        <button onclick="App.addSocioProduct()">PUBLICAR PRODUCTO</button>
+                    </div>
+                    <h4>Tus Productos en Venta</h4>
+                    <div id="socio-items-list"></div>
+                </div>
             </section>
 
             <section id="view-orders" class="view">
-                <h3>Rastreo de Pedidos Activos</h3>
-                <div id="order-stack" class="stack"></div>
+                <h3 class="section-title">Rastreo en Vivo</h3>
+                <div id="order-history"></div>
             </section>
+
         </main>
 
-        <nav class="dock">
-            <button class="dock-btn active" onclick="App.navigate('home', this)">🏠<span>Tienda</span></button>
-            <button id="nav-inv-btn" class="dock-btn" onclick="App.navigate('inventory', this)" style="display:none;">🚀<span>Socio</span></button>
-            <button class="dock-btn" onclick="App.navigate('orders', this)">📋<span>Rastreo</span></button>
-            <button class="dock-btn" onclick="App.openReg()">⚙️<span>Perfil</span></button>
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></button>
+            <button class="nav-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></button>
+            <button class="nav-item" onclick="App.navigate('socio', this)">🚀<span>Soy Socio</span></button>
         </nav>
-    </div>
-
-    <div id="modal-reg" class="overlay">
-        <div class="modal">
-            <h2>Registro de Socio</h2>
-            <p>Al registrarte podrás subir tus propios productos.</p>
-            <input type="text" id="reg-name" placeholder="Tu Nombre">
-            <input type="text" id="reg-biz" placeholder="Nombre de tu Negocio">
-            <button class="btn-primary" onclick="App.saveReg()">ACTIVAR CUENTA SOCIO</button>
-            <button class="btn-flat" onclick="App.closeReg()">CANCELAR</button>
-        </div>
     </div>
 
     <script src="app.js"></script>

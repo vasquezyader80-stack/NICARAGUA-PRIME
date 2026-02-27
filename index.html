@@ -3,101 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Compra y Recibe</title>
+    <title>PinolApp Premium | Nicaragua Delivery</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-</head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+</head> 
 <body>
 
-    <div id="splash" class="splash">
-        <h1 class="logo">Pinol<span>App</span></h1>
-        <div class="loader"></div>
+    <div id="splash" class="splash-screen">
+        <div class="brand-loading">
+            <h1 class="logo-pro">Pinol<span>App</span></h1>
+            <div class="line-loader"></div>
+            <p>Socio Logístico de Nicaragua</p>
+        </div>
     </div>
 
-    <div id="app" style="display:none;">
-        <header class="main-header">
-            <div class="top-bar">
-                <div class="location">
-                    <small>Entrega en:</small>
-                    <b id="current-city">Managua, Nicaragua 📍</b>
+    <div id="app" class="app-container">
+        
+        <header class="header-premium">
+            <div class="top-nav">
+                <div class="loc-data">
+                    <span class="dot"></span>
+                    <div>
+                        <small>Entregar en</small>
+                        <b id="user-location">Mi Casa - Managua</b>
+                    </div>
                 </div>
-                <div class="user-control" onclick="App.navigate('profile')">👤</div>
+                <div class="user-avatar" onclick="App.navigate('socio')">
+                    <img src="https://ui-avatars.com/api/?name=User&background=005aab&color=fff" alt="Perfil">
+                </div>
             </div>
-            <div class="search-engine">
-                <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.liveSearch(this.value)">
-            </div> 
-        </header> 
+            <div class="search-wrap">
+                <input type="text" placeholder="Buscar marcas, platos o servicios..." oninput="App.search(this.value)">
+            </div>
+        </header>
 
-        <main class="content">
+        <main class="content-area">
             
             <section id="view-home" class="view active">
-                <div class="banner-slider">
-                    <div class="slide">Envío GRATIS en tu primera compra 🎁</div>
+                <div class="promo-carousel">
+                    <div class="promo-card">
+                        <h3>Feria Gastronómica 🥘</h3>
+                        <p>50% OFF en envíos hoy</p>
+                    </div>
                 </div>
 
-                <div class="categories">
-                    <div class="cat-card" onclick="App.filter('comida')">🥘<span>Comida</span></div>
-                    <div class="cat-card" onclick="App.filter('super')">🛒<span>Súper</span></div>
-                    <div class="cat-card" onclick="App.filter('mandados')">🛵<span>Mandados</span></div>
-                    <div class="cat-card" onclick="App.filter('pagos')">📄<span>Pagos</span></div>
+                <div class="quick-cats">
+                    <div class="q-item" onclick="App.filter('comida')">🍔<span>Restaurantes</span></div>
+                    <div class="q-item" onclick="App.filter('super')">🛒<span>Súper</span></div>
+                    <div class="q-item" onclick="App.filter('pagos')">💳<span>Pagos</span></div>
+                    <div class="q-item" onclick="App.filter('mandados')">🛵<span>Mandados</span></div>
                 </div>
 
-                <h3 class="section-title">Comercios Afiliados</h3>
+                <h2 class="title-md">Cerca de ti</h2>
                 <div id="store-grid" class="store-grid"></div>
             </section>
 
-            <section id="view-checkout" class="view">
-                <h3 class="section-title">Resumen de Compra</h3>
-                <div id="checkout-details" class="checkout-card"></div>
-                
-                <div class="payment-methods">
-                    <h4>Método de Pago</h4>
-                    <label class="pay-option">
-                        <input type="radio" name="pay" value="Efectivo" checked> 💵 Efectivo
-                    </label>
-                    <label class="pay-option">
-                        <input type="radio" name="pay" value="Tarjeta"> 💳 Tarjeta (BAC/Banpro)
-                    </label>
-                </div>
-
-                <div class="price-breakdown">
-                    <div class="row"><span>Subtotal</span><span id="sub-price">C$ 0</span></div>
-                    <div class="row"><span>Envío</span><span id="delivery-price">C$ 45</span></div>
-                    <div class="row"><span>Comisión App</span><span id="fee-price">C$ 10</span></div>
-                    <hr>
-                    <div class="row total"><span>Total</span><span id="total-price">C$ 0</span></div>
-                </div>
-
-                <button class="btn-confirm-order" onclick="App.processOrder()">CONFIRMAR PEDIDO</button>
+            <section id="view-orders" class="view">
+                <h2 class="title-md">Seguimiento de Orden</h2>
+                <div id="live-tracking" class="tracking-wrap"></div>
             </section>
 
             <section id="view-socio" class="view">
-                <div class="socio-panel">
-                    <h3>Panel de Comercio</h3>
-                    <p>Gestiona los productos que ven los clientes.</p>
-                    <div class="add-product-form">
-                        <input type="text" id="p-name" placeholder="Nombre del Producto (Ej: Carne Asada)">
-                        <input type="number" id="p-price" placeholder="Precio C$">
-                        <textarea id="p-desc" placeholder="Descripción (Ej: Incluye gallopinto y tajadas)"></textarea>
-                        <button onclick="App.addSocioProduct()">PUBLICAR PRODUCTO</button>
-                    </div>
-                    <h4>Tus Productos en Venta</h4>
-                    <div id="socio-items-list"></div>
+                <div class="socio-header">
+                    <h2 class="title-md">Portal de Negocio</h2>
+                    <p>Gestiona tu catálogo y ventas en PinolApp</p>
                 </div>
+                <div class="biz-form">
+                    <h3>Subir Nuevo Producto</h3>
+                    <input type="text" id="p-name" placeholder="Ej: Vigorón Especial">
+                    <input type="number" id="p-price" placeholder="Precio C$">
+                    <select id="p-cat">
+                        <option value="comida">Restaurante</option>
+                        <option value="mandados">Servicio</option>
+                    </select>
+                    <button class="btn-main" onclick="App.addSocioProduct()">Publicar en Marketplace</button>
+                </div>
+                <div id="socio-items" class="items-grid"></div>
             </section>
-
-            <section id="view-orders" class="view">
-                <h3 class="section-title">Rastreo en Vivo</h3>
-                <div id="order-history"></div>
-            </section>
-
         </main>
 
-        <nav class="bottom-nav">
-            <button class="nav-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></button>
-            <button class="nav-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></button>
-            <button class="nav-item" onclick="App.navigate('socio', this)">🚀<span>Soy Socio</span></button>
+        <nav class="bottom-tab-bar">
+            <div class="tab-item active" onclick="App.navigate('home', this)">
+                <i>🏠</i><span>Tienda</span>
+            </div>
+            <div class="tab-item" onclick="App.navigate('orders', this)">
+                <i>📋</i><span>Pedidos</span>
+            </div>
+            <div class="tab-item" onclick="App.navigate('socio', this)">
+                <i>💼</i><span>Socio</span>
+            </div>
         </nav>
+    </div>
+
+    <div id="checkout-modal" class="modal-bottom">
+        <div class="modal-handle"></div>
+        <div class="modal-content">
+            <h3>Finalizar Pedido</h3>
+            <div id="cart-item-info" class="cart-box"></div>
+            
+            <div class="pay-selector">
+                <div class="pay-method active">💵 Efectivo</div>
+                <div class="pay-method">💳 Tarjeta</div>
+            </div>
+
+            <div class="summary">
+                <div class="s-row"><span>Subtotal</span><span id="s-sub">C$ 0</span></div>
+                <div class="s-row"><span>Delivery</span><span>C$ 45</span></div>
+                <div class="s-row"><span>Comisión</span><span>C$ 10</span></div>
+                <div class="s-row total"><span>Total</span><span id="s-total">C$ 0</span></div>
+            </div>
+            <button class="btn-order" onclick="App.confirmPurchase()">Realizar Pedido</button>
+        </div>
     </div>
 
     <script src="app.js"></script>

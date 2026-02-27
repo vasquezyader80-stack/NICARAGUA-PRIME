@@ -1,145 +1,158 @@
 const App = {
-    // ESTADO GLOBAL DE LA APP (Datos Persistentes de Yader)
+    // 1. DATABASE (Persistencia Real en Navegador)
     state: {
-        get: () => JSON.parse(localStorage.getItem('PinolApp_v6')) || {
+        get: () => JSON.parse(localStorage.getItem('Pinol_DB_v7')) || {
             user: "Yader",
-            socio: false,
+            bizName: "Fritanga Nica",
             orders: [],
-            inventory: [] // Productos creados por los socios locales
+            inventory: [] // Lo que el socio sube
         },
-        save: (d) => localStorage.setItem('PinolApp_v6', JSON.stringify(d))
+        save: (data) => localStorage.setItem('Pinol_DB_v7', JSON.stringify(data))
     },
 
-    // CATÁLOGO BASE (EMPRESAS ANCLA)
-    baseStores: [
-        { id: 10, n: "Tip-Top Los Robles", p: 420, cat: "comida", s: "Famosos por el sabor" },
-        { id: 11, n: "Fritanga La Sureña", p: 150, cat: "comida", s: "Carne asada al carbón" },
-        { id: 12, n: "Súper Express", p: 90, cat: "super", s: "Canasta básica" }
+    // 2. PRODUCTOS DE EJEMPLO (COMERCIOS ANCLA)
+    baseProducts: [
+        { id: 101, n: "Gallo Pinto c/ Carne", p: 150, s: "Fritanga Doña Tania", c: "comida" },
+        { id: 102, n: "Pago de Luz/Agua", p: 50, s: "Mensajería Express", c: "servicios" },
+        { id: 103, n: "Queso Crema (Libra)", p: 95, s: "Lácteos El Vaquero", c: "comida" }
     ],
 
     init() {
         const data = this.state.get();
-        // Simular carga de red profesional
+        // Simulación de carga profesional
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
-                document.getElementById('app').style.opacity = '1';
-            }, 500);
-        }, 2000);
+                document.getElementById('app').style.display = 'block';
+            }, 600);
+        }, 2200);
 
-        this.renderMarketplace();
-        this.renderTracking();
+        this.renderMarket();
+        this.renderOrders();
     },
 
-    // RENDERIZAR TIENDA (ENFOQUE CLIENTE)
-    renderMarketplace() {
+    // 3. FLUJO DEL CLIENTE
+    renderMarket() {
         const data = this.state.get();
-        const grid = document.getElementById('store-grid');
-        const allItems = [...data.inventory, ...this.baseStores];
+        const grid = document.getElementById('marketplace-grid');
+        const allItems = [...data.inventory, ...this.baseProducts];
         
-        grid.innerHTML = allItems.map(i => `
-            <div class="store-card-pro" onclick="App.openCheckout('${i.n}', ${i.p})">
-                <div class="img-placeholder">🍲</div>
-                <div class="card-details">
-                    <b>${i.n}</b>
-                    <small>${i.s || 'Comercio Afiliado'}</small><br><br>
-                    <span>C$ ${i.p}</span>
+        grid.innerHTML = allItems.map(p => `
+            <div class="product-card" onclick="App.openCheckout('${p.n}', ${p.p}, '${p.s}')">
+                <div class="p-icon">🍱</div>
+                <div class="p-data">
+                    <b>${p.n}</b>
+                    <small>${p.s || 'Socio Afiliado'}</small>
+                    <span class="p-price">C$ ${p.p}</span>
                 </div>
+                <button class="add-btn">+</button>
             </div>
         `).join('');
     },
 
-    // SISTEMA DE CHECKOUT DESLIZABLE
-    openCheckout(name, price) {
-        const subtotal = price;
-        const total = subtotal + 45 + 10;
-        
-        document.getElementById('cart-item-info').innerHTML = `
-            <div style="display:flex; justify-content:space-between">
-                <b>${name}</b>
+    openCheckout(name, price, store) {
+        const total = price + 45; // Precio + Envío Fijo
+        document.getElementById('checkout-body').innerHTML = `
+            <div class="item-line">
+                <span><b>${name}</b><br><small>${store}</small></span>
                 <b>C$ ${price}</b>
             </div>
         `;
-        document.getElementById('s-sub').innerText = `C$ ${subtotal}`;
-        document.getElementById('s-total').innerText = `C$ ${total}`;
+        document.getElementById('t-sub').innerText = `C$ ${price}`;
+        document.getElementById('t-total').innerText = `C$ ${total}`;
         
-        // Guardar pedido temporal
-        this.tempOrder = { n: name, t: total };
+        this.tempOrder = { n: name, p: price, s: store, t: total };
         document.getElementById('checkout-modal').classList.add('active');
     },
 
-    confirmPurchase() {
+    confirmOrder() {
         const data = this.state.get();
         const newOrder = {
-            id: Math.floor(Math.random() * 9999),
-            name: this.tempOrder.n,
-            status: "Buscando repartidor... 🛵",
+            id: Math.floor(1000 + Math.random() * 9000),
+            item: this.tempOrder.n,
+            status: "Buscando Motorizado... 🛵",
             total: this.tempOrder.t
         };
         data.orders.unshift(newOrder);
         this.state.save(data);
         
         document.getElementById('checkout-modal').classList.remove('active');
-        alert("¡Pedido enviado! Podés rastrearlo en la pestaña de pedidos.");
-        this.renderTracking();
+        this.renderOrders();
         this.navigate('orders');
-    },  
+        
+        // Simulación de respuesta logística
+        setTimeout(() => {
+            const current = this.state.get();
+            current.orders[0].status = "Motorizado en camino 🚩";
+            this.state.save(current);
+            this.renderOrders();
+        }, 5000);
+    },
 
-    // RENDERIZAR RASTREO
-    renderTracking() {
+    renderOrders() {
         const data = this.state.get();
-        const container = document.getElementById('live-tracking');
+        const container = document.getElementById('tracking-list');
         container.innerHTML = data.orders.map(o => `
-            <div class="store-card-pro" style="margin-bottom:15px; border-left: 5px solid var(--blue)">
-                <div class="card-details">
-                    <div style="display:flex; justify-content:space-between">
-                        <b>#${o.id} - ${o.name}</b>
-                        <b style="color:var(--blue)">${o.status}</b>
-                    </div>
-                    <small>Total pagado: C$ ${o.total}</small>
+            <div class="order-item">
+                <div class="o-head">
+                    <b>ORDEN #${o.id}</b>
+                    <span class="o-status">${o.status}</span>
                 </div>
+                <p>${o.item}</p>
+                <b>Total: C$ ${o.total}</b>
             </div>
         `).join('');
     },
 
-    // SISTEMA PARA EL SOCIO (MÓDULO DE NEGOCIO)
-    addSocioProduct() {
-        const n = document.getElementById('p-name').value;
-        const p = document.getElementById('p-price').value;
-        if(!n || !p) return;
+    // 4. FLUJO DEL SOCIO (AFILIACIÓN)
+    socioAddProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        if(!name || !price) return alert("Error: Datos incompletos.");
 
         const data = this.state.get();
-        data.inventory.unshift({ id: Date.now(), n, p: parseInt(p), cat: 'socio', s: 'Producto Local' });
+        const newProd = {
+            id: Date.now(),
+            n: name,
+            p: parseInt(price),
+            s: data.bizName,
+            c: document.getElementById('p-cat').value
+        };
+        
+        data.inventory.unshift(newProd);
         this.state.save(data);
         
-        alert("Producto publicado en el Marketplace.");
-        this.renderMarketplace();
-        this.renderSocioItems();
-        // Limpiar campos
+        alert("¡Producto publicado! Ya es visible para los clientes.");
+        this.renderMarket();
+        this.renderSocioInventory();
+        
+        // Reset campos
         document.getElementById('p-name').value = "";
         document.getElementById('p-price').value = "";
     },
 
-    renderSocioItems() {
+    renderSocioInventory() {
         const data = this.state.get();
-        const cont = document.getElementById('socio-items');
-        cont.innerHTML = data.inventory.map(i => `
-            <div class="store-card-pro" style="margin-bottom:10px; padding:10px;">
-                <b>${i.n} - C$ ${i.p}</b>
+        const container = document.getElementById('socio-inventory');
+        container.innerHTML = data.inventory.map(p => `
+            <div class="inv-item">
+                <span>${p.n} - C$ ${p.p}</span>
+                <button onclick="App.deleteItem(${p.id})">Eliminar</button>
             </div>
         `).join('');
     },
 
-    // NAVEGACIÓN SPA
+    // 5. UTILIDADES DE NAVEGACIÓN
     navigate(id, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.getElementById(`view-${id}`).classList.add('active');
+        
         if(btn) {
-            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
             btn.classList.add('active');
         }
-        if(id === 'socio') this.renderSocioItems();
+        if(id === 'socio') this.renderSocioInventory();
     }
 };
 

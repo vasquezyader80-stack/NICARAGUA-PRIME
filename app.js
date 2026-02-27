@@ -1,17 +1,16 @@
 const App = {
-    // RED INTEGRADA DE NICARAGUA: Catálogo Real
-    inventory: [
-        { id: 1, n: "Toña 12oz Pack (6)", p: 240, m: "Compañía Cervecera", c: "bebidas", i: "🍺" },
-        { id: 2, n: "Queso Seco Ahumado", p: 105, m: "Lácteos de Chontales", c: "super", i: "🧀" },
-        { id: 3, n: "Tip-Top Combo Familiar", p: 485, m: "Tip-Top Nicaragua", c: "restaurante", i: "🍗" },
-        { id: 4, n: "Leche Eskimo Litro", p: 38, m: "Eskimo / Lala", c: "super", i: "🥛" },
-        { id: 5, n: "Flor de Caña 7 Años", p: 470, m: "SER Licorera", c: "bebidas", i: "🥃" },
-        { id: 6, n: "Cena Típica Completa", p: 160, m: "Fritanga Doña Tania", c: "restaurante", i: "🥘" },
-        { id: 7, n: "Vigorón Granadino", p: 120, m: "El Kioskito", c: "restaurante", i: "🍽️" },
-        { id: 8, n: "Café Presto 200g", p: 118, m: "Nestlé Nicaragua", c: "super", i: "☕" }
-    ],   
+    // NUESTRA RED DE PRODUCTOS NICARAGÜENSES
+    products: [
+        { id: 1, n: "Toña 12oz Pack", p: 240, m: "Compañía Cervecera", c: "bebidas", i: "🍺" },
+        { id: 2, n: "Cerdo con Yuca", p: 150, m: "Fritanga Doña Tania", c: "fritanga", i: "🥘" },
+        { id: 3, n: "Tajadas con Queso", p: 80, m: "Nica Snacks", c: "fritanga", i: "🥗" },
+        { id: 4, n: "Leche Eskimo 1L", p: 38, m: "Lala/Eskimo", c: "super", i: "🥛" },
+        { id: 5, n: "Flor de Caña 7 Años", p: 460, m: "SER Licorera", c: "bebidas", i: "🥃" },
+        { id: 6, n: "Envío Express Chinandega", p: 60, m: "Pinol Express", c: "servicios", i: "🛵" }
+    ],
 
-    init() {
+    init() { 
+        // Simular carga de servidores
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
@@ -20,47 +19,62 @@ const App = {
             }, 500);
         }, 2200);
 
-        this.renderGrid(this.inventory);
+        this.renderGrid(this.products);
+    },  
+
+    // 1. NAVEGACIÓN ENTRE SECCIONES (AQUÍ ES DONDE LOS BOTONES FUNCIONAN)
+    navigate(viewId, btn) {
+        // Quitar 'active' de todas las vistas
+        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+        // Mostrar la vista que tocaste
+        document.getElementById(`view-${viewId}`).classList.add('active');
+        
+        // Actualizar visual de los botones del Dock
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        if(btn) btn.classList.add('active');
+    },
+
+    // 2. FILTRADO POR CATEGORÍA (FRITANGA, BEBIDAS, ETC)
+    catFilter(category, btn) {
+        // Estilo del botón pill
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Lógica de filtrado
+        if(category === 'all') {
+            this.renderGrid(this.products);
+        } else {
+            const filtered = this.products.filter(p => p.c === category);
+            this.renderGrid(filtered);
+        }
     },
 
     renderGrid(items) {
         const grid = document.getElementById('main-grid');
         grid.innerHTML = items.map(p => `
-            <div class="p-card" onclick="App.buy('${p.n}', ${p.p})">
+            <div class="p-card" onclick="App.buy('${p.n}')">
                 <div class="p-img">${p.i}</div>
-                <b>${p.n}</b>
-                <small>${p.m}</small>
-                <span class="price-tag">C$ ${p.p}</span>
+                <div class="p-info">
+                    <b>${p.n}</b>
+                    <small>${p.m}</small>
+                    <span class="price-tag">C$ ${p.p}</span>
+                </div>
             </div>
         `).join('');
     },
 
-    navigate(id, el) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${id}`).classList.add('active');
-        document.querySelectorAll('.d-item').forEach(d => d.classList.remove('active'));
-        if(el) el.classList.add('active');
+    // 3. INTERACCIÓN DE MODALES (SOCIOS Y DELIVERY)
+    modal(type) {
+        if(type === 'socio') {
+            const biz = prompt("¿Cómo se llama tu negocio?");
+            if(biz) alert(`¡Bienvenido ${biz}! Tu solicitud para vender en PinolApp ha sido enviada.`);
+        } else {
+            alert("Accediendo al formulario de reclutamiento para motorizados...");
+        }
     },
 
-    search(val) {
-        const res = this.inventory.filter(p => 
-            p.n.toLowerCase().includes(val.toLowerCase()) || 
-            p.m.toLowerCase().includes(val.toLowerCase())
-        );
-        this.renderGrid(res);
-    },
-
-    regBiz() {
-        const biz = prompt("Ingresá el nombre de tu Restaurante o Tienda:");
-        if(biz) alert(`¡Hola Yader! Hemos recibido la solicitud para ${biz}. Nuestro equipo te llamará para integrar tu catálogo.`);
-    },
-
-    regRider() {
-        alert("Abriendo portal de registro para motorizados PinolApp...");
-    },
-
-    buy(n, p) {
-        alert(`Añadiste ${n} (C$ ${p}) al carrito. ¡Gracias por preferir lo Nica!`);
+    buy(name) {
+        alert(`¡Excelente elección! Añadiste ${name} al carrito.`);
     }
 };
 

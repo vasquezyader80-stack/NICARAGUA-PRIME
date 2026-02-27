@@ -1,82 +1,85 @@
 const App = {
+    // ESTADO DE LA EMPRESA
     state: {
-        user: JSON.parse(localStorage.getItem('Pinol_User')) || { name: 'Socio Nica', location: 'Managua' },
-        cart: [],
-        shops: [
-            { id: 1, name: "Tip-Top Los Robles", cat: "restaurante", time: "25-35 min", rate: "4.8", img: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=600", tag: "Pollo Frito" },
-            { id: 2, name: "Super Express Altamira", cat: "super", time: "15-20 min", rate: "4.5", img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=600", tag: "Abarrotes" },
-            { id: 3, name: "El Novillo", cat: "restaurante", time: "40-50 min", rate: "4.9", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600", tag: "Cortes de Carne" },
-            { id: 4, name: "Compañía Cervecera", cat: "bebida", time: "20-30 min", rate: "4.7", img: "https://images.unsplash.com/photo-1505075106905-fb052892c116?w=600", tag: "Cervezas y Licores" }
+        stores: [
+            { id: 1, name: "Tip-Top Metrocentro", cat: "comida", rate: 4.8, img: "https://images.unsplash.com/photo-1562967914-6cbb22e2c91c?w=600", desc: "El mejor pollo de Nicaragua", fee: "C$ 40.00" },
+            { id: 2, name: "Super La Colonia", cat: "super", rate: 4.6, img: "https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=600", desc: "Calidad y Frescura", fee: "C$ 60.00" },
+            { id: 3, name: "Fritanga Doña Tania", cat: "comida", rate: 4.9, img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600", desc: "Sabor tradicional casero", fee: "C$ 35.00" },
+            { id: 4, name: "Beer Home Nicaragua", cat: "bebida", rate: 4.7, img: "https://images.unsplash.com/photo-1505075106905-fb052892c116?w=600", desc: "Tus licores a domicilio", fee: "C$ 50.00" }
         ],
-        registeredSellers: JSON.parse(localStorage.getItem('Pinol_Sellers')) || []
+        cart: [],
+        sellers: JSON.parse(localStorage.getItem('Pinol_Network_Sellers')) || []
     },
 
     init() {
-        // Splash Screen Delay
+        // Ejecutar Animación de Despertar
         setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => document.getElementById('splash').style.display = 'none', 500);
-        }, 2000);
+            document.getElementById('splash').style.transform = 'translateY(-100%)';
+        }, 2500);
 
-        this.renderShops(this.state.shops);
+        this.renderStores();
     },
 
-    renderShops(items) {
-        const grid = document.getElementById('shop-grid');
-        // Unir tiendas base con tiendas registradas por usuarios
-        const allShops = [...items, ...this.state.registeredSellers];
-        
-        grid.innerHTML = allShops.map(s => `
-            <div class="shop-card" onclick="App.openStore(${s.id})">
+    renderStores(data = [...this.state.stores, ...this.state.sellers]) {
+        const grid = document.getElementById('stores-grid');
+        grid.innerHTML = data.map(s => `
+            <div class="store-card" onclick="App.openStore(${s.id})">
                 <img src="${s.img}">
-                <div class="shop-info">
-                    <span class="rating">⭐ ${s.rate || 'Nuevo'}</span>
-                    <h4>${s.name}</h4>
-                    <p><small>${s.tag} • ${s.time || 'Envío gratis'}</small></p>
-                    <b style="color:#e60045">Mínimo: C$ 150.00</b>
+                <div class="store-details">
+                    <div style="display:flex; justify-content:space-between;">
+                        <span class="badge-rate">⭐ ${s.rate || 'Nuevo'}</span>
+                        <small style="color:green; font-weight:700;">${s.fee || 'Envío C$ 30.00'}</small>
+                    </div>  
+                    <h3 style="margin:10px 0 5px 0;">${s.name}</h3>
+                    <p style="font-size:0.8rem; color:#666; margin:0;">${s.desc}</p>
                 </div>
             </div>
         `).join('');
     },
 
     filter(cat) {
-        const filtered = this.state.shops.filter(s => s.cat === cat);
-        this.renderShops(filtered);
+        // Despierta el filtrado profesional
+        const filtered = cat === 'all' ? [...this.state.stores, ...this.state.sellers] : this.state.stores.filter(s => s.cat === cat);
+        this.renderStores(filtered);
     },
 
     search() {
-        const query = document.getElementById('main-search').value.toLowerCase();
-        const filtered = this.state.shops.filter(s => s.name.toLowerCase().includes(query));
-        this.renderShops(filtered);
+        const query = document.getElementById('global-search').value.toLowerCase();
+        const filtered = this.state.stores.filter(s => s.name.toLowerCase().includes(query) || s.desc.toLowerCase().includes(query));
+        this.renderStores(filtered);
     },
 
-    toggleSellerModal() {
-        const modal = document.getElementById('seller-modal');
-        modal.style.display = (modal.style.display === 'flex') ? 'none' : 'flex';
+    openSellerPortal() {
+        document.getElementById('seller-portal').classList.add('active');
     },
 
-    registerSeller() {
+    closeSellerPortal() {
+        document.getElementById('seller-portal').classList.remove('active');
+    },
+
+    registerStore() {
         const name = document.getElementById('biz-name').value;
         const cat = document.getElementById('biz-cat').value;
-        
-        if(!name) return alert("Ingresa el nombre de tu empresa");
 
-        const newShop = {
+        if(!name) return alert("Por favor, ingresa el nombre de tu comercio");
+
+        const newSeller = {
             id: Date.now(),
             name: name,
             cat: cat,
-            tag: "Negocio Local",
-            img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600",
-            rate: "Nuevo"
+            rate: "Nuevo",
+            img: "https://images.unsplash.com/photo-1533900298358-e419f655b044?w=600",
+            desc: "Nuevo comercio asociado PinolApp",
+            fee: "C$ 40.00"
         };
 
-        this.state.registeredSellers.push(newShop);
-        localStorage.setItem('Pinol_Sellers', JSON.stringify(this.state.registeredSellers));
+        this.state.sellers.push(newSeller);
+        localStorage.setItem('Pinol_Network_Sellers', JSON.stringify(this.state.sellers));
         
-        alert("✅ Solicitud recibida. Nuestro equipo de delivery te contactará para validar documentos.");
-        this.toggleSellerModal();
-        this.renderShops(this.state.shops);
+        alert("¡Bienvenido Socio! Tu tienda está en proceso de activación.");
+        this.closeSellerPortal();
+        this.renderStores();
     }
 };
 
-window.onload = () => App.init();     
+window.onload = () => App.init();

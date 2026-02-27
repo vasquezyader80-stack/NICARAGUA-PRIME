@@ -1,168 +1,145 @@
 const App = {
-    // PERSISTENCIA: Datos guardados en el teléfono
-    db: {
-        get: () => JSON.parse(localStorage.getItem('PinolApp_DB')) || {
-            user: "Cliente Nica",
-            isSocio: false,
-            cart: null,
+    // ESTADO GLOBAL DE LA APP (Datos Persistentes de Yader)
+    state: {
+        get: () => JSON.parse(localStorage.getItem('PinolApp_v6')) || {
+            user: "Yader",
+            socio: false,
             orders: [],
-            socioProducts: [] // Productos que suben los negocios
+            inventory: [] // Productos creados por los socios locales
         },
-        save: (data) => localStorage.setItem('PinolApp_DB', JSON.stringify(data))
+        save: (d) => localStorage.setItem('PinolApp_v6', JSON.stringify(d))
     },
 
-    // PRODUCTOS PRECARGADOS (Ejemplos)
-    catalog: [
-        { id: 101, name: "Carne Asada Completa", price: 180, store: "Fritanga Doña Tania", cat: "comida" },
-        { id: 102, name: "Pago de Recibo ENATREL", price: 0, store: "Servicios Pinol", cat: "pagos" },
-        { id: 103, name: "Mandado Express (Hasta 5km)", price: 80, store: "Motorizados Ya", cat: "mandados" }
+    // CATÁLOGO BASE (EMPRESAS ANCLA)
+    baseStores: [
+        { id: 10, n: "Tip-Top Los Robles", p: 420, cat: "comida", s: "Famosos por el sabor" },
+        { id: 11, n: "Fritanga La Sureña", p: 150, cat: "comida", s: "Carne asada al carbón" },
+        { id: 12, n: "Súper Express", p: 90, cat: "super", s: "Canasta básica" }
     ],
 
     init() {
-        const state = this.db.get();
+        const data = this.state.get();
+        // Simular carga de red profesional
         setTimeout(() => {
-            document.getElementById('splash').style.display = 'none';
-            document.getElementById('app').style.display = 'block';
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('app').style.opacity = '1';
+            }, 500);
         }, 2000);
 
         this.renderMarketplace();
-        this.renderOrders();
+        this.renderTracking();
     },
 
-    // 1. FUNCIONES DEL CLIENTE
+    // RENDERIZAR TIENDA (ENFOQUE CLIENTE)
     renderMarketplace() {
-        const state = this.db.get();
+        const data = this.state.get();
         const grid = document.getElementById('store-grid');
-        // Unir productos del sistema con los que suben los socios
-        const allItems = [...this.catalog, ...state.socioProducts];
+        const allItems = [...data.inventory, ...this.baseStores];
         
-        grid.innerHTML = allItems.map(p => `
-            <div class="product-card" onclick="App.prepCheckout('${p.name}', ${p.price}, '${p.store}')">
-                <div class="p-img">📸</div>
-                <div class="p-info">
-                    <b>${p.name}</b>
-                    <small>${p.store}</small>
-                    <span class="price">C$ ${p.price}</span>
+        grid.innerHTML = allItems.map(i => `
+            <div class="store-card-pro" onclick="App.openCheckout('${i.n}', ${i.p})">
+                <div class="img-placeholder">🍲</div>
+                <div class="card-details">
+                    <b>${i.n}</b>
+                    <small>${i.s || 'Comercio Afiliado'}</small><br><br>
+                    <span>C$ ${i.p}</span>
                 </div>
-                <button class="add-btn">+</button>
             </div>
         `).join('');
     },
 
-    prepCheckout(name, price, store) {
+    // SISTEMA DE CHECKOUT DESLIZABLE
+    openCheckout(name, price) {
         const subtotal = price;
-        const delivery = 45;
-        const fee = 10;
-        const total = subtotal + delivery + fee;
-
-        document.getElementById('checkout-details').innerHTML = `
-            <b>Producto:</b> ${name}<br>
-            <small>Vendido por: ${store}</small>
-        `;
-        document.getElementById('sub-price').innerText = `C$ ${subtotal}`;
-        document.getElementById('total-price').innerText = `C$ ${total}`;
+        const total = subtotal + 45 + 10;
         
-        // Guardar temporalmente el carrito
-        const state = this.db.get();
-        state.cart = { name, total, store };
-        this.db.save(state);
-
-        this.navigate('checkout');
-    },
-
-    processOrder() {
-        const state = this.db.get();
-        if(!state.cart) return;
-
-        const method = document.querySelector('input[name="pay"]:checked').value;
-        const newOrder = {
-            id: Math.floor(Math.random() * 900000),
-            item: state.cart.name,
-            total: state.cart.total,
-            status: "Buscando Delivery... 🛵",
-            payment: method
-        };
-
-        state.orders.unshift(newOrder);
-        state.cart = null;
-        this.db.save(state);
-
-        alert("¡Pedido realizado con éxito! Un motorizado lo recogerá pronto.");
-        this.renderOrders();
-        this.navigate('orders');
-
-        // Simulación de cambio de estado
-        setTimeout(() => {
-            const s = this.db.get();
-            s.orders[0].status = "Motorizado en camino al local 🏪";
-            this.db.save(s);
-            this.renderOrders();
-        }, 4000);
-    },
-
-    renderOrders() {
-        const state = this.db.get();
-        const container = document.getElementById('order-history');
-        container.innerHTML = state.orders.map(o => `
-            <div class="order-tracker">
-                <div class="ot-header">
-                    <b>ID #${o.id}</b>
-                    <span class="badge">${o.status}</span>
-                </div>
-                <p>${o.item} - <b>Total: C$ ${o.total}</b></p>
-                <small>Pago: ${o.payment}</small>
+        document.getElementById('cart-item-info').innerHTML = `
+            <div style="display:flex; justify-content:space-between">
+                <b>${name}</b>
+                <b>C$ ${price}</b>
             </div>
-        `).join('');    
+        `;
+        document.getElementById('s-sub').innerText = `C$ ${subtotal}`;
+        document.getElementById('s-total').innerText = `C$ ${total}`;
+        
+        // Guardar pedido temporal
+        this.tempOrder = { n: name, t: total };
+        document.getElementById('checkout-modal').classList.add('active');
     },
 
-    // 2. FUNCIONES DEL SOCIO (AFILIACIONES)
-    addSocioProduct() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-price').value;
-        const desc = document.getElementById('p-desc').value;
-
-        if(!name || !price) return alert("Completa los datos del producto.");
-
-        const state = this.db.get();
-        const newProd = {
-            id: Date.now(),
-            name: name,
-            price: parseInt(price),
-            store: state.bizName || "Mi Negocio Afiliado",
-            cat: "comida"
+    confirmPurchase() {
+        const data = this.state.get();
+        const newOrder = {
+            id: Math.floor(Math.random() * 9999),
+            name: this.tempOrder.n,
+            status: "Buscando repartidor... 🛵",
+            total: this.tempOrder.t
         };
+        data.orders.unshift(newOrder);
+        this.state.save(data);
+        
+        document.getElementById('checkout-modal').classList.remove('active');
+        alert("¡Pedido enviado! Podés rastrearlo en la pestaña de pedidos.");
+        this.renderTracking();
+        this.navigate('orders');
+    },  
 
-        state.socioProducts.unshift(newProd);
-        this.db.save(state);
+    // RENDERIZAR RASTREO
+    renderTracking() {
+        const data = this.state.get();
+        const container = document.getElementById('live-tracking');
+        container.innerHTML = data.orders.map(o => `
+            <div class="store-card-pro" style="margin-bottom:15px; border-left: 5px solid var(--blue)">
+                <div class="card-details">
+                    <div style="display:flex; justify-content:space-between">
+                        <b>#${o.id} - ${o.name}</b>
+                        <b style="color:var(--blue)">${o.status}</b>
+                    </div>
+                    <small>Total pagado: C$ ${o.total}</small>
+                </div>
+            </div>
+        `).join('');
+    },
+
+    // SISTEMA PARA EL SOCIO (MÓDULO DE NEGOCIO)
+    addSocioProduct() {
+        const n = document.getElementById('p-name').value;
+        const p = document.getElementById('p-price').value;
+        if(!n || !p) return;
+
+        const data = this.state.get();
+        data.inventory.unshift({ id: Date.now(), n, p: parseInt(p), cat: 'socio', s: 'Producto Local' });
+        this.state.save(data);
         
-        alert("Producto subido. Ahora los clientes pueden verlo en la tienda principal.");
+        alert("Producto publicado en el Marketplace.");
         this.renderMarketplace();
-        this.renderSocioList();
-        
+        this.renderSocioItems();
+        // Limpiar campos
         document.getElementById('p-name').value = "";
         document.getElementById('p-price').value = "";
     },
 
-    renderSocioList() {
-        const state = this.db.get();
-        const container = document.getElementById('socio-items-list');
-        container.innerHTML = state.socioProducts.map(p => `
-            <div class="socio-item">
-                <span>${p.name} - C$ ${p.price}</span>
-                <button onclick="App.deleteProd(${p.id})">🗑️</button>
+    renderSocioItems() {
+        const data = this.state.get();
+        const cont = document.getElementById('socio-items');
+        cont.innerHTML = data.inventory.map(i => `
+            <div class="store-card-pro" style="margin-bottom:10px; padding:10px;">
+                <b>${i.n} - C$ ${i.p}</b>
             </div>
         `).join('');
     },
 
-    // NAVEGACIÓN
-    navigate(viewId, btn) {
+    // NAVEGACIÓN SPA
+    navigate(id, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
+        document.getElementById(`view-${id}`).classList.add('active');
         if(btn) {
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             btn.classList.add('active');
         }
-        if(viewId === 'socio') this.renderSocioList();
+        if(id === 'socio') this.renderSocioItems();
     }
 };
 

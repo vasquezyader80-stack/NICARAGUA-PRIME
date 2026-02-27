@@ -3,116 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp Premium | Nicaragua Delivery</title>
+    <title>PinolApp Enterprise | Business Edition</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash-screen">
-        <div class="brand-loading">
-            <h1 class="logo-pro">Pinol<span>App</span></h1>
-            <div class="line-loader"></div>
-            <p>Socio Logístico de Nicaragua</p>
+        <div class="brand">
+            <h1 class="logo">Pinol<span>App</span></h1>
+            <div class="loader-line"></div>
+            <p>LOGÍSTICA Y COMERCIO NICARAGÜENSE</p>
         </div>
     </div>
 
-    <div id="app" class="app-container">
+    <div id="app" class="app-shell" style="display:none;">
         
-        <header class="header-premium">
-            <div class="top-nav">
-                <div class="loc-data">
-                    <span class="dot"></span>
-                    <div>
-                        <small>Entregar en</small>
-                        <b id="user-location">Mi Casa - Managua</b>
+        <header class="main-header">
+            <div class="header-content">
+                <div class="user-profile" onclick="App.navigate('config')">
+                    <div class="avatar" id="user-avatar">Y</div>
+                    <div class="user-info">
+                        <small>Bienvenido,</small>
+                        <b id="user-name">Usuario</b>
                     </div>
                 </div>
-                <div class="user-avatar" onclick="App.navigate('socio')">
-                    <img src="https://ui-avatars.com/api/?name=User&background=005aab&color=fff" alt="Perfil">
+                <div class="cart-preview" onclick="App.navigate('orders')">
+                    <span>📦</span>
                 </div>
             </div>
-            <div class="search-wrap">
-                <input type="text" placeholder="Buscar marcas, platos o servicios..." oninput="App.search(this.value)">
+            <div class="search-bar">
+                <input type="text" placeholder="¿Qué necesitas pedir hoy?" oninput="App.filterMarket(this.value)">
             </div>
         </header>
 
-        <main class="content-area">
+        <main class="view-container">
             
             <section id="view-home" class="view active">
-                <div class="promo-carousel">
-                    <div class="promo-card">
-                        <h3>Feria Gastronómica 🥘</h3>
-                        <p>50% OFF en envíos hoy</p>
+                <div class="featured-banner">
+                    <h3>Mercado Oriental a tu puerta 🍍</h3>
+                    <p>Precios de tramo, entrega de App.</p>
+                </div>
+                     
+                <div class="category-pills">
+                    <button class="pill active" onclick="App.catFilter('all')">Todos</button>
+                    <button class="pill" onclick="App.catFilter('comida')">Fritangas</button>
+                    <button class="pill" onclick="App.catFilter('servicios')">Mandados</button>
+                </div>
+
+                <div id="marketplace-grid" class="marketplace-grid">
                     </div>
-                </div>
-
-                <div class="quick-cats">
-                    <div class="q-item" onclick="App.filter('comida')">🍔<span>Restaurantes</span></div>
-                    <div class="q-item" onclick="App.filter('super')">🛒<span>Súper</span></div>
-                    <div class="q-item" onclick="App.filter('pagos')">💳<span>Pagos</span></div>
-                    <div class="q-item" onclick="App.filter('mandados')">🛵<span>Mandados</span></div>
-                </div>
-
-                <h2 class="title-md">Cerca de ti</h2>
-                <div id="store-grid" class="store-grid"></div>
             </section>
 
             <section id="view-orders" class="view">
-                <h2 class="title-md">Seguimiento de Orden</h2>
-                <div id="live-tracking" class="tracking-wrap"></div>
+                <h3 class="view-title">Rastreo Logístico</h3>
+                <div id="tracking-list" class="tracking-list"></div>
             </section>
 
             <section id="view-socio" class="view">
-                <div class="socio-header">
-                    <h2 class="title-md">Portal de Negocio</h2>
-                    <p>Gestiona tu catálogo y ventas en PinolApp</p>
+                <div class="socio-panel">
+                    <div class="panel-header">
+                        <h3>Panel del Comercio</h3>
+                        <p>Gestiona tu catálogo y sucursal digital</p>
+                    </div>
+                    
+                    <div class="form-card">
+                        <h4>Subir Nuevo Producto</h4>
+                        <input type="text" id="p-name" placeholder="Nombre (Ej: Pollo Asado)">
+                        <input type="number" id="p-price" placeholder="Precio C$">
+                        <select id="p-cat">
+                            <option value="comida">Restaurante</option>
+                            <option value="servicios">Servicio / Mandado</option>
+                        </select>
+                        <button class="btn-submit" onclick="App.socioAddProduct()">Publicar Producto</button>
+                    </div>
+
+                    <div id="socio-inventory" class="inventory-list">
+                        </div>
                 </div>
-                <div class="biz-form">
-                    <h3>Subir Nuevo Producto</h3>
-                    <input type="text" id="p-name" placeholder="Ej: Vigorón Especial">
-                    <input type="number" id="p-price" placeholder="Precio C$">
-                    <select id="p-cat">
-                        <option value="comida">Restaurante</option>
-                        <option value="mandados">Servicio</option>
-                    </select>
-                    <button class="btn-main" onclick="App.addSocioProduct()">Publicar en Marketplace</button>
-                </div>
-                <div id="socio-items" class="items-grid"></div>
             </section>
+
         </main>
 
-        <nav class="bottom-tab-bar">
-            <div class="tab-item active" onclick="App.navigate('home', this)">
-                <i>🏠</i><span>Tienda</span>
-            </div>
-            <div class="tab-item" onclick="App.navigate('orders', this)">
-                <i>📋</i><span>Pedidos</span>
-            </div>
-            <div class="tab-item" onclick="App.navigate('socio', this)">
-                <i>💼</i><span>Socio</span>
-            </div>
+        <nav class="bottom-dock">
+            <div class="dock-item active" onclick="App.navigate('home', this)">🏠<span>Tienda</span></div>
+            <div class="dock-item" onclick="App.navigate('orders', this)">📋<span>Pedidos</span></div>
+            <div class="dock-item" onclick="App.navigate('socio', this)">🚀<span>Socio</span></div>
         </nav>
     </div>
 
-    <div id="checkout-modal" class="modal-bottom">
-        <div class="modal-handle"></div>
-        <div class="modal-content">
-            <h3>Finalizar Pedido</h3>
-            <div id="cart-item-info" class="cart-box"></div>
+    <div id="checkout-modal" class="modal-overlay">
+        <div class="checkout-sheet">
+            <div class="handle"></div>
+            <h3>Finalizar Compra</h3>
+            <div id="checkout-body" class="checkout-body"></div>
             
-            <div class="pay-selector">
-                <div class="pay-method active">💵 Efectivo</div>
-                <div class="pay-method">💳 Tarjeta</div>
+            <div class="payment-method">
+                <p>Forma de Pago:</p>
+                <div class="pay-options">
+                    <button class="pay-btn active">💵 Efectivo</button>
+                    <button class="pay-btn">💳 Tarjeta</button>
+                </div>
             </div>
 
-            <div class="summary">
-                <div class="s-row"><span>Subtotal</span><span id="s-sub">C$ 0</span></div>
-                <div class="s-row"><span>Delivery</span><span>C$ 45</span></div>
-                <div class="s-row"><span>Comisión</span><span>C$ 10</span></div>
-                <div class="s-row total"><span>Total</span><span id="s-total">C$ 0</span></div>
+            <div class="totals">
+                <div class="t-row"><span>Subtotal</span><span id="t-sub">C$ 0</span></div>
+                <div class="t-row"><span>Envío</span><span>C$ 45</span></div>
+                <div class="t-row highlight"><span>Total</span><span id="t-total">C$ 0</span></div>
             </div>
-            <button class="btn-order" onclick="App.confirmPurchase()">Realizar Pedido</button>
+            <button class="btn-confirm" onclick="App.confirmOrder()">CONFIRMAR PEDIDO</button>
         </div>
     </div>
 

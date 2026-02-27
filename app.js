@@ -1,189 +1,169 @@
 const App = {
-    // 1. BASE DE DATOS LOCAL (PERSISTENCIA)
+    // PERSISTENCIA: Datos guardados en el teléfono
     db: {
-        get: () => JSON.parse(localStorage.getItem('PinolApp_v5')) || {
-            user: "Invitado",
-            biz: "N/A",
+        get: () => JSON.parse(localStorage.getItem('PinolApp_DB')) || {
+            user: "Cliente Nica",
             isSocio: false,
+            cart: null,
             orders: [],
-            myItems: [] // Inventario del Socio
+            socioProducts: [] // Productos que suben los negocios
         },
-        save: (data) => localStorage.setItem('PinolApp_v5', JSON.stringify(data))
+        save: (data) => localStorage.setItem('PinolApp_DB', JSON.stringify(data))
     },
 
-    // PRODUCTOS POR DEFECTO DEL SISTEMA
-    baseProducts: [
-        { id: 1, name: "Gallo Pinto con Carne", price: 150, cat: "comida", store: "Fritanga Doña Tania" },
-        { id: 2, name: "Servicio de Mensajería", price: 60, cat: "servicio", store: "Pinol Express" },
-        { id: 3, name: "Combo Pollo Tip-Top", price: 420, cat: "comida", store: "Tip-Top" }
+    // PRODUCTOS PRECARGADOS (Ejemplos)
+    catalog: [
+        { id: 101, name: "Carne Asada Completa", price: 180, store: "Fritanga Doña Tania", cat: "comida" },
+        { id: 102, name: "Pago de Recibo ENATREL", price: 0, store: "Servicios Pinol", cat: "pagos" },
+        { id: 103, name: "Mandado Express (Hasta 5km)", price: 80, store: "Motorizados Ya", cat: "mandados" }
     ],
 
     init() {
-        const session = this.db.get();
-        this.updateUI(session);
-
-        // Animación de Entrada Profesional
+        const state = this.db.get();
         setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('main-app').style.display = 'block';
-            }, 500);
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
         }, 2000);
 
         this.renderMarketplace();
         this.renderOrders();
     },
 
-    // 2. SISTEMA DE INVENTARIO (Check ✅)
-    addItem() {
-        const name = document.getElementById('inv-name').value;
-        const price = document.getElementById('inv-price').value;
-        const cat = document.getElementById('inv-cat').value;
-
-        if(!name || !price) return alert("Error: Datos incompletos.");
-
-        const session = this.db.get();
-        const newItem = { 
-            id: Date.now(), 
-            name: name, 
-            price: price, 
-            cat: cat, 
-            store: session.biz // Usa el nombre de tu negocio registrado
-        };
-        
-        session.myItems.unshift(newItem);
-        this.db.save(session);
-        
-        alert("¡Éxito! Tu producto ya es visible en el Marketplace.");
-        this.renderMarketplace();
-        this.renderMyInventory();
-        
-        // Limpiar formulario
-        document.getElementById('inv-name').value = "";
-        document.getElementById('inv-price').value = "";
-    },
-
+    // 1. FUNCIONES DEL CLIENTE
     renderMarketplace() {
-        const session = this.db.get();
-        const grid = document.getElementById('global-grid');
-        // Unimos los productos del sistema con los creados por los socios
-        const allItems = [...session.myItems, ...this.baseProducts];
+        const state = this.db.get();
+        const grid = document.getElementById('store-grid');
+        // Unir productos del sistema con los que suben los socios
+        const allItems = [...this.catalog, ...state.socioProducts];
         
         grid.innerHTML = allItems.map(p => `
-            <div class="card-item" onclick="App.buy('${p.name}', ${p.price})">
-                <div class="card-info">
+            <div class="product-card" onclick="App.prepCheckout('${p.name}', ${p.price}, '${p.store}')">
+                <div class="p-img">📸</div>
+                <div class="p-info">
                     <b>${p.name}</b>
-                    <small>${p.store} • ${p.cat}</small>
+                    <small>${p.store}</small>
+                    <span class="price">C$ ${p.price}</span>
                 </div>
-                <div class="card-price">C$ ${p.price}</div>
+                <button class="add-btn">+</button>
             </div>
         `).join('');
     },
 
-    // 3. SISTEMA DE COMPRAS Y RASTREO
-    buy(name, price) {
-        const session = this.db.get();
-        const orderId = Math.floor(1000 + Math.random() * 9000);
-        const order = { 
-            id: orderId, 
-            product: name, 
-            status: "Confirmando...", 
-            total: parseInt(price) + 40 // Tarifa envío Nicaragua
-        };
+    prepCheckout(name, price, store) {
+        const subtotal = price;
+        const delivery = 45;
+        const fee = 10;
+        const total = subtotal + delivery + fee;
+
+        document.getElementById('checkout-details').innerHTML = `
+            <b>Producto:</b> ${name}<br>
+            <small>Vendido por: ${store}</small>
+        `;
+        document.getElementById('sub-price').innerText = `C$ ${subtotal}`;
+        document.getElementById('total-price').innerText = `C$ ${total}`;
         
-        session.orders.unshift(order);
-        this.db.save(session);
+        // Guardar temporalmente el carrito
+        const state = this.db.get();
+        state.cart = { name, total, store };
+        this.db.save(state);
+
+        this.navigate('checkout');
+    },
+
+    processOrder() {
+        const state = this.db.get();
+        if(!state.cart) return;
+
+        const method = document.querySelector('input[name="pay"]:checked').value;
+        const newOrder = {
+            id: Math.floor(Math.random() * 900000),
+            item: state.cart.name,
+            total: state.cart.total,
+            status: "Buscando Delivery... 🛵",
+            payment: method
+        };
+
+        state.orders.unshift(newOrder);
+        state.cart = null;
+        this.db.save(state);
+
+        alert("¡Pedido realizado con éxito! Un motorizado lo recogerá pronto.");
         this.renderOrders();
         this.navigate('orders');
-        
-        // Simulación de Logística en Vivo
+
+        // Simulación de cambio de estado
         setTimeout(() => {
-            const cur = this.db.get();
-            cur.orders[0].status = "En camino 🛵";
-            this.db.save(cur);
+            const s = this.db.get();
+            s.orders[0].status = "Motorizado en camino al local 🏪";
+            this.db.save(s);
             this.renderOrders();
         }, 4000);
     },
 
     renderOrders() {
-        const container = document.getElementById('order-stack');
-        const session = this.db.get();
-        if(session.orders.length === 0) {
-            container.innerHTML = "<div class='empty-msg'>No tienes pedidos hoy.</div>";
-            return;
-        }
-        container.innerHTML = session.orders.map(o => `
-            <div class="order-card">
-                <div class="order-header">
-                    <b>ORDEN #${o.id}</b>
-                    <span class="status-tag">${o.status}</span>
+        const state = this.db.get();
+        const container = document.getElementById('order-history');
+        container.innerHTML = state.orders.map(o => `
+            <div class="order-tracker">
+                <div class="ot-header">
+                    <b>ID #${o.id}</b>
+                    <span class="badge">${o.status}</span>
                 </div>
-                <p>${o.product}</p>
-                <div class="order-footer">
-                    <span>Total pagado: C$ ${o.total}</span>
-                    <button onclick="alert('Llamando al motorizado...')">Llamar 📞</button>
-                </div>
+                <p>${o.item} - <b>Total: C$ ${o.total}</b></p>
+                <small>Pago: ${o.payment}</small>
+            </div>
+        `).join('');    
+    },
+
+    // 2. FUNCIONES DEL SOCIO (AFILIACIONES)
+    addSocioProduct() {
+        const name = document.getElementById('p-name').value;
+        const price = document.getElementById('p-price').value;
+        const desc = document.getElementById('p-desc').value;
+
+        if(!name || !price) return alert("Completa los datos del producto.");
+
+        const state = this.db.get();
+        const newProd = {
+            id: Date.now(),
+            name: name,
+            price: parseInt(price),
+            store: state.bizName || "Mi Negocio Afiliado",
+            cat: "comida"
+        };
+
+        state.socioProducts.unshift(newProd);
+        this.db.save(state);
+        
+        alert("Producto subido. Ahora los clientes pueden verlo en la tienda principal.");
+        this.renderMarketplace();
+        this.renderSocioList();
+        
+        document.getElementById('p-name').value = "";
+        document.getElementById('p-price').value = "";
+    },
+
+    renderSocioList() {
+        const state = this.db.get();
+        const container = document.getElementById('socio-items-list');
+        container.innerHTML = state.socioProducts.map(p => `
+            <div class="socio-item">
+                <span>${p.name} - C$ ${p.price}</span>
+                <button onclick="App.deleteProd(${p.id})">🗑️</button>
             </div>
         `).join('');
     },
 
-    // 4. FUNCIONES DE PERFIL Y NAVEGACIÓN
-    updateUI(s) {
-        document.getElementById('user-name-display').innerText = s.user;
-        document.getElementById('user-status-display').innerText = s.isSocio ? `Socio de: ${s.biz}` : "Usuario Cliente";
-        document.getElementById('user-initials').innerText = s.user.charAt(0).toUpperCase();
-        
-        // Si es socio, mostramos el botón de gestión de inventario
-        if(s.isSocio) document.getElementById('nav-inv-btn').style.display = 'flex';
-    },
-
-    saveReg() {
-        const name = document.getElementById('reg-name').value;
-        const biz = document.getElementById('reg-biz').value;
-        if(!name || !biz) return alert("Completa los campos.");
-
-        const session = this.db.get();
-        session.user = name;
-        session.biz = biz;
-        session.isSocio = true;
-        this.db.save(session);
-        location.reload();
-    },
-
-    navigate(id, btn) {
+    // NAVEGACIÓN
+    navigate(viewId, btn) {
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${id}`).classList.add('active');
+        document.getElementById(`view-${viewId}`).classList.add('active');
         if(btn) {
-            document.querySelectorAll('.dock-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
         }
-        if(id === 'inventory') this.renderMyInventory();
-    },
-
-    renderMyInventory() {
-        const session = this.db.get();
-        const container = document.getElementById('my-products');
-        container.innerHTML = session.myItems.map(p => `
-            <div class="inv-item">
-                <span>${p.name} - C$ ${p.price}</span>
-                <button onclick="App.deleteItem(${p.id})">Eliminar</button>
-            </div>
-        `).join('');
-    },
-
-    deleteItem(id) {
-        const session = this.db.get();
-        session.myItems = session.myItems.filter(p => p.id !== id);
-        this.db.save(session);
-        this.renderMyInventory();
-        this.renderMarketplace();
-    },
-
-    openReg() { document.getElementById('modal-reg').style.display = 'flex'; },
-    closeReg() { document.getElementById('modal-reg').style.display = 'none'; },
-    clearData() { localStorage.clear(); location.reload(); }
+        if(viewId === 'socio') this.renderSocioList();
+    }
 };
 
 window.onload = () => App.init();
-         

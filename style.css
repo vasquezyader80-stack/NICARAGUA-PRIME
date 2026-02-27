@@ -15,4 +15,4 @@ body { font-family: sans-serif; margin: 0; background: var(--bg); color: #333; }
 .card b { display: block; margin: 5px 0; font-size: 0.9rem; }
 .card button { background: var(--red); color: #fff; border: none; padding: 5px 15px; border-radius: 5px; font-weight: bold; }
 
-.footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; }
+.footer { text-align: center; padding: 20px; font-size: 0.8rem; color: #777; }.   

@@ -1,47 +1,38 @@
-:root { --blue: #005aab; --red: #e60045; --bg: #f5f8fa; --white: #ffffff; --text: #1a202c; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--white); color: var(--text); overflow: hidden; }
+:root { --blue: #005aab; --red: #e60045; --light: #f1f5f9; --text: #0f172a; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: white; color: var(--text); overflow: hidden; }
 
-/* Splash */
-.splash { position: fixed; inset: 0; background: var(--white); z-index: 1000; display: flex; align-items: center; justify-content: center; text-align: center; }
-.logo { font-size: 3.5rem; font-weight: 800; color: var(--blue); margin: 0; }
-.logo span { color: var(--red); }
-.loader-line { width: 140px; height: 4px; background: #eee; border-radius: 10px; margin: 15px auto; overflow: hidden; position: relative; }
-.loader-line::after { content: ''; position: absolute; left: -100%; width: 100%; height: 100%; background: var(--blue); animation: load 2s infinite; }
-@keyframes load { 100% { left: 100%; } }
+/* Splash Animado */
+.splash-screen { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.logo-anim { font-size: 3rem; font-weight: 800; color: var(--blue); animation: pulse 1.5s infinite; }
+.logo-anim span { color: var(--red); }
+@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
-/* Home & Search */
-.home-nav { padding: 20px; border-bottom: 1px solid #edf2f7; position: sticky; top: 0; background: white; z-index: 50; }
-.loc-header b { color: var(--blue); display: block; font-size: 1.1rem; }
-.search-wrap input { width: 100%; padding: 15px; border: none; background: #f1f5f9; border-radius: 12px; margin-top: 15px; box-sizing: border-box; font-weight: 600; }
+/* Navegación Inferior (Dock) */
+.bottom-nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; padding-bottom: 20px; z-index: 500; }
+.nav-btn { background: none; border: none; color: #94a3b8; font-weight: 700; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; cursor: pointer; }
+.nav-btn.active { color: var(--blue); transform: translateY(-5px); }
+.nav-btn .icon { font-size: 1.4rem; }
 
-/* Bubble Nav */
-.bubble-nav { display: flex; overflow-x: auto; padding: 20px; gap: 18px; scrollbar-width: none; }
-.b-cat { text-align: center; min-width: 75px; }
-.b-icon { width: 65px; height: 65px; background: #f0f7ff; border-radius: 22px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; margin-bottom: 8px; }
-.b-cat span { font-size: 0.8rem; font-weight: 700; }
+/* Vistas */
+.app-view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
+.app-view.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* Grid de Productos */
-.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px 120px; }
-.p-card { background: white; border: 1px solid #f1f5f9; border-radius: 20px; padding: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.02); }
-.p-img { width: 100%; height: 100px; background: #f8fafc; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
-.p-card b { display: block; margin-top: 10px; font-size: 0.95rem; }
-.p-card small { color: #94a3b8; font-size: 0.75rem; }
-.price-tag { display: block; margin-top: 5px; color: var(--blue); font-weight: 800; font-size: 1.1rem; }
+/* Filtros Pills */
+.category-pills { display: flex; gap: 10px; padding: 20px; overflow-x: auto; scrollbar-width: none; }
+.pill { padding: 10px 20px; background: var(--light); border-radius: 25px; white-space: nowrap; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s; }
+.pill.active { background: var(--blue); color: white; }
 
-/* Vista Perfil (PedidosYa Clone) */
-.user-card-premium { padding: 40px 20px; display: flex; align-items: center; gap: 15px; background: #f0f7ff; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-.u-avatar { width: 65px; height: 65px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; }
-.menu-container { padding: 20px; background: #f8fafc; height: 100vh; }
-.m-group { background: white; border-radius: 20px; padding: 8px; margin-bottom: 20px; }
-.m-row { display: flex; align-items: center; padding: 15px 10px; border-bottom: 1px solid #f1f5f9; gap: 15px; }
-.ri { font-size: 1.3rem; }
-.rt { flex: 1; }
-.rt b { font-size: 0.9rem; display: block; }
-.rt p { font-size: 0.75rem; color: #718096; margin: 0; }
-.ra { color: #cbd5e0; font-size: 0.8rem; }
-
-/* Bottom Dock */
-.main-dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0 35px; border-top: 1px solid #f1f5f9; }
-.d-item { color: #cbd5e0; font-size: 0.75rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-.d-item.active { color: var(--blue); }
+/* Perfil Estilo Empresa */
+.profile-hero { padding: 50px 20px; background: #f0f7ff; display: flex; align-items: center; gap: 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+.p-avatar { width: 65px; height: 65px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; }
+.menu-list { padding: 20px; background: #f8fafc; min-height: 100vh; }
+.menu-section { background: white; border-radius: 20px; padding: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
+.item { display: flex; align-items: center; padding: 15px 10px; border-bottom: 1px solid #f1f5f9; gap: 15px; cursor: pointer; }
+.item:active { background: #fafafa; }
+.i-icon { font-size: 1.2rem; }
+.i-txt { flex: 1; }   
+.i-txt b { font-size: 0.9rem; display: block; }
+.i-txt p { font-size: 0.75rem; color: #64748b; margin: 0; }
+.arrow { color: #cbd5e0; font-size: 0.7rem; }
    

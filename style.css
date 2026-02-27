@@ -1,38 +1,40 @@
-:root { --blue: #005aab; --red: #e60045; --light: #f1f5f9; --text: #0f172a; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: white; color: var(--text); overflow: hidden; }
+:root { --blue: #005aab; --red: #e60045; --white: #ffffff; --bg: #f8f9fa; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: #1a202c; overflow: hidden; }
 
-/* Splash Animado */
-.splash-screen { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.logo-anim { font-size: 3rem; font-weight: 800; color: var(--blue); animation: pulse 1.5s infinite; }
-.logo-anim span { color: var(--red); }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+/* Splash */
+.splash { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.logo-pro { font-size: 3rem; font-weight: 800; color: var(--blue); }
+.logo-pro span { color: var(--red); }
 
-/* Navegación Inferior (Dock) */
-.bottom-nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; padding-bottom: 20px; z-index: 500; }
-.nav-btn { background: none; border: none; color: #94a3b8; font-weight: 700; font-size: 0.7rem; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.2s; cursor: pointer; }
-.nav-btn.active { color: var(--blue); transform: translateY(-5px); }
-.nav-btn .icon { font-size: 1.4rem; }
+/* Header & Cacaos */
+.main-header { background: white; padding: 20px; border-bottom: 1px solid #eee; }
+.user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.cacaos-badge { background: #fff8e1; color: #f59e0b; padding: 8px 12px; border-radius: 12px; font-weight: 800; font-size: 0.85rem; border: 1px solid #fbbf24; }
+.search-wrap input { width: 100%; padding: 14px; border: none; background: #f1f3f5; border-radius: 12px; box-sizing: border-box; font-weight: 600; }
 
-/* Vistas */
-.app-view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
-.app-view.active { display: block; animation: fadeIn 0.3s ease; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Grid */
+.view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 100px; }
+.view.active { display: block; }
+.grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+.p-card { background: white; border-radius: 20px; padding: 12px; border: 1px solid #f1f1f1; text-align: center; }
+.p-img { font-size: 2.5rem; background: #f8fafc; border-radius: 15px; padding: 15px; margin-bottom: 10px; }
+ 
+/* Tracking Barra de Progreso */
+.tracking-card { margin: 20px; background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+.progress-container { height: 8px; background: #eee; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+.progress-bar { height: 100%; background: var(--blue); width: 0%; transition: 1s linear; }
 
-/* Filtros Pills */
-.category-pills { display: flex; gap: 10px; padding: 20px; overflow-x: auto; scrollbar-width: none; }
-.pill { padding: 10px 20px; background: var(--light); border-radius: 25px; white-space: nowrap; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: 0.3s; }
-.pill.active { background: var(--blue); color: white; }
+/* Modal Checkout */
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 3000; align-items: flex-end; }
+.modal.active { display: flex; }
+.modal-content { background: white; width: 100%; border-radius: 30px 30px 0 0; padding: 30px; box-sizing: border-box; animation: slideUp 0.4s ease; }
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
-/* Perfil Estilo Empresa */
-.profile-hero { padding: 50px 20px; background: #f0f7ff; display: flex; align-items: center; gap: 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-.p-avatar { width: 65px; height: 65px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: 800; }
-.menu-list { padding: 20px; background: #f8fafc; min-height: 100vh; }
-.menu-section { background: white; border-radius: 20px; padding: 10px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-.item { display: flex; align-items: center; padding: 15px 10px; border-bottom: 1px solid #f1f5f9; gap: 15px; cursor: pointer; }
-.item:active { background: #fafafa; }
-.i-icon { font-size: 1.2rem; }
-.i-txt { flex: 1; }   
-.i-txt b { font-size: 0.9rem; display: block; }
-.i-txt p { font-size: 0.75rem; color: #64748b; margin: 0; }
-.arrow { color: #cbd5e0; font-size: 0.7rem; }
-   
+.sim-map { height: 120px; background: #e2e8f0; border-radius: 20px; position: relative; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; border: 2px dashed #cbd5e0; }
+.pin { font-size: 2rem; animation: bounce 1s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+/* Dock Nav */
+.dock { position: fixed; bottom: 0; width: 100%; height: 85px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; }
+.d-item { color: #cbd5e0; font-size: 0.75rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; }
+.d-item.active { color: var(--blue); }

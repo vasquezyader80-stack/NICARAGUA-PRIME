@@ -3,28 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pinol app | Yader Vasquez</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Pinol App | Yader Vasquez</title>
+    <link rel="stylesheet" href="style.css?v=1.2">
 </head>
 <body>
 
-    <header class="header">
-        <div class="header-box">
-            <h2 class="logo">Pinol<span>app</span></h2>
-            <div class="cacaos">🪙 <span id="cacaos-val">0</span> Cacaos</div>
-        </div>
-        <div class="profile-inline">
-            <input type="text" id="user-input" onchange="App.saveName()" placeholder="Tu nombre...">
-        </div>
-    </header>
+    <div class="main-container">
+        <header class="top-nav">
+            <div class="branding">
+                <h1>Pinol<span>app</span></h1>
+                <small>By Yader Vasquez</small>
+            </div>
+            <div class="wallet">
+                🪙 <span id="cacaos-count">0</span> Cacaos
+            </div>
+        </header>
 
-    <main id="grid" class="grid">
-        </main>
+        <section class="user-profile">
+            <label>Socio:</label>
+            <input type="text" id="user-field" oninput="App.saveData()" placeholder="Tu nombre...">
+        </section>
 
-    <footer class="footer">
-        <p>Propiedad Intelectual de <b>Yader Vasquez</b> © 2026</p>
-    </footer>
+        <div id="product-list" class="items-grid">
+            </div>
+    </div>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=1.2"></script>
 </body>
-</html>
+</html>.   

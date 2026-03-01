@@ -1,16 +1,37 @@
 const App = {
-    // MEMORIA DEL TELÉFONO
+    // Almacenamiento Local (Data Persistence)
     db: {
-        get: () => JSON.parse(localStorage.getItem('Pinol_DB')) || { cacaos: 500, user: "Yader", products: [] },
-        save: (data) => localStorage.setItem('Pinol_DB', JSON.stringify(data))
+        get: () => JSON.parse(localStorage.getItem('PinolMaster_V1')) || { 
+            cacaos: 150, 
+            user: "Yader Vasquez", 
+            myProducts: [] 
+        },
+        save: (data) => localStorage.setItem('PinolMaster_V1', JSON.stringify(data))
     },
 
+    catalog: [
+        { n: "Nacatamal", p: 120, s: "Fritanga El Norte", i: "🫔" },
+        { n: "Vigorón", p: 140, s: "Kiosko Central", i: "🥗" },
+        { n: "Toña Litro", p: 85, s: "Súper Express", i: "🍺" }
+    ],
+
     init() {
-        this.render();
+        this.updateUI();
+        this.renderFeed();
+        
+        // Simular Splash de 2.5 seg
         setTimeout(() => {
-            document.getElementById('splash').style.display = 'none';
-            document.getElementById('app').classList.remove('hidden');
-        }, 3000);
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+            }, 500);
+        }, 2500);
+    },
+
+    updateUI() {
+        const data = this.db.get();
+        document.getElementById('cacaos-display').innerText = data.cacaos;
     },
 
     nav(viewId, el) {
@@ -18,40 +39,46 @@ const App = {
         document.getElementById(`view-${viewId}`).classList.add('active');
         
         if(el) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
     },
 
-    render() {
+    renderFeed() {
         const data = this.db.get();
-        document.getElementById('cacaos-val').innerText = data.cacaos;
-        
-        const feed = document.getElementById('feed');
-        const items = [{n:"Nacatamal", p:120, s:"Doña Mary", i:"🫔"}, ...data.products];
-        
-        feed.innerHTML = items.map(p => `
-            <div class="card" style="background:white; padding:15px; border-radius:15px; margin:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                <span style="font-size:30px;">${p.i || '📦'}</span>
-                <h4>${p.n}</h4>
-                <p>C$ ${p.p}</p>
-                <button onclick="App.buy()" style="width:100%; background:var(--blue); color:white; border:none; padding:8px; border-radius:8px;">Pedir</button>
+        const feed = document.getElementById('product-feed');
+        const all = [...data.myProducts, ...this.catalog];
+
+        feed.innerHTML = all.map(p => `
+            <div class="p-card" style="background:white; margin:10px; padding:15px; border-radius:20px; box-shadow:0 4px 10px rgba(0,0,0,0.03);">
+                <div style="font-size:35px; margin-bottom:10px;">${p.i || '🏪'}</div>
+                <b style="display:block;">${p.n}</b>
+                <small style="color:#888;">${p.s}</small>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+                    <b style="color:var(--blue);">C$ ${p.p}</b>
+                    <button style="background:var(--bg); border:none; border-radius:50%; width:30px; height:30px; font-weight:bold;">+</button>
+                </div>
             </div>
         `).join('');
     },
 
-    sellerMode() {
-        const name = prompt("¿Qué vas a vender hoy?");
-        if(name) {
+    openSeller() {
+        const name = prompt("Nombre de tu producto:");
+        const price = prompt("Precio (C$):");
+        if(name && price) {
             const data = this.db.get();
-            data.products.push({n: name, p: 100, s: "Local", i: "🏪"});
+            data.myProducts.push({ n: name, p: price, s: "Mi Negocio", i: "🍱" });
+            data.cacaos += 50; // Recompensa por registrar
             this.db.save(data);
-            this.render();
-            alert("¡Producto registrado en tu memoria local!");
+            this.updateUI();
+            this.renderFeed();
+            alert("¡Felicidades! Ganaste 50 Cacaos por registrar un producto.");
         }
     },
 
-    action(msg) { alert(msg + " se activará en la versión final con servidor."); }
+    action(name) {
+        alert(name + ": Próximamente disponible en PinolApp.");
+    }
 };
 
 window.onload = () => App.init();

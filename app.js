@@ -1,35 +1,40 @@
 const App = {
     init() {
-        // Carga el nombre del usuario guardado
-        const savedName = localStorage.getItem('userName') || "Yader";
-        console.log("Sistema cargado para: " + savedName);
-    },
-
-    navigate(screenId, element) {
-        // 1. Apagar todas las pantallas
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        // Cargar datos de persistencia (LocalStorage)
+        this.user = JSON.parse(localStorage.getItem('PinolApp_User')) || { name: "Yader", stores: [] };
         
-        // 2. Encender la que tocaste
-        const target = document.getElementById(`view-${screenId}`);
-        if(target) target.classList.add('active');
+        setTimeout(() => {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+                document.getElementById('app').classList.remove('hidden');
+            }, 800);
+        }, 2800);
+    },
 
-        // 3. Iluminar el botón del menú
-        if(element) {
+    nav(viewId, el) {
+        // Cambiar de pantalla con efecto
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+
+        // Actualizar el menú inferior
+        if(el) {
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-            element.classList.add('active');
+            el.classList.add('active');
         }
     },
 
-    openSeller() {
-        const name = prompt("¿Cómo se llama tu negocio?");
-        if(name) {
-            // Persistencia: Se guarda en el teléfono
-            let myStores = JSON.parse(localStorage.getItem('myStores')) || [];
-            myStores.push({ name: name, date: new Date().toLocaleDateString() });
-            localStorage.setItem('myStores', JSON.stringify(myStores));
-            
-            alert(`¡Buenísimo! ${name} ya está registrado en PinolApp 🇳🇮`);
+    openSellerPanel() {
+        const storeName = prompt("🏬 Nombre de tu negocio local:");
+        if(storeName) {
+            this.user.stores.push({ name: storeName, date: new Date().toLocaleDateString() });
+            localStorage.setItem('PinolApp_User', JSON.stringify(this.user));
+            alert(`¡Nítido! Tu negocio "${storeName}" ha sido guardado exitosamente. 🇳🇮`);
         }
+    },
+
+    showFeature(name) {
+        alert(`${name}: Esta sección se activará al conectar con el servidor real de PinolApp.`);
     }
 };
 

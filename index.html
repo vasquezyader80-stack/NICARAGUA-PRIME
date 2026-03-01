@@ -3,83 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp Pro | Pedidos Ya Clone</title>
+    <title>PinolApp | Orgullo Nica 🇳🇮</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <div class="logo-wrap">
-            <h1 class="brand">Pinol<span>app</span></h1>
-            <div class="loader-track"><div class="loader-fill"></div></div>
-            <p class="slogan">100% ORGULLO NICARAGÜENSE 🇳🇮</p>
+    <div id="splash" class="splash">
+        <div class="splash-box">
+            <h1 class="logo-main">Pinol<span>app</span></h1>
+            <div class="loader-line"><div class="fill"></div></div>
+            <p class="tagline">100% ORGULLO NICARAGÜENSE</p>
         </div>
     </div>
 
-    <div id="main-app" class="app-hidden">
-        <section id="screen-home" class="screen active">
-            <header class="header-nica">
-                <div class="status-bar">
-                    <div class="location">📍 C. Principal Del Naranjo ▼</div>
-                    <div class="cacaos-pill"><span id="cacaos-val">500</span> 💰</div>
+    <div id="app" class="app-container hidden">
+        <section id="view-inicio" class="view active">
+            <header class="p-header">
+                <div class="top-info">
+                    <span class="loc">📍 Managua, Nicaragua ▼</span>
+                    <div class="cacaos-badge"><span id="cacaos-val">0</span> 💰</div>
                 </div>
-                <div class="search-container">
-                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="global-search">
-                    <button class="btn-s">🔍</button>
+                <div class="search-bar">
+                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="search">
+                    <button class="s-btn">🔍</button>
                 </div>
             </header>
 
-            <div class="main-scroll">
+            <main class="content">
                 <div class="cat-grid">
-                    <div class="cat-card c-pink" onclick="App.filter('comida')">
-                        <span class="emoji">🥘</span><b>Restaurantes</b>
-                    </div>
-                    <div class="cat-card c-green" onclick="App.filter('mercado')">
-                        <span class="emoji">🛒</span><b>Mercados</b>
-                    </div>
+                    <div class="cat-card c-rosa" onclick="App.nav('mercados')">🥘 <b>Fritangas</b></div>
+                    <div class="cat-card c-verde" onclick="App.nav('mercados')">🛒 <b>Mercados</b></div>
                 </div>
-
-                <div class="horizontal-pills">
-                    <div class="pill">🏍️ Mandaditos</div>
-                    <div class="pill">🛍️ Tiendas</div>
-                    <div class="pill">🍺 Bebidas</div>
+                <div class="quick-nav">
+                    <span>🏍️ Mandados</span>
+                    <span>🛍️ Tiendas</span>
+                    <span>🍺 Bebidas</span>
                 </div>
-
-                <div class="hero-banner">
-                    <h3>¡Nuevos Cupones!</h3>
-                    <p>Usa tus Cordobas en Fritangas.</p>
+                <div class="promo-box">
+                    <h3>¡Descuento Nica!</h3>
+                    <p>Usa tus Cacaos y ahorra en el envío.</p>
                 </div>
-
-                <h4 class="section-label">Lo más pedido en Managua</h4>
-                <div id="feed" class="product-feed"></div>
-            </div>
+                <div id="feed" class="feed-grid"></div>
+            </main>
         </section>
 
-        <section id="screen-profile" class="screen">
-            <div class="profile-banner">
-                <button class="back-icon" onclick="App.navigate('home')">←</button>
+        <section id="view-perfil" class="view">
+            <div class="profile-header">
+                <button class="back-btn" onclick="App.nav('inicio')">←</button>
                 <h2>Te damos la bienvenida</h2>
             </div>
-            
-            <div class="menu-wrap">
-                <div class="menu-box">
-                    <div class="menu-item" onclick="App.show('Login')">👤 <span>Registrarme / Iniciar sesión</span></div>
+            <div class="p-menu">
+                <div class="p-group">
+                    <div class="p-item" onclick="App.action('Login')">👤 Registrarme / Iniciar sesión</div>
                 </div>
-
-                <div class="menu-box">
-                    <div class="menu-item" onclick="App.show('Ayuda')">🎧 <span>Ayuda</span> <i class="arr">›</i></div>
-                    <div class="menu-item" onclick="App.show('Legal')">📜 <span>Información legal</span> <i class="arr">›</i></div>
-                    <div class="menu-item nica-blue" onclick="App.sellerPanel()">🏠 <span>Registrar mi negocio</span> <i class="arr">›</i></div>
+                <div class="p-group">
+                    <div class="p-item" onclick="App.action('Ayuda')">🎧 Ayuda <span>›</span></div>
+                    <div class="p-item" onclick="App.action('Legal')">📜 Información legal <span>›</span></div>
+                    <div class="p-item b-blue" onclick="App.sellerMode()">🏠 Registrar mi negocio <span>›</span></div>
                 </div>
             </div>
         </section>
 
-        <nav class="dock-bar">
-            <div class="tab active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
-            <div class="tab" onclick="App.navigate('mercado', this)">🛒<span>Mercado</span></div>
-            <div class="tab" onclick="App.navigate('promos', this)">%<span>Promos</span></div>
-            <div class="tab" onclick="App.navigate('profile', this)">👤<span>Mi Perfil</span></div>
+        <nav class="dock">
+            <div class="tab active" onclick="App.nav('inicio', this)">🏠<span>Inicio</span></div>
+            <div class="tab" onclick="App.action('Mercado')">🛒<span>Mercado</span></div>
+            <div class="tab" onclick="App.action('Promos')">%<span>Promos</span></div>
+            <div class="tab" onclick="App.nav('perfil', this)">👤<span>Perfil</span></div>
         </nav>
     </div>
 

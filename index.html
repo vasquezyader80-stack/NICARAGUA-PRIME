@@ -2,74 +2,84 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Orgullo Nica 🇳🇮</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>PinolApp | 100% Nica 🇳🇮</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="splash-box">
-            <h1 class="logo-main">Pinol<span>app</span></h1>
-            <div class="loader-line"><div class="fill"></div></div>
+        <div class="logo-box">
+            <h1 class="logo-text">Pinol<span>app</span></h1>
+            <div class="loader-bg"><div class="loader-fill"></div></div>
             <p class="tagline">100% ORGULLO NICARAGÜENSE</p>
         </div>
     </div>
 
-    <div id="app" class="app-container hidden">
+    <div id="app" class="hidden">
         <section id="view-inicio" class="view active">
-            <header class="p-header">
-                <div class="top-info">
-                    <span class="loc">📍 Managua, Nicaragua ▼</span>
-                    <div class="cacaos-badge"><span id="cacaos-val">0</span> 💰</div>
+            <header class="main-header">
+                <div class="top-bar">
+                    <div class="loc-pill">📍 Managua, Nicaragua ▼</div>
+                    <div class="currency-pill"><span id="cacaos-display">0</span> 💰</div>
                 </div>
-                <div class="search-bar">
-                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="search">
-                    <button class="s-btn">🔍</button>
+                <div class="search-container">
+                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="main-search">
+                    <button class="btn-search">🔍</button>
                 </div>
             </header>
 
-            <main class="content">
-                <div class="cat-grid">
-                    <div class="cat-card c-rosa" onclick="App.nav('mercados')">🥘 <b>Fritangas</b></div>
-                    <div class="cat-card c-verde" onclick="App.nav('mercados')">🛒 <b>Mercados</b></div>
+            <main class="body-content">
+                <div class="promo-card">
+                    <div class="promo-info">
+                        <h2>¡Descuento Nica!</h2>
+                        <p>Ahorra con tus Cacaos acumulados.</p>
+                    </div>
                 </div>
-                <div class="quick-nav">
-                    <span>🏍️ Mandados</span>
-                    <span>🛍️ Tiendas</span>
-                    <span>🍺 Bebidas</span>
+
+                <div class="grid-cats">
+                    <div class="cat-box pink" onclick="App.nav('mercado')">🍱 <span>Restaurantes</span></div>
+                    <div class="cat-box green" onclick="App.nav('mercado')">🛒 <span>Mercados</span></div>
                 </div>
-                <div class="promo-box">
-                    <h3>¡Descuento Nica!</h3>
-                    <p>Usa tus Cacaos y ahorra en el envío.</p>
+
+                <div class="pills-scroll">
+                    <div class="pill">🏍️ Mandaditos</div>
+                    <div class="pill">🛍️ Tiendas</div>
+                    <div class="pill">🍺 Bebidas</div>
                 </div>
-                <div id="feed" class="feed-grid"></div>
+
+                <h3 class="section-title">Populares en tu zona</h3>
+                <div id="product-feed" class="product-feed"></div>
             </main>
         </section>
 
         <section id="view-perfil" class="view">
-            <div class="profile-header">
+            <div class="hero-profile">
                 <button class="back-btn" onclick="App.nav('inicio')">←</button>
                 <h2>Te damos la bienvenida</h2>
+                <p id="user-subtitle">Yader Vasquez • Cliente Pro</p>
             </div>
-            <div class="p-menu">
-                <div class="p-group">
-                    <div class="p-item" onclick="App.action('Login')">👤 Registrarme / Iniciar sesión</div>
+
+            <div class="menu-container">
+                <div class="menu-card">
+                    <div class="menu-item" onclick="App.action('Login')">👤 <span>Registrarme / Iniciar sesión</span></div>
                 </div>
-                <div class="p-group">
-                    <div class="p-item" onclick="App.action('Ayuda')">🎧 Ayuda <span>›</span></div>
-                    <div class="p-item" onclick="App.action('Legal')">📜 Información legal <span>›</span></div>
-                    <div class="p-item b-blue" onclick="App.sellerMode()">🏠 Registrar mi negocio <span>›</span></div>
+
+                <div class="menu-card">
+                    <div class="menu-item" onclick="App.action('Ayuda')">🎧 <span>Ayuda</span> <span class="arrow">›</span></div>
+                    <div class="menu-item" onclick="App.action('Legal')">📜 <span>Información legal</span> <span class="arrow">›</span></div>
+                    <div class="menu-item nica-blue" onclick="App.openSeller()">🏠 <span>Registrar mi negocio</span> <span class="arrow">›</span></div>
                 </div>
             </div>
         </section>
 
         <nav class="dock">
-            <div class="tab active" onclick="App.nav('inicio', this)">🏠<span>Inicio</span></div>
-            <div class="tab" onclick="App.action('Mercado')">🛒<span>Mercado</span></div>
-            <div class="tab" onclick="App.action('Promos')">%<span>Promos</span></div>
-            <div class="tab" onclick="App.nav('perfil', this)">👤<span>Perfil</span></div>
+            <div class="dock-tab active" id="tab-inicio" onclick="App.nav('inicio', this)">🏠<span>Inicio</span></div>
+            <div class="dock-tab" onclick="App.action('Mercados')">🛒<span>Mercados</span></div>
+            <div class="dock-tab" onclick="App.action('Promos')">%<span>Promos</span></div>
+            <div class="dock-tab" id="tab-perfil" onclick="App.nav('perfil', this)">👤<span>Mi perfil</span></div>
         </nav>
     </div>
 

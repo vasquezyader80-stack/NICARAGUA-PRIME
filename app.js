@@ -1,28 +1,41 @@
-// Función para enviar un producto nuevo al servidor
-async function registrarProducto() {
-    const producto = {
-        nombre: document.getElementById('nombre').value,
-        precio: document.getElementById('precio').value,
-        vendedor: "Vendedor de Managua", // Esto vendrá del perfil
-        cacaos: 10 // Puntos que genera
-    };
-
+// Función para cargar productos desde tu API
+async function cargarProductos() {
     try {
-        const response = await fetch('/api/productos', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(producto)
-        });
+        const res = await fetch('/api/productos');
+        const productos = await res.json();
+        
+        const contenedor = document.getElementById('lista-productos');
+        contenedor.innerHTML = ''; // Limpiamos
 
-        if (response.ok) {
-            // También lo guardamos localmente como pediste
-            let locales = JSON.parse(localStorage.getItem('productos_registrados')) || [];
-            locales.push(producto);
-            localStorage.setItem('productos_registrados', JSON.stringify(locales));
-            
-            alert("¡Producto registrado en la nube y en tu celular!");
-        }
-    } catch (error) {
-        console.error("Error al conectar con el server", error);
+        productos.forEach(p => {
+            contenedor.innerHTML += `
+                <div class="card-producto">
+                    <img src="${p.imagen || 'placeholder.png'}" alt="${p.nombre}">
+                    <div class="info">
+                        <h3>${p.nombre}</h3>
+                        <p class="precio">C$ ${p.precio}</p>
+                        <button onclick="realizarPedido(${p.id}, ${p.precio})" class="btn-pedir">
+                            Pedir ahora
+                        </button>
+                    </div>
+                </div>
+            `;
+        });
+    } catch (e) {
+        console.error("Error cargando productos pinoleros", e);
+    }
+}
+
+// Función para comprar y usar Cacaos
+function realizarPedido(id, precio) {
+    let misCacaos = parseInt(localStorage.getItem('user_cacaos')) || 500;
+    
+    if (misCacaos >= 10) { // Ejemplo: cada pedido da 10 cacaos de descuento
+        misCacaos -= 10;
+        localStorage.setItem('user_cacaos', misCacaos);
+        alert(`¡Pedido realizado! Has usado 10 Cacaos. Te quedan: ${misCacaos}`);
+        location.reload(); // Para actualizar el contador en la UI
+    } else {
+        alert("¡No tienes suficientes Cacaos! Sigue comprando para acumular.");
     }
 }

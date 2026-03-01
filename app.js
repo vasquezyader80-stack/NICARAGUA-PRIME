@@ -1,50 +1,44 @@
 const App = {
     init() {
-        // Cargar datos de LocalStorage
-        this.loadStorage();
-
-        // Ocultar Splash tras carga
+        // Simular carga profesional
         setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-            }, 500);
-        }, 2800);
+            document.getElementById('splash').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+        }, 3000);
+
+        // Cargar nombre si existe
+        this.data = JSON.parse(localStorage.getItem('PinolUserData')) || { name: "Invitado", stores: [] };
     },
 
-    loadStorage() {
-        const user = localStorage.getItem('user_p') || "Nica User";
-        console.log("Bienvenido de nuevo, " + user);
-    },
+    navigate(viewId, element) {
+        // Cambiar vista
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(`view-${viewId}`).classList.add('active');
 
-    navigate(view, el) {
-        // 1. Ocultar todas las vistas
-        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
-        
-        // 2. Mostrar la elegida
-        document.getElementById(`view-${view}`).classList.add('active');
-
-        // 3. Activar Tab visualmente
-        if(el) {
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
+        // Actualizar Tabs
+        if (element) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            element.classList.add('active');
         }
     },
 
-    sellerPanel() {
-        const bizName = prompt("Nombre de tu negocio:");
-        if(bizName) {
-            // Persistencia de datos
-            let myStores = JSON.parse(localStorage.getItem('my_stores')) || [];
-            myStores.push(bizName);
-            localStorage.setItem('my_stores', JSON.stringify(myStores));
-            alert(`¡Felicidades! ${bizName} ahora está registrado en PinolApp.`);
+    action(type) {
+        // Esto le da "vida" a las opciones muertas
+        alert(`${type}: Esta función estará disponible en la próxima actualización local.`);
+    },
+
+    registerBusiness() {
+        const name = prompt("Ingrese el nombre de su negocio local:");
+        if (name) {
+            this.data.stores.push({ name: name, date: new Date().toLocaleDateString() });
+            localStorage.setItem('PinolUserData', JSON.stringify(this.data));
+            alert(`¡Éxito! El negocio "${name}" ha sido guardado en la memoria del teléfono.`);
         }
     },
 
-    openHelp() {
-        alert("Conectando con soporte de PinolApp 🇳🇮...");
+    quickFilter(cat) {
+        alert("Filtrando por: " + cat);
+        // Aquí podrías filtrar los productos locales
     }
 };
 

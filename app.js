@@ -1,80 +1,106 @@
 const App = {
-    // Memoria para recordar nombre y productos registrados
-    db: {
+    data: {
         get: () => {
-            const saved = localStorage.getItem('PinolApp_Yader');
-            return saved ? JSON.parse(saved) : {
-                user: "Yader Vasquez",
-                cacaos: 500,
-                customProducts: []
-            };
+            const db = localStorage.getItem('Pinol_Store_V4');
+            return db ? JSON.parse(db) : { name: "Yader Vasquez", cacaos: 150, myItems: [] };
         },
-        save: (data) => localStorage.setItem('PinolApp_Yader', JSON.stringify(data))
+        save: (obj) => localStorage.setItem('Pinol_Store_V4', JSON.stringify(obj))
     },
 
-    // Datos por defecto (Como en tu foto)
     catalog: [
-        { id: 1, n: "Nacatamal Especial", p: 120, s: "Delicias Nicas", i: "🫔", c: "comida" },
-        { id: 2, n: "Toña 12oz (Pack 6)", p: 260, s: "Super Express", i: "🍺", c: "bebida" },
-        { id: 3, n: "Queso de Exportación (Lb)", p: 95, s: "Lácteos Chontales", i: "🧀", c: "super" },
-        { id: 4, n: "Vigorón Mixto", p: 140, s: "El Kiosko", i: "🥗", c: "comida" }
+        { n: "Nacatamal Especial", p: 120, s: "Delicias Nicas", i: "🫔", c: "comida" },
+        { n: "Toña 12oz (Pack 6)", p: 260, s: "Super Express", i: "🍺", c: "bebida" },
+        { n: "Queso Seco (Lb)", p: 95, s: "Lácteos Chontales", i: "🧀", c: "super" },
+        { n: "Vigorón Mixto", p: 140, s: "El Kiosko", i: "🥗", c: "comida" }
     ],
 
     init() {
-        // Simular Splash de la foto
+        const state = this.data.get();
+        document.getElementById('prof-name').innerText = state.name;
+        document.getElementById('prof-cacaos').innerText = `💰 ${state.cacaos} Cacaos acumulados`;
+
         setTimeout(() => {
             document.getElementById('splash').style.display = 'none';
             document.getElementById('app').style.display = 'block';
-        }, 2200);
+        }, 2500);
 
-        this.render();
+        this.renderHome();
     },
 
-    render(cat = 'all') {
-        const data = this.db.get();
+    navigate(view) {
+        // Ocultar todas las pantallas
+        document.querySelectorAll('.main-view').forEach(v => v.classList.remove('active'));
+        // Mostrar la elegida
+        document.getElementById(`view-${view}`).classList.add('active');
+
+        // Actualizar Dock
+        document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
+        if(view === 'home') document.getElementById('btn-home').classList.add('active');
+        if(view === 'profile') document.getElementById('btn-profile').classList.add('active');
+        
+        if(view === 'home') this.renderHome();
+    },
+
+    renderHome(filter = 'all') {
+        const state = this.data.get();
         const grid = document.getElementById('product-grid');
-        
-        // Mezclamos productos oficiales + los que vos registres como vendedor
-        let all = [...data.customProducts, ...this.catalog];
-        
-        if(cat !== 'all') all = all.filter(p => p.c === cat);
+        let all = [...state.myItems, ...this.catalog];
+
+        if(filter !== 'all') all = all.filter(p => p.c === filter);
 
         grid.innerHTML = all.map(p => `
             <div class="card-n">
                 <span class="free-shipping">Envío Gratis</span>
                 <div class="p-icon">${p.i}</div>
-                <div style="font-weight:bold; margin-top:5px;">${p.n}</div>
-                <div style="font-size:12px; color:gray;">${p.s}</div>
+                <b>${p.n}</b><br>
+                <small>${p.s}</small>
                 <div class="price-tag">
                     <b>C$ ${p.p}</b>
-                    <button class="add-btn" onclick="alert('Agregado al carrito')">+</button>
+                    <button class="add-btn">+</button>
                 </div>
             </div>
         `).join('');
     },
 
-    filter(cat) {
-        this.render(cat);
+    openSeller() {
+        this.navigate('seller');
+        this.renderSellerList();
     },
 
-    nav(target) {
-        // Aquí podés agregar el panel de perfil para registrar productos
-        if(target === 'profile') {
-            const name = prompt("Registrar producto (Nombre):");
-            if(name) {
-                const data = this.db.get();
-                data.customProducts.push({
-                    id: Date.now(),
-                    n: name,
-                    p: 100,
-                    s: "Mi Negocio",
-                    i: "🏪",
-                    c: "comida"
-                });
-                this.db.save(data);
-                this.render();
-            }
-        }
+    registerProduct() {
+        const n = document.getElementById('reg-name').value;
+        const p = document.getElementById('reg-price').value;
+        const c = document.getElementById('reg-cat').value;
+
+        if(!n || !p) return alert("Completa los datos");
+
+        const state = this.data.get();
+        state.myItems.push({ n, p, c, s: "Mi Negocio", i: "🏪" });
+        this.data.save(state);
+
+        alert("¡Producto publicado!");
+        this.renderSellerList();
+    },
+
+    renderSellerList() {
+        const state = this.data.get();
+        const list = document.getElementById('my-list');
+        list.innerHTML = state.myItems.map(p => `<div>✅ ${p.n} - C$ ${p.p}</div>`).join('');
+    },
+
+    search(val) {
+        const state = this.data.get();
+        const all = [...state.myItems, ...this.catalog];
+        const filtered = all.filter(p => p.n.toLowerCase().includes(val.toLowerCase()));
+        
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = filtered.map(p => `
+            <div class="card-n">
+                <div class="p-icon">${p.i}</div>
+                <b>${p.n}</b>
+                <div class="price-tag"><b>C$ ${p.p}</b></div>
+            </div>
+        `).join('');
     }
 };
 

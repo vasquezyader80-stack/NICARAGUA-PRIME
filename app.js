@@ -1,36 +1,50 @@
 const App = {
     init() {
-        // Cargar datos del usuario
-        const userData = JSON.parse(localStorage.getItem('user_n')) || { name: "Yader", cacaos: 100 };
-        
-        // Animación Splash
+        // Cargar datos de LocalStorage
+        this.loadStorage();
+
+        // Ocultar Splash tras carga
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
             }, 500);
-        }, 2500);
+        }, 2800);
     },
 
-    navigate(viewId, el) {
-        // Cambiar Pantallas
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
+    loadStorage() {
+        const user = localStorage.getItem('user_p') || "Nica User";
+        console.log("Bienvenido de nuevo, " + user);
+    },
 
-        // Cambiar estado de Tabs
+    navigate(view, el) {
+        // 1. Ocultar todas las vistas
+        document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+        
+        // 2. Mostrar la elegida
+        document.getElementById(`view-${view}`).classList.add('active');
+
+        // 3. Activar Tab visualmente
         if(el) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
     },
 
-    openBusiness() {
-        const prod = prompt("Nombre del producto local (Nacatamal, Vigorón, etc):");
-        if(prod) {
-            alert(`¡Excelente! Tu producto "${prod}" ha sido registrado en la memoria del teléfono.`);
-            // Aquí guardaríamos en LocalStorage como pediste
+    sellerPanel() {
+        const bizName = prompt("Nombre de tu negocio:");
+        if(bizName) {
+            // Persistencia de datos
+            let myStores = JSON.parse(localStorage.getItem('my_stores')) || [];
+            myStores.push(bizName);
+            localStorage.setItem('my_stores', JSON.stringify(myStores));
+            alert(`¡Felicidades! ${bizName} ahora está registrado en PinolApp.`);
         }
+    },
+
+    openHelp() {
+        alert("Conectando con soporte de PinolApp 🇳🇮...");
     }
 };
 

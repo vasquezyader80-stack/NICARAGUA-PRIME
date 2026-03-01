@@ -1,44 +1,42 @@
 :root {
-    --blue-nica: #0052cc;
-    --red-nica: #ff004c;
-    --gray-f: #f6f7f9;
+    --primary: #0052cc; /* Azul Pinolero */
+    --accent: #d00040;  /* Rojo */
+    --bg: #f5f7fa;
+    --white: #ffffff;
 }
 
-body { font-family: 'Outfit', sans-serif; margin: 0; background: var(--gray-f); color: #222; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); overflow: hidden; }
 
-/* Splash Screen Profesional */
-.splash { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-.logo-text { font-size: 52px; font-weight: 800; color: var(--blue-nica); margin: 0; }
-.logo-text span { color: var(--red-nica); }
-.loader-wrapper { width: 180px; height: 5px; background: #eee; border-radius: 10px; margin: 20px auto; overflow: hidden; }
-.loader-progress { width: 0%; height: 100%; background: var(--blue-nica); animation: load 2.5s forwards; }
+/* Splash Estilo Video */
+.splash { position: fixed; inset: 0; background: var(--white); z-index: 1000; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+.logo { font-size: 52px; font-weight: 800; color: var(--primary); margin: 0; }
+.logo span { color: var(--accent); }
+.progress-container { width: 200px; height: 5px; background: #eee; border-radius: 10px; margin-top: 25px; overflow: hidden; }
+.progress-bar { width: 0%; height: 100%; background: var(--primary); animation: load 2.5s forwards; }
 @keyframes load { to { width: 100%; } }
 
-/* Vistas con transiciones suaves */
-.view { display: none; height: 100vh; animation: slideUp 0.4s ease-out; }
-.view.active { display: block; }
-@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+/* Estructura de Screens */
+.screen { display: none; height: 100vh; animation: fadeIn 0.4s; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Header Azul Estilo Peya */
-.header-main { background: var(--blue-nica); padding: 25px 20px 45px; border-radius: 0 0 30px 30px; color: white; }
-.search-container { background: white; border-radius: 15px; display: flex; padding: 12px 18px; margin-top: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
-.search-container input { border: none; width: 100%; outline: none; font-size: 16px; font-family: inherit; }
+/* Header PedidosYa Pro */
+.main-header { background: var(--primary); padding: 25px 20px 40px; border-radius: 0 0 30px 30px; color: white; }
+.top-row { display: flex; justify-content: space-between; align-items: center; }
+.search-wrapper { background: white; border-radius: 15px; display: flex; padding: 12px; margin-top: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+.search-wrapper input { border: none; width: 100%; outline: none; font-size: 16px; margin-left: 10px; }
 
-/* Menú de Perfil Mejorado */
-.profile-hero-blue { background: var(--blue-nica); padding: 50px 25px; color: white; border-radius: 0 0 0 100px; }
-.menu-list-container { margin-top: -30px; padding: 0 15px; }
-.menu-group { background: white; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; }
-.menu-item { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f9f9f9; transition: 0.3s; }
-.menu-item:active { background: #f0f0f0; }
-.m-icon { font-size: 24px; margin-right: 15px; }
-.m-content { flex: 1; font-size: 16px; }
-.m-arrow { color: #ccc; font-size: 22px; }
-.special-blue { color: var(--blue-nica); }
+/* Product Cards */
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+.card { background: white; border-radius: 20px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.card-icon { font-size: 40px; margin: 10px 0; }
+.price-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.add-btn { background: var(--bg); border: none; border-radius: 8px; width: 30px; height: 30px; font-weight: bold; }
 
-/* Tab Bar Estilo App Real */
-.tab-bar { position: fixed; bottom: 0; width: 100%; display: flex; background: white; border-top: 1px solid #eee; padding: 12px 0 25px; }
-.tab-item { flex: 1; text-align: center; color: #888; font-size: 12px; transition: 0.3s; }
-.tab-item.active { color: var(--blue-nica); font-weight: 700; transform: translateY(-3px); }
-.t-icon { font-size: 22px; margin-bottom: 4px; }
+/* Tab Bar */
+.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; padding: 10px 0 25px; }
+.tab { flex: 1; text-align: center; color: #888; transition: 0.3s; }
+.tab.active { color: var(--primary); font-weight: bold; transform: translateY(-5px); }
 
-.hidden { display: none !important; }
+.fade-out { opacity: 0; transition: 0.5s; }
+.hidden { display: none; }

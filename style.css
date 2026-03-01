@@ -1,38 +1,37 @@
-:root { --blue: #0047AB; --white: #ffffff; --bg: #F4F7F9; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); overflow: hidden; }
+:root { --blue: #0047AB; --red: #E31C44; --bg: #F7F7F7; --white: #FFFFFF; }
+
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: #333; overflow: hidden; }
 
 /* Splash */
-.splash { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-.splash.hide { opacity: 0; visibility: hidden; }
-.logo { font-size: 50px; color: var(--blue); font-weight: 800; }
-.logo span { color: #E31C44; }
+.splash { position: fixed; inset: 0; background: var(--white); z-index: 1000; display: flex; justify-content: center; align-items: center; transition: 0.6s; }
+.logo { font-size: 55px; font-weight: 800; color: var(--blue); margin: 0; }
+.logo span { color: var(--red); }
+.loader-line { width: 180px; height: 4px; background: #eee; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+.fill { width: 0%; height: 100%; background: var(--blue); animation: load 2.5s forwards; }
+@keyframes load { to { width: 100%; } }
 
-/* Header */
-.main-nav { background: var(--blue); padding: 30px 20px; border-radius: 0 0 25px 25px; color: white; }
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-.badge { background: rgba(255,255,255,0.2); padding: 5px 12px; border-radius: 20px; font-size: 12px; }
-.search-box input { width: 100%; padding: 12px; border-radius: 12px; border: none; outline: none; box-sizing: border-box; }
+/* App & Screens */
+.hidden { display: none; }
+.screen { display: none; height: 100vh; overflow-y: auto; padding: 20px 15px 120px; box-sizing: border-box; }
+.screen.active { display: block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-/* Vistas y Cards */
-.view { display: none; height: 100vh; overflow-y: auto; padding: 20px 15px 120px; box-sizing: border-box; }
-.view.active { display: block; }
+/* Header Premium */
+.app-header { background: var(--blue); padding: 40px 20px 45px; border-radius: 0 0 30px 30px; color: white; }
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.cart-trigger { background: rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-weight: bold; }
+.search-wrap input { width: 100%; padding: 14px; border-radius: 15px; border: none; outline: none; font-size: 16px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
 
-.grid-productos { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-.p-card { background: white; padding: 15px; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.p-cat { font-size: 10px; color: #888; }
-.p-row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
-.p-row button { background: var(--blue); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; }
-
-/* Formularios de Afiliado */
-.admin-panel { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-.form-group label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 14px; }
-.form-group input, .form-group select { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; border-radius: 10px; box-sizing: border-box;}
-.btn-primary { width: 100%; background: var(--blue); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+/* Tarjetas de Producto */
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+.p-card { background: var(--white); padding: 15px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; }
+.p-card .p-tag { font-size: 10px; background: #E8F0FE; color: var(--blue); padding: 3px 8px; border-radius: 5px; font-weight: bold; }
+.p-card h4 { margin: 10px 0 5px; font-size: 15px; }
+.p-card .price { color: var(--blue); font-weight: 800; font-size: 17px; }
+.add-btn { position: absolute; bottom: 15px; right: 15px; background: var(--blue); color: white; border: none; width: 32px; height: 32px; border-radius: 50%; font-size: 20px; cursor: pointer; }
 
 /* Dock */
-.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 15px 0 30px; border-top: 1px solid #eee; }
-.tab { flex: 1; text-align: center; font-size: 11px; color: #888; cursor: pointer; }
-.tab.active { color: var(--blue); font-weight: bold; }
-.tab span { display: block; margin-top: 5px; }
-
-.hidden { display: none; }
+.dock-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 12px 0 30px; border-top: 1px solid #EEE; z-index: 100; }
+.tab { flex: 1; text-align: center; color: #999; font-size: 11px; font-weight: 600; }
+.tab.active { color: var(--blue); transform: translateY(-3px); }
+.tab span { display: block; margin-top: 4px; }

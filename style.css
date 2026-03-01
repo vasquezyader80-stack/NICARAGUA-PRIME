@@ -1,42 +1,89 @@
 :root {
     --nica-blue: #0056b3;
-    --nica-red: #e60045;
-    --bg-light: #f8f9fa;
+    --peya-gray: #f7f7f7; /* El fondo gris claro de la app original */
+    --shadow: 0 2px 10px rgba(0,0,0,0.08);
 }
 
-body { font-family: 'Segoe UI', sans-serif; margin: 0; background: white; overflow: hidden; }
+body { 
+    font-family: 'Plus Jakarta Sans', sans-serif; 
+    margin: 0; 
+    background-color: var(--peya-gray); /* Esto quita lo 'raro' */
+    color: #333;
+}
 
-/* Splash Screen (Fiel a tu video) */
-.splash { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 0.5s; }
-.logo-nica { font-size: 50px; color: var(--nica-blue); margin: 0; }
-.logo-nica span { color: var(--nica-red); }
-.progress-container { width: 200px; height: 4px; background: #eee; border-radius: 10px; margin-top: 20px; overflow: hidden; }
-.progress-bar { width: 0%; height: 100%; background: var(--nica-blue); animation: load 2.5s forwards; }
-@keyframes load { to { width: 100%; } }
+/* Header con curva sutil */
+.header-blue {
+    background: var(--nica-blue);
+    padding: 25px 20px 35px 20px;
+    color: white;
+    border-radius: 0 0 24px 24px;
+}
 
-/* App Views */
-.page { display: none; height: 100vh; width: 100%; position: absolute; background: white; }
-.page.active { display: block; animation: fadeIn 0.3s; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* Buscador con sombra para que resalte */
+.search-box {
+    background: white;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    margin-top: 20px;
+    box-shadow: var(--shadow);
+}
 
-/* Headers */
-.header-blue { background: var(--nica-blue); padding: 20px; color: white; border-radius: 0 0 20px 20px; }
-.search-box { background: white; border-radius: 50px; display: flex; align-items: center; padding: 10px 15px; margin-top: 15px; color: #888; }
-.search-box input { border: none; outline: none; margin-left: 10px; width: 100%; }
+.search-box input {
+    border: none;
+    outline: none;
+    width: 100%;
+    font-size: 15px;
+}
 
-/* Perfil (Tu captura) */
-.profile-hero { background: var(--nica-blue); padding: 40px 20px; color: white; border-radius: 0 0 0 100px; position: relative; }
-.btn-circle { background: white; border: none; width: 35px; height: 35px; border-radius: 50%; color: var(--nica-blue); margin-bottom: 15px; }
-.menu-list { padding: 10px; }
-.menu-item { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f0f0f0; color: #333; font-weight: 500; }
-.menu-item i:first-child { width: 30px; font-size: 20px; margin-right: 15px; color: #555; }
-.menu-item .arrow { margin-left: auto; color: #ccc; }
-.menu-item.special { color: var(--nica-blue); }
+/* Categorías: Ahora son tarjetas blancas sobre fondo gris */
+.categories-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 20px;
+    margin-top: -20px; /* Para que muerdan un poco el header */
+}
 
-/* Tab Bar */
-.tab-bar { position: fixed; bottom: 0; width: 100%; display: flex; background: white; border-top: 1px solid #eee; padding: 10px 0; }
-.tab { flex: 1; text-align: center; color: #888; font-size: 12px; transition: 0.2s; }
-.tab i { display: block; font-size: 20px; margin-bottom: 3px; }
-.tab.active { color: var(--nica-blue); transform: translateY(-3px); }
+.cat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+}
 
-.hidden { display: none; }
+.cat-card:active { transform: scale(0.95); }
+
+.cat-card img { width: 55px; margin-bottom: 10px; }
+
+/* Menú de Perfil: Limpio y organizado */
+.menu-group {
+    background: white;
+    margin: 15px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid #f2f2f2;
+    cursor: pointer;
+}
+
+.menu-item:last-child { border-bottom: none; }
+
+.menu-item i { 
+    font-size: 20px; 
+    width: 30px; 
+    color: var(--nica-blue); 
+}
+
+.menu-item span { flex: 1; font-weight: 500; }
+
+.arrow-right { color: #ccc; font-size: 12px; }

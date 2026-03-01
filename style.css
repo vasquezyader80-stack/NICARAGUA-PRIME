@@ -1,140 +1,42 @@
-:root { 
-    --peya-red: #e0004d;
-    --bg-fritanga: #ffebee;
-    --bg-super: #e8f5e9;
-    --bg-bebidas: #e3f2fd;
-    --bg-mandaditos: #fff3e0;
-    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+:root {
+    --n-pink: #fff0f3;
+    --n-green: #f0fff4;
+    --n-blue: #f0f7ff;
+    --n-orange: #fffaf0;
+    --n-text: #333;
 }
 
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    margin: 0;
-    background-color: #fff;
-    color: #333;
-}
+body { font-family: sans-serif; margin: 0; background: #fff; color: var(--n-text); }
 
-/* SPLASH SCREEN (Como tu foto 1 y 2) */
-.splash {
-    position: fixed;
-    inset: 0;
-    background: white;
-    z-index: 10000;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.5s ease;
-}
-
-.loader-bar {
-    width: 200px;
-    height: 4px;
-    background: #eee;
-    margin-top: 20px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.progress {
-    width: 0%;
-    height: 100%;
-    background: #0055b8; /* El azul de tu barra en la foto 2 */
-    animation: load 2s forwards;
-}
-
+/* Splash Estilo Foto 1 */
+.splash { position: fixed; inset: 0; background: white; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.logo-text { font-size: 45px; color: #004a99; margin: 0; }
+.logo-text span { color: #d00040; }
+.loader-container { width: 180px; height: 3px; background: #eee; margin-top: 20px; border-radius: 5px; overflow: hidden; }
+.loader-progress { width: 0%; height: 100%; background: #004a99; animation: load 2s forwards; }
 @keyframes load { to { width: 100%; } }
 
-/* HEADER Y BUSCADOR */
-.main-header {
-    padding: 15px;
-    position: sticky;
-    top: 0;
-    background: white;
-    z-index: 100;
-}
+/* Header y Buscador como la foto */
+.header-n { padding: 15px; border-bottom: 1px solid #f0f0f0; }
+.search-wrap { margin-top: 10px; border: 1px solid #ccc; padding: 8px; border-radius: 4px; }
+.search-wrap input { border: none; width: 100%; outline: none; font-size: 15px; }
 
-.search-box {
-    background: #f7f7f7;
-    border-radius: 8px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-    border: 1px solid #eee;
-}
+/* Categorías Estilo Foto 1 */
+.cat-row { padding: 12px 15px; margin-bottom: 2px; font-weight: bold; cursor: pointer; }
+.n-pink { background: var(--n-pink); }
+.n-green { background: var(--n-green); }
+.n-blue { background: var(--n-blue); }
+.n-orange { background: var(--n-orange); }
 
-.search-box input {
-    border: none;
-    background: transparent;
-    width: 100%;
-    outline: none;
-    font-size: 14px;
-}
+/* Grid de productos */
+.grid-n { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 15px; }
+.card-n { position: relative; }
+.free-shipping { color: #666; font-size: 11px; display: block; margin-bottom: 5px; }
+.p-icon { font-size: 24px; }
+.price-tag { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.add-btn { border: 1px solid #ddd; background: white; border-radius: 4px; width: 22px; height: 22px; cursor: pointer; }
 
-/* CATEGORIAS (Como tu foto 3) */
-.cat-list {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 15px;
-}
-
-.cat-row {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    margin-bottom: 5px;
-    border-radius: 8px;
-    font-weight: 600;
-}
-
-/* PRODUCTOS */
-.product-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    padding: 15px;
-}
-
-.card {
-    border: 1px solid #f0f0f0;
-    border-radius: 12px;
-    padding: 12px;
-    position: relative;
-    box-shadow: var(--shadow);
-}
-
-.badge-free {
-    font-size: 10px;
-    color: #666;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.price-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-}
-
-.add-btn {
-    background: #f3f3f3;
-    border: none;
-    border-radius: 4px;
-    width: 24px;
-    height: 24px;
-    font-weight: bold;
-}
-
-/* NAVEGACIÓN INFERIOR */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: white;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-}
+/* Dock inferior */
+.dock-n { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #eee; background: white; }
+.dock-item { text-align: center; color: #888; font-size: 12px; }
+.dock-item.active { color: #d00040; }

@@ -3,117 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp 🇳🇮</title>
+    <title>PinolApp 2026 | El Orgullo de Nicaragua</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="logo-container">
-            <h1 class="logo-text">Pinol<span>app</span></h1>
-            <div class="loader-wrapper">
-                <div class="loader-progress"></div>
-            </div>
-            <p class="n-brand">100% ORGULLO NICARAGÜENSE</p>
+        <div class="splash-body">
+            <h1 class="logo">Pinol<span>app</span></h1>
+            <div class="progress-container"><div class="progress-bar"></div></div>
+            <p class="tagline">100% ORGULLO NICARAGÜENSE 🇳🇮</p>
         </div>
+        <p class="dev-sign">Designed by Yader Vasquez & Gemini AI</p>
     </div>
 
     <div id="app" class="hidden">
-        <section id="inicio" class="view active">
-            <div class="header-main">
-                <div class="loc-bar">
-                    <span class="icon">📍</span>
-                    <div class="loc-info">
-                        <small>Entregar en</small>
-                        <b id="user-city">Managua, Nicaragua</b>
+        <section id="view-home" class="screen active">
+            <header class="main-header">
+                <div class="top-row">
+                    <div class="location-chip">📍 Managua, Nicaragua ▼</div>
+                    <div class="user-stats"><span id="cacaos-count">0</span> 💰</div>
+                </div>
+                <div class="search-wrapper">
+                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="search-input">
+                    <button class="search-trigger">🔍</button>
+                </div>
+            </header>
+
+            <main class="scrollable">
+                <div class="categories-grid">
+                    <div class="cat-item pink" onclick="App.filter('fritanga')">🥘<span>Fritangas</span></div>
+                    <div class="cat-item green" onclick="App.filter('super')">🛒<span>Súper</span></div>
+                    <div class="cat-item blue" onclick="App.filter('bebida')">🍺<span>Bebidas</span></div>
+                    <div class="cat-item orange" onclick="App.filter('envio')">🏍️<span>Mandaditos</span></div>
+                </div>
+
+                <div class="promo-banner">
+                    <div class="promo-text">
+                        <h2>¡Descuento Local!</h2>
+                        <p>Aprovecha 20% en pedidos con Cacaos.</p>
                     </div>
                 </div>
-                <div class="search-container">
-                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="search">
-                    <button class="search-btn">🔍</button>
-                </div>
+
+                <div class="section-title">Populares en tu zona</div>
+                <div id="product-grid" class="product-grid"></div>
+            </main>
+        </section>
+
+        <section id="view-profile" class="screen">
+            <div class="profile-hero">
+                <div class="avatar-large">YV</div>
+                <h2 id="user-display-name">Yader Vasquez</h2>
+                <p>Nivel: Cliente Oro 🇳🇮</p>
             </div>
 
-            <div class="content-scroll">
-                <div class="category-grid">
-                    <div class="cat-box color-1" onclick="App.nav('mercados')">
-                        <span class="emoji">🛒</span>
-                        <b>Mercados</b>
+            <div class="settings-list">
+                <div class="group">
+                    <div class="list-item" onclick="App.openBusinessPanel()">
+                        <span class="icon">🏢</span> <b>Mi Negocio</b> <span>›</span>
                     </div>
-                    <div class="cat-box color-2" onclick="App.nav('restaurantes')">
-                        <span class="emoji">🥘</span>
-                        <b>Restaurantes</b>
+                    <div class="list-item">
+                        <span class="icon">🎫</span> <b>Mis Cupones</b> <span>›</span>
                     </div>
                 </div>
-
-                <div class="quick-pills">
-                    <div class="pill">🏍️ Mandaditos</div>
-                    <div class="pill">🛍️ Tiendas</div>
-                    <div class="pill">🥤 Bebidas</div>
+                <div class="group">
+                    <div class="list-item">
+                        <span class="icon">⚙️</span> <b>Configuración</b> <span>›</span>
+                    </div>
+                    <div class="list-item">
+                        <span class="icon">🎧</span> <b>Ayuda</b> <span>›</span>
+                    </div>
                 </div>
-
-                <div class="status-banner">
-                    <div class="icon-big">🏪</div>
-                    <h4>¡Estamos cocinando!</h4>
-                    <p>Muchos locales abren pronto. ¡Preparate!</p>
-                </div>
+                <button class="btn-logout" onclick="location.reload()">Cerrar sesión</button>
             </div>
         </section>
 
-        <section id="perfil" class="view">
-            <div class="profile-hero-blue">
-                <button class="back-circle" onclick="App.nav('inicio')">←</button>
-                <h2>Te damos la bienvenida</h2>
-            </div>
-            
-            <div class="menu-list-container">
-                <div class="menu-group">
-                    <div class="menu-item" onclick="App.login()">
-                        <span class="m-icon">👤</span>
-                        <div class="m-content">
-                            <b>Registrarme / Iniciar sesión</b>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="menu-group">
-                    <div class="menu-item" onclick="App.showFeature('Ayuda')">
-                        <span class="m-icon">🎧</span>
-                        <div class="m-content"><span>Ayuda</span></div>
-                        <span class="m-arrow">›</span>
-                    </div>
-                    <div class="menu-item" onclick="App.showFeature('Legal')">
-                        <span class="m-icon">📜</span>
-                        <div class="m-content"><span>Información legal</span></div>
-                        <span class="m-arrow">›</span>
-                    </div>
-                    <div class="menu-item special-blue" onclick="App.openSellerPanel()">
-                        <span class="m-icon">🏠</span>
-                        <div class="m-content"><b>Registrar mi negocio</b></div>
-                        <span class="m-arrow">›</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <nav class="tab-bar">
-            <div class="tab-item active" onclick="App.nav('inicio', this)">
-                <div class="t-icon">🏠</div>
-                <span>Inicio</span>
-            </div>
-            <div class="tab-item" onclick="App.nav('mercados', this)">
-                <div class="t-icon">🛒</div>
-                <span>Mercados</span>
-            </div>
-            <div class="tab-item" onclick="App.nav('promos', this)">
-                <div class="t-icon">🎫</div>
-                <span>Promos</span>
-            </div>
-            <div class="tab-item" onclick="App.nav('perfil', this)">
-                <div class="t-icon">👤</div>
-                <span>Mi perfil</span>
-            </div>
+        <nav class="dock">
+            <div class="tab active" onclick="App.navigate('home', this)">🏠<small>Inicio</small></div>
+            <div class="tab" onclick="alert('Pedidos en curso')">📋<small>Pedidos</small></div>
+            <div class="tab" onclick="App.navigate('profile', this)">👤<small>Mi Perfil</small></div>
         </nav>
     </div>
 

@@ -2,84 +2,81 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>PinolApp | 100% Nica 🇳🇮</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PinolApp Pro 🇳🇮</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="logo-box">
-            <h1 class="logo-text">Pinol<span>app</span></h1>
-            <div class="loader-bg"><div class="loader-fill"></div></div>
-            <p class="tagline">100% ORGULLO NICARAGÜENSE</p>
-        </div>
+        <h1 class="logo">Pinol<span>app</span></h1>
+        <div class="loader"><div class="bar"></div></div>
     </div>
 
     <div id="app" class="hidden">
+        <header class="main-nav">
+            <div class="header-top">
+                <span id="role-badge" class="badge">Modo Cliente</span>
+                <div class="wallet">💰 <span id="cacaos-val">0</span></div>
+            </div>
+            <div class="search-box">
+                <input type="text" placeholder="Buscar en Nicaragua..." id="main-search">
+            </div>
+        </header>
+
         <section id="view-inicio" class="view active">
-            <header class="main-header">
-                <div class="top-bar">
-                    <div class="loc-pill">📍 Managua, Nicaragua ▼</div>
-                    <div class="currency-pill"><span id="cacaos-display">0</span> 💰</div>
-                </div>
-                <div class="search-container">
-                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="main-search">
-                    <button class="btn-search">🔍</button>
-                </div>
-            </header>
-
-            <main class="body-content">
-                <div class="promo-card">
-                    <div class="promo-info">
-                        <h2>¡Descuento Nica!</h2>
-                        <p>Ahorra con tus Cacaos acumulados.</p>
-                    </div>
-                </div>
-
-                <div class="grid-cats">
-                    <div class="cat-box pink" onclick="App.nav('mercado')">🍱 <span>Restaurantes</span></div>
-                    <div class="cat-box green" onclick="App.nav('mercado')">🛒 <span>Mercados</span></div>
-                </div>
-
-                <div class="pills-scroll">
-                    <div class="pill">🏍️ Mandaditos</div>
-                    <div class="pill">🛍️ Tiendas</div>
-                    <div class="pill">🍺 Bebidas</div>
-                </div>
-
-                <h3 class="section-title">Populares en tu zona</h3>
-                <div id="product-feed" class="product-feed"></div>
-            </main>
+            <div class="section-header">
+                <h3>Restaurantes y Mercados</h3>
+                <button class="cart-btn" onclick="App.nav('carrito')">🛒 <span id="cart-count">0</span></button>
+            </div>
+            <div id="feed-productos" class="grid-productos"></div>
         </section>
 
-        <section id="view-perfil" class="view">
-            <div class="hero-profile">
-                <button class="back-btn" onclick="App.nav('inicio')">←</button>
-                <h2>Te damos la bienvenida</h2>
-                <p id="user-subtitle">Yader Vasquez • Cliente Pro</p>
-            </div>
+        <section id="view-registro" class="view">
+            <div class="admin-panel">
+                <h2>Panel de Afiliado 🏢</h2>
+                <p>Registra tus productos para que todo Nicaragua los vea.</p>
+                
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" id="p-name" placeholder="Ej: Vigorón Especial">
+                    
+                    <label>Precio (C$)</label>
+                    <input type="number" id="p-price" placeholder="0.00">
+                    
+                    <label>Categoría</label>
+                    <select id="p-cat">
+                        <option value="🥘 Restaurante">Restaurante</option>
+                        <option value="🛒 Mercado">Mercado</option>
+                        <option value="🛍️ Tienda">Tienda</option>
+                    </select>
 
-            <div class="menu-container">
-                <div class="menu-card">
-                    <div class="menu-item" onclick="App.action('Login')">👤 <span>Registrarme / Iniciar sesión</span></div>
+                    <button class="btn-primary" onclick="App.saveProduct()">Publicar Producto</button>
                 </div>
 
-                <div class="menu-card">
-                    <div class="menu-item" onclick="App.action('Ayuda')">🎧 <span>Ayuda</span> <span class="arrow">›</span></div>
-                    <div class="menu-item" onclick="App.action('Legal')">📜 <span>Información legal</span> <span class="arrow">›</span></div>
-                    <div class="menu-item nica-blue" onclick="App.openSeller()">🏠 <span>Registrar mi negocio</span> <span class="arrow">›</span></div>
+                <div class="my-inventory">
+                    <h4>Mis Productos Publicados</h4>
+                    <div id="my-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-carrito" class="view">
+            <div class="cart-page">
+                <h2>Tu Pedido</h2>
+                <div id="cart-items"></div>
+                <div class="cart-footer">
+                    <div class="total">Total: C$ <span id="total-price">0</span></div>
+                    <button class="btn-confirm" onclick="App.checkout()">Confirmar Pedido 🇳🇮</button>
                 </div>
             </div>
         </section>
 
         <nav class="dock">
-            <div class="dock-tab active" id="tab-inicio" onclick="App.nav('inicio', this)">🏠<span>Inicio</span></div>
-            <div class="dock-tab" onclick="App.action('Mercados')">🛒<span>Mercados</span></div>
-            <div class="dock-tab" onclick="App.action('Promos')">%<span>Promos</span></div>
-            <div class="dock-tab" id="tab-perfil" onclick="App.nav('perfil', this)">👤<span>Mi perfil</span></div>
+            <div class="tab active" onclick="App.nav('inicio', this)">🏠<span>Inicio</span></div>
+            <div class="tab" onclick="App.nav('registro', this)">🏢<span>Afiliarse</span></div>
+            <div class="tab" onclick="App.nav('perfil', this)">👤<span>Mi Perfil</span></div>
         </nav>
     </div>
 

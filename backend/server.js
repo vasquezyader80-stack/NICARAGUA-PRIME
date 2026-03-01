@@ -1,22 +1,24 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 app.use(express.json());
 
-// Simulación de base de datos (puedes usar un JSON o MongoDB después)
-let productos = [
-  { id: 1, nombre: "Nacatamal", precio: 120, vendedor: "Fritanga El Norte", imagen: "nacatamal.png" }
-];
+const DATA_FILE = path.join(__dirname, 'productos.json');
 
-// Ruta para obtener todos los productos
+// Leer productos
 app.get('/api/productos', (req, res) => {
-  res.json(productos);
+    const data = fs.readFileSync(DATA_FILE);
+    res.json(JSON.parse(data));
 });
 
-// Ruta para agregar un nuevo producto
+// Guardar nuevo producto
 app.post('/api/productos', (req, res) => {
-  const nuevo = req.body;
-  productos.push({ id: Date.now(), ...nuevo });
-  res.status(201).json({ mensaje: "Producto guardado con éxito" });
+    const productos = JSON.parse(fs.readFileSync(DATA_FILE));
+    const nuevoProducto = { id: Date.now(), ...req.body };
+    productos.push(nuevoProducto);
+    fs.writeFileSync(DATA_FILE, JSON.stringify(productos));
+    res.status(201).json(nuevoProducto);
 });
 
 module.exports = app;

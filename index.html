@@ -3,96 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | 100% Nica</title>
+    <title>PinolApp | Pro</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="splash-box">
-            <h1 class="logo-text">Pinol<span>app</span></h1>
-            <p class="n-tag">100% Orgullo Nicaragüense 🇳🇮</p>
-            <div class="bar-bg"><div class="bar-fill"></div></div>
+        <div class="splash-content">
+            <h1 class="logo-nica">Pinol<span>app</span></h1>
+            <p class="slogan">100% Orgullo Nicaragüense 🇳🇮</p>
+            <div class="progress-container"><div class="progress-bar"></div></div>
         </div>
     </div>
 
-    <div id="app" style="display:none;">
-        
-        <section id="view-inicio" class="app-view active">
-            <header class="main-nav-blue">
-                <div class="user-loc">📍 C. Principal Del Naranjo ▼</div>
-                <div class="search-engine">
-                    <input type="text" placeholder="Locales, platos y productos">
-                    <button class="s-btn">🔍</button>
+    <div id="app" class="hidden">
+        <section id="view-inicio" class="page active">
+            <header class="header-blue">
+                <div class="location-row">
+                    <span>📍 Managua, Nicaragua</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="¿Qué se te antoja hoy?" id="main-search">
                 </div>
             </header>
 
-            <div class="main-body">
-                <div class="grid-categories">
-                    <div class="cat-item-v" onclick="App.filter('comida')">
-                        <img src="https://img.icons8.com/emoji/96/hamburger-emoji.png">
+            <div class="scroll-content">
+                <div class="categories-grid">
+                    <div class="cat-card" onclick="App.quickFilter('Restaurantes')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/1996/1996055.png">
                         <b>Restaurantes</b>
                     </div>
-                    <div class="cat-item-v" onclick="App.filter('mercados')">
-                        <img src="https://img.icons8.com/emoji/48/shopping-basket-emoji.png">
+                    <div class="cat-card" onclick="App.quickFilter('Mercados')">
+                        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081918.png">
                         <b>Mercados</b>
                     </div>
                 </div>
 
-                <div class="fast-access">
-                    <div class="f-pill">🏍️ Mandados</div>
-                    <div class="f-pill">🛍️ Tiendas</div>
-                    <div class="f-pill">☕ Café</div>
+                <div class="pill-container">
+                    <div class="pill">🏍️ Mandaditos</div>
+                    <div class="pill">🛍️ Tiendas</div>
+                    <div class="pill">☕ Café</div>
                 </div>
 
-                <div class="local-status">
-                    <div class="store-icon">🏪</div>
-                    <h4>A esta hora hay pocos locales abiertos</h4>
-                    <p>Regresa más tarde para encontrar más opciones.</p>
+                <div class="status-card">
+                    <i class="fa-solid fa-store-slash"></i>
+                    <h3>Locales cerrados temporalmente</h3>
+                    <p>La mayoría de locales abren a las 8:00 AM.</p>
                 </div>
             </div>
         </section>
 
-        <section id="view-perfil" class="app-view">
-            <div class="p-header-blue">
-                <div class="p-top">
-                    <button class="p-back" onclick="App.navigate('inicio')">←</button>
-                </div>
+        <section id="view-perfil" class="page">
+            <div class="profile-hero">
+                <button class="btn-circle" onclick="App.navigate('inicio')">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
                 <h2>Te damos la bienvenida</h2>
             </div>
             
-            <div class="p-options">
-                <div class="opt-line" onclick="App.login()">
-                    <span class="icon">👤</span> <b>Registrarme / Iniciar sesión</b>
+            <div class="menu-list">
+                <div class="menu-item" onclick="App.action('Login')">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Registrarme / Iniciar sesión</span>
                 </div>
-                <div class="opt-line" onclick="App.openHelp()">
-                    <span class="icon">🎧</span> <b>Ayuda</b> <span class="arr">›</span>
+                <div class="menu-item" onclick="App.action('Ayuda')">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>Ayuda</span>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
-                <div class="opt-line">
-                    <span class="icon">📜</span> <b>Información legal</b> <span class="arr">›</span>
+                <div class="menu-item" onclick="App.action('Legal')">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Información legal</span>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
-                <div class="opt-line highlight" onclick="App.sellerPanel()">
-                    <span class="icon">🏠</span> <b>Registrar mi negocio</b> <span class="arr">›</span>
+                <div class="menu-item special" onclick="App.registerBusiness()">
+                    <i class="fa-solid fa-shop"></i>
+                    <span>Registrar mi negocio</span>
+                    <i class="fa-solid fa-chevron-right arrow"></i>
                 </div>
             </div>
         </section>
 
-        <nav class="bottom-tabs">
-            <div class="tab-btn active" onclick="App.navigate('inicio', this)">
-                <span class="t-ico">🏠</span>
-                <span class="t-txt">Inicio</span>
+        <nav class="tab-bar">
+            <div class="tab active" data-target="inicio" onclick="App.navigate('inicio', this)">
+                <i class="fa-solid fa-house"></i>
+                <span>Inicio</span>
             </div>
-            <div class="tab-btn" onclick="alert('Explora Mercados Locales')">
-                <span class="t-ico">🛒</span>
-                <span class="t-txt">Mercados</span>
+            <div class="tab" data-target="mercados" onclick="App.action('Mercados')">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span>Mercados</span>
             </div>
-            <div class="tab-btn" onclick="alert('Promociones del Mes')">
-                <span class="t-ico">%</span>
-                <span class="t-txt">Promos</span>
+            <div class="tab" data-target="promos" onclick="App.action('Promos')">
+                <i class="fa-solid fa-percent"></i>
+                <span>Promos</span>
             </div>
-            <div class="tab-btn" onclick="App.navigate('perfil', this)">
-                <span class="t-ico">👤</span>
-                <span class="t-txt">Mi perfil</span>
+            <div class="tab" data-target="perfil" onclick="App.navigate('perfil', this)">
+                <i class="fa-solid fa-user"></i>
+                <span>Mi perfil</span>
             </div>
         </nav>
     </div>

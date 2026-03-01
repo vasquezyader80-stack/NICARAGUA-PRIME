@@ -1,147 +1,37 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | ¡Pidamos lo Nuestro! 🇳🇮</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
+<div id="splash" class="splash">
+    <img src="logo.png" width="180"> <h1 style="color:#0055b8; font-size:42px; margin:0;">Pinol<span style="color:#e0004d;">app</span></h1>
+    <div class="loader-bar"><div class="progress"></div></div>
+    <p style="color:#bbb; font-size:10px; margin-top:30px;">© 2026 DESIGNED BY YADER VASQUEZ</p>
+</div>
 
-    <div id="splash" class="splash">
-        <div class="splash-content">
-            <h1 class="logo-main">Pinol<span>app</span></h1>
-            <div class="loader-bar"><div class="progress"></div></div>
-            <p class="designer">© 2026 DESIGNED BY YADER VASQUEZ</p>
+<div id="app" style="display:none;">
+    <header class="main-header">
+        <div style="font-size:12px; color:red;">📍 Entregar en <b>Managua</b> ▼</div>
+        <div class="search-box">
+            <span>🔍</span>
+            <input type="text" placeholder="¿Qué se te antoja hoy?">
         </div>
+    </header>
+
+    <div class="cat-list">
+        <div class="cat-row" style="background:var(--bg-fritanga)">🥘 Fritangas</div>
+        <div class="cat-row" style="background:var(--bg-super)">🛒 Súper</div>
+        <div class="cat-row" style="background:var(--bg-bebidas)">🍺 Bebidas</div>
+        <div class="cat-row" style="background:var(--bg-mandaditos)">🏍️ Mandaditos</div>
     </div>
 
-    <div id="app" style="display:none;">
-        <header class="main-header">
-            <div class="location-picker">
-                <span class="icon">📍</span>
-                <div class="loc-text">
-                    <small>Entregar en</small>
-                    <b id="user-location">Managua, Nicaragua</b>
-                </div>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="search-container">
-                <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.search(this.value)">
-            </div>
-        </header>
-
-        <main class="main-content">
-            <section id="view-home" class="view active">
-                <div class="categories-scroll">
-                    <div class="cat-item" onclick="App.filter('comida', this)">
-                        <div class="cat-icon" style="background: #ffebee;">🥘</div>
-                        <span>Fritangas</span>
-                    </div>
-                    <div class="cat-item" onclick="App.filter('super', this)">
-                        <div class="cat-icon" style="background: #e8f5e9;">🛒</div>
-                        <span>Súper</span>
-                    </div>
-                    <div class="cat-item" onclick="App.filter('bebidas', this)">
-                        <div class="cat-icon" style="background: #e3f2fd;">🍺</div>
-                        <span>Bebidas</span>
-                    </div>
-                    <div class="cat-item" onclick="App.filter('envios', this)">
-                        <div class="cat-icon" style="background: #fff3e0;">🏍️</div>
-                        <span>Mandaditos</span>
-                    </div>
-                </div>
-
-                <div class="promo-banner">
-                    <div class="promo-info">
-                        <h2>¡Descuento Nica!</h2>
-                        <p>15% OFF en Fritangas seleccionadas</p>
-                        <button>Ver locales</button>
-                    </div>
-                </div>
-
-                <h3 class="section-title">Populares en tu zona</h3>
-                <div id="product-grid" class="product-grid">
-                    </div>
-            </section>
-
-            <section id="view-profile" class="view">
-                <div class="profile-header">
-                    <div class="profile-info">
-                        <div class="avatar-large" id="user-avatar">YV</div>
-                        <h2 id="display-name">Yader Vasquez</h2>
-                        <p id="display-cacaos">💰 0 Cacaos acumulados</p>
-                    </div>
-                </div>
- 
-                <div class="menu-list">
-                    <div class="menu-group">
-                        <div class="menu-option" onclick="App.openSellerPanel()">
-                            <span class="m-icon">🏢</span>
-                            <div class="m-text"><b>Mi Negocio</b><p>Gestiona tus productos y ventas</p></div>
-                            <span class="m-arrow">❯</span>
-                        </div>
-                        <div class="menu-option">
-                            <span class="m-icon">🎫</span>
-                            <div class="m-text"><b>Cupones</b><p>Tienes 2 cupones disponibles</p></div>
-                            <span class="m-arrow">❯</span>
-                        </div>
-                    </div>
-
-                    <div class="menu-group">
-                        <div class="menu-option" onclick="App.editProfile()">
-                            <span class="m-icon">⚙️</span>
-                            <div class="m-text"><b>Configuración</b><p>Editar perfil y notificaciones</p></div>
-                            <span class="m-arrow">❯</span>
-                        </div>
-                        <div class="menu-option">
-                            <span class="m-icon">🎧</span>
-                            <div class="m-text"><b>Ayuda en línea</b><p>Soporte 24/7</p></div>
-                            <span class="m-arrow">❯</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="view-seller" class="view">
-                <div class="seller-panel">
-                    <button class="btn-back" onclick="App.navigate('profile')">← Volver</button>
-                    <h3>Registrar Nuevo Producto</h3>
-                    <div class="seller-form">
-                        <input type="text" id="p-name" placeholder="Nombre (Ej: Vigorón Granadino)">
-                        <input type="number" id="p-price" placeholder="Precio en C$">
-                        <select id="p-cat">
-                            <option value="comida">🥘 Fritanga / Comida</option>
-                            <option value="super">🛒 Súper / Pulpería</option>
-                            <option value="bebidas">🍺 Bebidas</option>
-                            <option value="envios">🏍️ Delivery</option>
-                        </select>
-                        <button class="btn-save" onclick="App.saveProduct()">Publicar en PinolApp</button>
-                    </div>
-                    <hr>
-                    <h4>Mis Productos Publicados</h4>
-                    <div id="seller-inventory" class="inventory-list"></div>
-                </div>
-            </section>
-        </main>
-
-        <nav class="bottom-nav">
-            <div class="nav-btn active" onclick="App.navigate('home', this)">
-                <span class="n-icon">🏠</span>
-                <span>Inicio</span>
-            </div>
-            <div class="nav-btn" onclick="alert('Próximamente: Pedidos en curso')">
-                <span class="n-icon">📋</span>
-                <span>Pedidos</span>
-            </div>
-            <div class="nav-btn" onclick="App.navigate('profile', this)">
-                <span class="n-icon">👤</span>
-                <span>Perfil</span>
-            </div>
-        </nav>
+    <div class="promo-box" style="padding:15px;">
+        <h2 style="margin:0;">¡Descuento Nica!</h2>
+        <p>15% OFF en Fritangas seleccionadas</p>
+        <button style="background:white; border:1px solid #ddd; padding:5px 15px; border-radius:5px;">Ver locales</button>
     </div>
 
-    <script src="app.js"></script>
-</body>
-</html>
+    <h3 style="padding:0 15px; margin-bottom:0;">Populares en tu zona</h3>
+    <div id="product-grid" class="product-grid"></div>
+
+    <nav class="bottom-nav">
+        <div onclick="App.navigate('home')">🏠<br><small>Inicio</small></div>
+        <div>📋<br><small>Pedidos</small></div>
+        <div onclick="App.navigate('profile')">👤<br><small>Perfil</small></div>
+    </nav>
+</div>

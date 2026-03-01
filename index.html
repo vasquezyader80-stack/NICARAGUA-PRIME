@@ -3,86 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp 2026 | El Orgullo de Nicaragua</title>
+    <title>PinolApp Pro | Pedidos Ya Clone</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash">
-        <div class="splash-body">
-            <h1 class="logo">Pinol<span>app</span></h1>
-            <div class="progress-container"><div class="progress-bar"></div></div>
-            <p class="tagline">100% ORGULLO NICARAGÜENSE 🇳🇮</p>
+    <div id="splash" class="splash-screen">
+        <div class="logo-wrap">
+            <h1 class="brand">Pinol<span>app</span></h1>
+            <div class="loader-track"><div class="loader-fill"></div></div>
+            <p class="slogan">100% ORGULLO NICARAGÜENSE 🇳🇮</p>
         </div>
-        <p class="dev-sign">Designed by Yader Vasquez & Gemini AI</p>
     </div>
 
-    <div id="app" class="hidden">
-        <section id="view-home" class="screen active">
-            <header class="main-header">
-                <div class="top-row">
-                    <div class="location-chip">📍 Managua, Nicaragua ▼</div>
-                    <div class="user-stats"><span id="cacaos-count">0</span> 💰</div>
+    <div id="main-app" class="app-hidden">
+        <section id="screen-home" class="screen active">
+            <header class="header-nica">
+                <div class="status-bar">
+                    <div class="location">📍 C. Principal Del Naranjo ▼</div>
+                    <div class="cacaos-pill"><span id="cacaos-val">500</span> 💰</div>
                 </div>
-                <div class="search-wrapper">
-                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="search-input">
-                    <button class="search-trigger">🔍</button>
+                <div class="search-container">
+                    <input type="text" placeholder="¿Qué se te antoja hoy, Yader?" id="global-search">
+                    <button class="btn-s">🔍</button>
                 </div>
             </header>
 
-            <main class="scrollable">
-                <div class="categories-grid">
-                    <div class="cat-item pink" onclick="App.filter('fritanga')">🥘<span>Fritangas</span></div>
-                    <div class="cat-item green" onclick="App.filter('super')">🛒<span>Súper</span></div>
-                    <div class="cat-item blue" onclick="App.filter('bebida')">🍺<span>Bebidas</span></div>
-                    <div class="cat-item orange" onclick="App.filter('envio')">🏍️<span>Mandaditos</span></div>
-                </div>
-
-                <div class="promo-banner">
-                    <div class="promo-text">
-                        <h2>¡Descuento Local!</h2>
-                        <p>Aprovecha 20% en pedidos con Cacaos.</p>
+            <div class="main-scroll">
+                <div class="cat-grid">
+                    <div class="cat-card c-pink" onclick="App.filter('comida')">
+                        <span class="emoji">🥘</span><b>Restaurantes</b>
+                    </div>
+                    <div class="cat-card c-green" onclick="App.filter('mercado')">
+                        <span class="emoji">🛒</span><b>Mercados</b>
                     </div>
                 </div>
 
-                <div class="section-title">Populares en tu zona</div>
-                <div id="product-grid" class="product-grid"></div>
-            </main>
-        </section>
-
-        <section id="view-profile" class="screen">
-            <div class="profile-hero">
-                <div class="avatar-large">YV</div>
-                <h2 id="user-display-name">Yader Vasquez</h2>
-                <p>Nivel: Cliente Oro 🇳🇮</p>
-            </div>
-
-            <div class="settings-list">
-                <div class="group">
-                    <div class="list-item" onclick="App.openBusinessPanel()">
-                        <span class="icon">🏢</span> <b>Mi Negocio</b> <span>›</span>
-                    </div>
-                    <div class="list-item">
-                        <span class="icon">🎫</span> <b>Mis Cupones</b> <span>›</span>
-                    </div>
+                <div class="horizontal-pills">
+                    <div class="pill">🏍️ Mandaditos</div>
+                    <div class="pill">🛍️ Tiendas</div>
+                    <div class="pill">🍺 Bebidas</div>
                 </div>
-                <div class="group">
-                    <div class="list-item">
-                        <span class="icon">⚙️</span> <b>Configuración</b> <span>›</span>
-                    </div>
-                    <div class="list-item">
-                        <span class="icon">🎧</span> <b>Ayuda</b> <span>›</span>
-                    </div>
+
+                <div class="hero-banner">
+                    <h3>¡Nuevos Cupones!</h3>
+                    <p>Usa tus Cordobas en Fritangas.</p>
                 </div>
-                <button class="btn-logout" onclick="location.reload()">Cerrar sesión</button>
+
+                <h4 class="section-label">Lo más pedido en Managua</h4>
+                <div id="feed" class="product-feed"></div>
             </div>
         </section>
 
-        <nav class="dock">
-            <div class="tab active" onclick="App.navigate('home', this)">🏠<small>Inicio</small></div>
-            <div class="tab" onclick="alert('Pedidos en curso')">📋<small>Pedidos</small></div>
-            <div class="tab" onclick="App.navigate('profile', this)">👤<small>Mi Perfil</small></div>
+        <section id="screen-profile" class="screen">
+            <div class="profile-banner">
+                <button class="back-icon" onclick="App.navigate('home')">←</button>
+                <h2>Te damos la bienvenida</h2>
+            </div>
+            
+            <div class="menu-wrap">
+                <div class="menu-box">
+                    <div class="menu-item" onclick="App.show('Login')">👤 <span>Registrarme / Iniciar sesión</span></div>
+                </div>
+
+                <div class="menu-box">
+                    <div class="menu-item" onclick="App.show('Ayuda')">🎧 <span>Ayuda</span> <i class="arr">›</i></div>
+                    <div class="menu-item" onclick="App.show('Legal')">📜 <span>Información legal</span> <i class="arr">›</i></div>
+                    <div class="menu-item nica-blue" onclick="App.sellerPanel()">🏠 <span>Registrar mi negocio</span> <i class="arr">›</i></div>
+                </div>
+            </div>
+        </section>
+
+        <nav class="dock-bar">
+            <div class="tab active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
+            <div class="tab" onclick="App.navigate('mercado', this)">🛒<span>Mercado</span></div>
+            <div class="tab" onclick="App.navigate('promos', this)">%<span>Promos</span></div>
+            <div class="tab" onclick="App.navigate('profile', this)">👤<span>Mi Perfil</span></div>
         </nav>
     </div>
 

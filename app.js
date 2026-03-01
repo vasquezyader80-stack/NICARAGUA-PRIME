@@ -1,106 +1,109 @@
 const App = {
-    // 1. DATA PERSISTENCE (Memoria del Teléfono)
+    // 1. MOTOR DE DATOS PERSISTENTE
     db: {
-        data: JSON.parse(localStorage.getItem('Pinol_Core_V2')) || {
-            cacaos: 1000,
-            inventory: [], // Productos de los socios
-            cart: []       // Carrito del cliente
+        get: () => JSON.parse(localStorage.getItem('PinolApp_Comercial_V1')) || {
+            myProducts: [],
+            cart: []
         },
-        save() { localStorage.setItem('Pinol_Core_V2', JSON.stringify(this.data)); }
+        save: (data) => localStorage.setItem('PinolApp_Comercial_V1', JSON.stringify(data))
     },
 
+    // Catálogo inicial de ejemplo
+    staticCatalog: [
+        { id: 1, n: "Nacatamal de Cerdo", p: 130, c: "Fritanga", s: "Doña Mary" },
+        { id: 2, n: "Toña Litro", p: 85, c: "Mercado", s: "Súper Express" },
+        { id: 3, n: "Vigorón Granadino", p: 140, c: "Fritanga", s: "El Kiosko" }
+    ],
+
     init() {
-        this.renderAll();
+        this.render();
         setTimeout(() => {
-            document.getElementById('splash').classList.add('hide');
-            document.getElementById('app').classList.remove('hidden');
-        }, 2500);
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('app').classList.remove('hidden');
+            }, 600);
+        }, 3000);
     },
 
     nav(viewId, el) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(`view-${viewId}`).classList.add('active');
-        
         if(el) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             el.classList.add('active');
         }
     },
 
-    // 2. LÓGICA DE COMERCIO (REGISTRO)
-    saveProduct() {
-        const name = document.getElementById('p-name').value;
+    // 2. LÓGICA DE VENTAS (PUBLICAR)
+    publish() {
+        const title = document.getElementById('p-title').value;
         const price = document.getElementById('p-price').value;
-        const cat = document.getElementById('p-cat').value;
+        const cat = document.getElementById('p-category').value;
 
-        if(!name || !price) return alert("Por favor llena todos los campos");
+        if(!title || !price) return alert("Completa los datos del producto");
 
-        const newProd = { id: Date.now(), name, price, cat, shop: "Socio Local" };
-        this.db.data.inventory.push(newProd);
-        this.db.save();
+        const data = this.db.get();
+        data.myProducts.push({ id: Date.now(), n: title, p: parseInt(price), c: cat, s: "Tu Negocio" });
+        this.db.save(data);
         
-        alert("¡Producto Afiliado con éxito! Ya está disponible en la tienda.");
-        this.renderAll();
-        
-        // Limpiar form
-        document.getElementById('p-name').value = "";
+        alert("¡Producto Publicado! Ya está en el catálogo nacional.");
+        this.render();
+        document.getElementById('p-title').value = "";
         document.getElementById('p-price').value = "";
     },
 
-    // 3. LÓGICA DE COMPRA (CLIENTE)
+    // 3. LÓGICA DE COMPRAS
     addToCart(id) {
-        const prod = this.db.data.inventory.find(p => p.id === id);
-        this.db.data.cart.push(prod);
-        this.db.save();
-        this.renderAll();
-        alert("Añadido al carrito 🛒");
+        const data = this.db.get();
+        const all = [...this.staticCatalog, ...data.myProducts];
+        const product = all.find(p => p.id === id);
+        
+        data.cart.push(product);
+        this.db.save(data);
+        this.render();
     },
 
-    // 4. RENDERING (DIBUJAR LA APP)
-    renderAll() {
-        const data = this.db.data;
+    render() {
+        const data = this.db.get();
         
-        // Actualizar Cacaos y Carrito
-        document.getElementById('cacaos-val').innerText = data.cacaos;
+        // Contador de carrito
         document.getElementById('cart-count').innerText = data.cart.length;
 
-        // Render Feed Principal (Lo que ve el cliente)
-        const feed = document.getElementById('feed-productos');
-        feed.innerHTML = data.inventory.map(p => `
+        // Render Catálogo (Explorar)
+        const grid = document.getElementById('product-grid');
+        const allProducts = [...this.staticCatalog, ...data.myProducts];
+        grid.innerHTML = allProducts.map(p => `
             <div class="p-card">
-                <span class="p-cat">${p.cat}</span>
-                <h4>${p.name}</h4>
-                <div class="p-row">
-                    <b>C$ ${p.price}</b>
-                    <button onclick="App.addToCart(${p.id})">+</button>
-                </div>
+                <span class="p-tag">${p.c}</span>
+                <h4>${p.n}</h4>
+                <div class="price">C$ ${p.p}</div>
+                <button class="add-btn" onclick="App.addToCart(${p.id})">+</button>
             </div>
-        `).join('') || "<p class='empty'>No hay productos registrados aún.</p>";
+        `).join('');
 
         // Render Carrito
         const cartItems = document.getElementById('cart-items');
         let total = 0;
-        cartItems.innerHTML = data.cart.map(item => {
-            total += parseInt(item.price);
-            return `<div class="cart-item"><span>${item.name}</span> <b>C$ ${item.price}</b></div>`;
-        }).join('');
-        document.getElementById('total-price').innerText = total;
+        cartItems.innerHTML = data.cart.map((p, index) => {
+            total += p.p;
+            return `<div class="cart-item-row" style="display:flex; justify-content:space-between; margin-bottom:10px; background:white; padding:15px; border-radius:15px;">
+                <span>${p.n}</span> <b>C$ ${p.p}</b>
+            </div>`;
+        }).join('') || "<p>Tu carrito está vacío</p>";
 
-        // Render Lista del Socio
-        const myList = document.getElementById('my-list');
-        myList.innerHTML = data.inventory.map(p => `
-            <div class="my-item">${p.name} - C$ ${p.price}</div>
-        `).join('');
+        document.getElementById('subtotal').innerText = "C$ " + total;
+        document.getElementById('final-total').innerText = "C$ " + (total > 0 ? total + 40 : 0);
     },
 
-    checkout() {
-        if(this.db.data.cart.length === 0) return alert("El carrito está vacío");
-        alert("¡Pedido enviado! El restaurante lo está preparando. 🇳🇮");
-        this.db.data.cart = [];
-        this.db.data.cacaos += 20; // Gana cacaos por comprar
-        this.db.save();
-        this.renderAll();
-        this.nav('inicio');
+    completeOrder() {
+        const data = this.db.get();
+        if(data.cart.length === 0) return alert("Agrega productos primero");
+        alert("¡Pedido Realizado! El comercio ha recibido tu orden en Córdobas.");
+        data.cart = [];
+        this.db.save(data);
+        this.render();
+        this.nav('home');
     }
 };
 

@@ -1,112 +1,77 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Pro</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+<div id="app">
+    <section id="view-inicio" class="view active">
+        <header class="header-blue">
+            <div class="loc-header">📍 C. Principal Del Naranjo ▼</div>
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass" style="color:#aaa"></i>
+                <input type="text" placeholder="Locales, platos y productos">
+            </div>
+        </header>
 
-    <div id="splash" class="splash">
-        <div class="splash-content">
-            <h1 class="logo-nica">Pinol<span>app</span></h1>
-            <p class="slogan">100% Orgullo Nicaragüense 🇳🇮</p>
-            <div class="progress-container"><div class="progress-bar"></div></div>
+        <div class="categories-grid">
+            <div class="cat-card" onclick="App.navigate('mercados')">
+                <img src="https://cdn-icons-png.flaticon.com/512/3081/3081918.png">
+                <b>Mercados</b>
+            </div>
+            <div class="cat-card" onclick="App.navigate('restaurantes')">
+                <img src="https://cdn-icons-png.flaticon.com/512/1996/1996055.png">
+                <b>Restaurantes</b>
+            </div>
         </div>
-    </div>
 
-    <div id="app" class="hidden">
-        <section id="view-inicio" class="page active">
-            <header class="header-blue">
-                <div class="location-row">
-                    <span>📍 Managua, Nicaragua</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </div>
-                <div class="search-box">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" placeholder="¿Qué se te antoja hoy?" id="main-search">
-                </div>
-            </header>
+        <div class="info-banner">
+            <i class="fa-solid fa-clock"></i>
+            <div>
+                <b>A esta hora hay pocos locales abiertos</b>
+                <p>Regresa más tarde para ver más opciones.</p>
+            </div>
+        </div>
+    </section>
 
-            <div class="scroll-content">
-                <div class="categories-grid">
-                    <div class="cat-card" onclick="App.quickFilter('Restaurantes')">
-                        <img src="https://cdn-icons-png.flaticon.com/512/1996/1996055.png">
-                        <b>Restaurantes</b>
-                    </div>
-                    <div class="cat-card" onclick="App.quickFilter('Mercados')">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081918.png">
-                        <b>Mercados</b>
-                    </div>
-                </div>
+    <section id="view-perfil" class="view">
+        <div class="profile-header">
+            <button class="back-btn" onclick="App.navigate('inicio')">←</button>
+            <h2>Te damos la bienvenida</h2>
+        </div>
 
-                <div class="pill-container">
-                    <div class="pill">🏍️ Mandaditos</div>
-                    <div class="pill">🛍️ Tiendas</div>
-                    <div class="pill">☕ Café</div>
-                </div>
+        <div class="menu-group">
+            <div class="menu-item" onclick="App.login()">
+                <i class="fa-solid fa-user-circle"></i>
+                <span>Registrarme / Iniciar sesión</span>
+            </div>
+        </div>
 
-                <div class="status-card">
-                    <i class="fa-solid fa-store-slash"></i>
-                    <h3>Locales cerrados temporalmente</h3>
-                    <p>La mayoría de locales abren a las 8:00 AM.</p>
-                </div>
+        <div class="menu-group">
+            <div class="menu-item" onclick="App.openHelp()">
+                <i class="fa-solid fa-headset"></i>
+                <span>Ayuda</span>
+                <span class="arrow-right">❯</span>
             </div>
-        </section>
+            <div class="menu-item" onclick="App.openLegal()">
+                <i class="fa-solid fa-circle-info"></i>
+                <span>Información legal</span>
+                <span class="arrow-right">❯</span>
+            </div>
+            <div class="menu-item" onclick="App.openSeller()">
+                <i class="fa-solid fa-shop" style="color:#d00040"></i>
+                <span style="color:#d00040">Registrar mi negocio</span>
+                <span class="arrow-right">❯</span>
+            </div>
+        </div>
+    </section>
 
-        <section id="view-perfil" class="page">
-            <div class="profile-hero">
-                <button class="btn-circle" onclick="App.navigate('inicio')">
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
-                <h2>Te damos la bienvenida</h2>
-            </div>
-            
-            <div class="menu-list">
-                <div class="menu-item" onclick="App.action('Login')">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span>Registrarme / Iniciar sesión</span>
-                </div>
-                <div class="menu-item" onclick="App.action('Ayuda')">
-                    <i class="fa-solid fa-headset"></i>
-                    <span>Ayuda</span>
-                    <i class="fa-solid fa-chevron-right arrow"></i>
-                </div>
-                <div class="menu-item" onclick="App.action('Legal')">
-                    <i class="fa-solid fa-circle-info"></i>
-                    <span>Información legal</span>
-                    <i class="fa-solid fa-chevron-right arrow"></i>
-                </div>
-                <div class="menu-item special" onclick="App.registerBusiness()">
-                    <i class="fa-solid fa-shop"></i>
-                    <span>Registrar mi negocio</span>
-                    <i class="fa-solid fa-chevron-right arrow"></i>
-                </div>
-            </div>
-        </section>
-
-        <nav class="tab-bar">
-            <div class="tab active" data-target="inicio" onclick="App.navigate('inicio', this)">
-                <i class="fa-solid fa-house"></i>
-                <span>Inicio</span>
-            </div>
-            <div class="tab" data-target="mercados" onclick="App.action('Mercados')">
-                <i class="fa-solid fa-basket-shopping"></i>
-                <span>Mercados</span>
-            </div>
-            <div class="tab" data-target="promos" onclick="App.action('Promos')">
-                <i class="fa-solid fa-percent"></i>
-                <span>Promos</span>
-            </div>
-            <div class="tab" data-target="perfil" onclick="App.navigate('perfil', this)">
-                <i class="fa-solid fa-user"></i>
-                <span>Mi perfil</span>
-            </div>
-        </nav>
-    </div>
-
-    <script src="app.js"></script>
-</body>
-</html>
+    <nav class="nav-bar">
+        <div class="tab-item active" onclick="App.navigate('inicio', this)">
+            <i class="fa-solid fa-house"></i>
+            <small>Inicio</small>
+        </div>
+        <div class="tab-item" onclick="App.navigate('mercados', this)">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <small>Mercados</small>
+        </div>
+        <div class="tab-item" onclick="App.navigate('perfil', this)">
+            <i class="fa-solid fa-user"></i>
+            <small>Mi perfil</small>
+        </div>
+    </nav>
+</div>

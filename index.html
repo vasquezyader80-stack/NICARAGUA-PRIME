@@ -10,53 +10,105 @@
 
     <div id="splash" class="splash">
         <h1 class="logo-text">Pinol<span>app</span></h1>
-        <div class="loader-container">
-            <div class="loader-progress"></div>
-        </div>
+        <div class="loader-container"><div class="loader-progress"></div></div>
         <p class="branding">© 2026 DESIGNED BY YADER VASQUEZ</p>
     </div>
 
     <div id="app" style="display:none;">
-        <header class="header-n">
-            <div class="location">
-                <span class="pin">📍</span>
-                <div class="loc-info">
-                    <small>Entregar en</small>
-                    <b>Managua</b>
+        
+        <section id="view-home" class="main-view active">
+            <header class="header-n">
+                <div class="location">
+                    <span class="pin">📍</span>
+                    <div class="loc-info"><small>Entregar en</small><b>Managua</b></div>
+                    <span class="arrow">▼</span>
                 </div>
-                <span class="arrow">▼</span>
-            </div>
-            <div class="search-wrap">
-                <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.search(this.value)">
-            </div>
-        </header>
+                <div class="search-wrap">
+                    <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.search(this.value)">
+                </div>
+            </header>
 
-        <main class="content-n">
-            <div class="cat-section">
-                <div class="cat-row n-pink" onclick="App.filter('comida')">🍱 Fritangas</div>
-                <div class="cat-row n-green" onclick="App.filter('super')">🛒 Súper</div>
-                <div class="cat-row n-blue" onclick="App.filter('bebida')">🍺 Bebidas</div>
-                <div class="cat-row n-orange" onclick="App.filter('envio')">🏍️ Mandaditos</div>
-            </div>
+            <div class="content-n">
+                <div class="cat-section">
+                    <div class="cat-row n-pink" onclick="App.filter('comida')">🍱 Fritangas</div>
+                    <div class="cat-row n-green" onclick="App.filter('super')">🛒 Súper</div>
+                    <div class="cat-row n-blue" onclick="App.filter('bebida')">🍺 Bebidas</div>
+                    <div class="cat-row n-orange" onclick="App.filter('envio')">🏍️ Mandaditos</div>
+                </div>
 
-            <div class="promo-card">
-                <h2>¡Descuento Nica!</h2>
-                <p>15% OFF en Fritangas seleccionadas</p>
-                <button class="btn-locales">Ver locales</button>
-            </div>
+                <div class="promo-card">
+                    <h2>¡Descuento Nica!</h2>
+                    <p>15% OFF en Fritangas seleccionadas</p>
+                    <button class="btn-locales">Ver locales</button>
+                </div>
 
-            <h3 class="title-section">Populares en tu zona</h3>
-            
-            <div id="product-grid" class="grid-n"></div>
-        </main>
+                <h3 class="title-section">Populares en tu zona</h3>
+                <div id="product-grid" class="grid-n"></div>
+            </div>
+        </section>
+
+        <section id="view-profile" class="main-view">
+            <div class="profile-container">
+                <div class="user-header">
+                    <div class="avatar">YV</div>
+                    <div class="user-meta">
+                        <h2 id="prof-name">Yader Vasquez</h2>
+                        <p id="prof-cacaos">💰 0 Cacaos acumulados</p>
+                    </div>
+                </div>
+
+                <div class="peya-menu">
+                    <div class="menu-section">
+                        <div class="menu-item" onclick="App.openSeller()">
+                            <span>🏢</span> <b>Mi Negocio</b> <small>Registra productos</small>
+                        </div>
+                        <div class="menu-item" onclick="alert('Mis Direcciones')">
+                            <span>📍</span> <b>Direcciones</b>
+                        </div>
+                        <div class="menu-item" onclick="alert('Cupones disponibles')">
+                            <span>🎫</span> <b>Cupones</b>
+                        </div>
+                    </div>
+
+                    <div class="menu-section">
+                        <div class="menu-item" onclick="alert('Configuración de cuenta')">
+                            <span>⚙️</span> <b>Configuración</b>
+                        </div>
+                        <div class="menu-item" onclick="alert('Centro de Ayuda')">
+                            <span>🎧</span> <b>Ayuda</b>
+                        </div>
+                    </div>
+
+                    <button class="logout-btn" onclick="location.reload()">Cerrar Sesión</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="view-seller" class="main-view">
+            <div class="seller-panel">
+                <button class="back-link" onclick="App.navigate('profile')">← Volver</button>
+                <h3>Panel de Vendedor</h3>
+                <div class="seller-form">
+                    <input type="text" id="reg-name" placeholder="Nombre del producto">
+                    <input type="number" id="reg-price" placeholder="Precio C$">
+                    <select id="reg-cat">
+                        <option value="comida">🍱 Comida</option>
+                        <option value="super">🛒 Súper</option>
+                        <option value="bebida">🍺 Bebida</option>
+                    </select>
+                    <button class="btn-action" onclick="App.registerProduct()">Publicar</button>
+                </div>
+                <div id="my-list" class="my-list"></div>
+            </div>
+        </section>
 
         <nav class="dock-n">
-            <div class="dock-item active" onclick="App.nav('home')">🏠<br><span>Inicio</span></div>
-            <div class="dock-item" onclick="App.nav('orders')">📋<br><span>Pedidos</span></div>
-            <div class="dock-item" onclick="App.nav('profile')">👤<br><span>Perfil</span></div>
+            <div class="dock-item active" id="btn-home" onclick="App.navigate('home')">🏠<br><span>Inicio</span></div>
+            <div class="dock-item" onclick="alert('Aún no tienes pedidos')">📋<br><span>Pedidos</span></div>
+            <div class="dock-item" id="btn-profile" onclick="App.navigate('profile')">👤<br><span>Perfil</span></div>
         </nav>
     </div>
 
     <script src="app.js"></script>
 </body>
-</html> 
+</html>

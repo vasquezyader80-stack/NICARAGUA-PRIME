@@ -1,84 +1,28 @@
-const App = {
-    // Almacenamiento Local (Data Persistence)
-    db: {
-        get: () => JSON.parse(localStorage.getItem('PinolMaster_V1')) || { 
-            cacaos: 150, 
-            user: "Yader Vasquez", 
-            myProducts: [] 
-        },
-        save: (data) => localStorage.setItem('PinolMaster_V1', JSON.stringify(data))
-    },
+// Función para enviar un producto nuevo al servidor
+async function registrarProducto() {
+    const producto = {
+        nombre: document.getElementById('nombre').value,
+        precio: document.getElementById('precio').value,
+        vendedor: "Vendedor de Managua", // Esto vendrá del perfil
+        cacaos: 10 // Puntos que genera
+    };
 
-    catalog: [
-        { n: "Nacatamal", p: 120, s: "Fritanga El Norte", i: "🫔" },
-        { n: "Vigorón", p: 140, s: "Kiosko Central", i: "🥗" },
-        { n: "Toña Litro", p: 85, s: "Súper Express", i: "🍺" }
-    ],
+    try {
+        const response = await fetch('/api/productos', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(producto)
+        });
 
-    init() {
-        this.updateUI();
-        this.renderFeed();
-        
-        // Simular Splash de 2.5 seg
-        setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').classList.add('hidden');
-                document.getElementById('app').classList.remove('hidden');
-            }, 500);
-        }, 2500);
-    },
-
-    updateUI() {
-        const data = this.db.get();
-        document.getElementById('cacaos-display').innerText = data.cacaos;
-    },
-
-    nav(viewId, el) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
-        
-        if(el) {
-            document.querySelectorAll('.dock-tab').forEach(t => t.classList.remove('active'));
-            el.classList.add('active');
+        if (response.ok) {
+            // También lo guardamos localmente como pediste
+            let locales = JSON.parse(localStorage.getItem('productos_registrados')) || [];
+            locales.push(producto);
+            localStorage.setItem('productos_registrados', JSON.stringify(locales));
+            
+            alert("¡Producto registrado en la nube y en tu celular!");
         }
-    },
-
-    renderFeed() {
-        const data = this.db.get();
-        const feed = document.getElementById('product-feed');
-        const all = [...data.myProducts, ...this.catalog];
-
-        feed.innerHTML = all.map(p => `
-            <div class="p-card" style="background:white; margin:10px; padding:15px; border-radius:20px; box-shadow:0 4px 10px rgba(0,0,0,0.03);">
-                <div style="font-size:35px; margin-bottom:10px;">${p.i || '🏪'}</div>
-                <b style="display:block;">${p.n}</b>
-                <small style="color:#888;">${p.s}</small>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                    <b style="color:var(--blue);">C$ ${p.p}</b>
-                    <button style="background:var(--bg); border:none; border-radius:50%; width:30px; height:30px; font-weight:bold;">+</button>
-                </div>
-            </div>
-        `).join('');
-    },
-
-    openSeller() {
-        const name = prompt("Nombre de tu producto:");
-        const price = prompt("Precio (C$):");
-        if(name && price) {
-            const data = this.db.get();
-            data.myProducts.push({ n: name, p: price, s: "Mi Negocio", i: "🍱" });
-            data.cacaos += 50; // Recompensa por registrar
-            this.db.save(data);
-            this.updateUI();
-            this.renderFeed();
-            alert("¡Felicidades! Ganaste 50 Cacaos por registrar un producto.");
-        }
-    },
-
-    action(name) {
-        alert(name + ": Próximamente disponible en PinolApp.");
+    } catch (error) {
+        console.error("Error al conectar con el server", error);
     }
-};
-
-window.onload = () => App.init();
+}

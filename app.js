@@ -1,96 +1,74 @@
 const App = {
-    // PERSISTENCIA DE DATOS
-    storage: {
-        db: JSON.parse(localStorage.getItem('Pinol_DB_2026')) || {
-            user: "Yader Vasquez",
-            cacaos: 750,
-            products: []
-        },
-        save() { localStorage.setItem('Pinol_DB_2026', JSON.stringify(this.db)); }
+    // Motor de Datos (Z-Engine)
+    db: {
+        get: () => JSON.parse(localStorage.getItem('Pinol_Master_DB')) || { cacaos: 750, myBiz: [] },
+        set: (data) => localStorage.setItem('Pinol_Master_DB', JSON.stringify(data))
     },
 
-    // CATÁLOGO BASE NICARAGÜENSE
     catalog: [
-        { id: 101, n: "Vigorón Granadino", p: 130, s: "El Kiosko", c: "fritanga", i: "🥗" },
-        { id: 102, n: "Toña Litro", p: 85, s: "Súper Express", c: "bebida", i: "🍺" },
-        { id: 103, n: "Nacatamal de Cerdo", p: 110, s: "Doña Mary", c: "fritanga", i: "🫔" },
-        { id: 104, n: "Queso Ahumado (Lb)", p: 90, s: "Lácteos Chontales", c: "super", i: "🧀" }
+        { n: "Nacatamal Navideño", p: 130, s: "Delicias Nicas", i: "🫔", c: "comida" },
+        { n: "Pack Toña (6)", p: 280, s: "Super Express", i: "🍺", c: "bebida" },
+        { n: "Vigorón Granadino", p: 140, s: "El Kiosko", i: "🥗", c: "comida" }
     ],
 
     init() {
-        this.renderHome();
-        this.updateStats();
+        this.renderFeed();
+        this.updateUI();
 
-        // SPLASH LOGIC
+        // Salida de Splash
         setTimeout(() => {
-            document.getElementById('splash').classList.add('fade-out');
+            document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
                 document.getElementById('splash').style.display = 'none';
-                document.getElementById('app').classList.remove('hidden');
-            }, 500);
+                document.getElementById('main-app').classList.remove('app-hidden');
+            }, 600);
         }, 3000);
     },
 
-    updateStats() {
-        document.getElementById('cacaos-count').innerText = this.storage.db.cacaos;
-        document.getElementById('user-display-name').innerText = this.storage.db.user;
+    updateUI() {
+        const data = this.db.get();
+        document.getElementById('cacaos-val').innerText = data.cacaos;
     },
 
-    navigate(viewId, el) {
+    navigate(screenId, el) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
+        document.getElementById(`screen-${screenId}`).classList.add('active');
         
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        if(el) el.classList.add('active');
+        if(el) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        }
     },
 
-    renderHome(filter = 'all') {
-        const grid = document.getElementById('product-grid');
-        // Unimos catálogo base con productos creados por el usuario (vendedor)
-        let all = [...this.storage.db.products, ...this.catalog];
+    renderFeed() {
+        const data = this.db.get();
+        const feed = document.getElementById('feed');
+        const all = [...data.myBiz, ...this.catalog];
 
-        if(filter !== 'all') all = all.filter(p => p.c === filter);
-
-        grid.innerHTML = all.map(p => `
-            <div class="card">
-                <div class="badge">Envío Local</div>
-                <div class="card-icon">${p.i || '📦'}</div>
-                <div class="card-info">
-                    <h3>${p.n}</h3>
-                    <p>${p.s}</p>
-                    <div class="price-row">
-                        <b>C$ ${p.p}</b>
-                        <button class="add-btn" onclick="App.buy(${p.p})">+</button>
+        feed.innerHTML = all.map(p => `
+            <div class="product-card">
+                <div class="free-badge">Envío Gratis 🇳🇮</div>
+                <div class="p-icon">${p.i}</div>
+                <div class="p-info">
+                    <b>${p.n}</b>
+                    <small>${p.s}</small>
+                    <div class="p-footer">
+                        <span class="price">C$ ${p.p}</span>
+                        <button class="add-btn">+</button>
                     </div>
                 </div>
             </div>
         `).join('');
     },
 
-    openBusinessPanel() {
-        const name = prompt("Nombre de tu producto nica:");
-        const price = prompt("Precio en Córdobas:");
-        if(name && price) {
-            this.storage.db.products.push({
-                id: Date.now(),
-                n: name,
-                p: parseInt(price),
-                s: "Negocio de " + this.storage.db.user,
-                c: "super",
-                i: "🏪"
-            });
-            this.storage.save();
-            this.renderHome();
-            alert("¡Producto registrado en tu memoria local!");
-        }
-    },
-
-    buy(cost) {
-        if(this.storage.db.cacaos >= 10) {
-            this.storage.db.cacaos += 5; // Gana cacaos por comprar
-            this.storage.save();
-            this.updateStats();
-            alert("¡Gracias por tu compra local!");
+    sellerPanel() {
+        const name = prompt("Nombre de tu producto/negocio:");
+        if(name) {
+            const data = this.db.get();
+            data.myBiz.push({ n: name, p: 100, s: "Mi Negocio", i: "🏬", c: "comida" });
+            this.db.set(data);
+            this.renderFeed();
+            alert("¡Producto publicado en PinolApp!");
         }
     }
 };

@@ -1,38 +1,21 @@
 const App = {
-    // Motor de Datos (Z-Engine)
+    // MEMORIA DEL TELÉFONO
     db: {
-        get: () => JSON.parse(localStorage.getItem('Pinol_Master_DB')) || { cacaos: 750, myBiz: [] },
-        set: (data) => localStorage.setItem('Pinol_Master_DB', JSON.stringify(data))
+        get: () => JSON.parse(localStorage.getItem('Pinol_DB')) || { cacaos: 500, user: "Yader", products: [] },
+        save: (data) => localStorage.setItem('Pinol_DB', JSON.stringify(data))
     },
 
-    catalog: [
-        { n: "Nacatamal Navideño", p: 130, s: "Delicias Nicas", i: "🫔", c: "comida" },
-        { n: "Pack Toña (6)", p: 280, s: "Super Express", i: "🍺", c: "bebida" },
-        { n: "Vigorón Granadino", p: 140, s: "El Kiosko", i: "🥗", c: "comida" }
-    ],
-
     init() {
-        this.renderFeed();
-        this.updateUI();
-
-        // Salida de Splash
+        this.render();
         setTimeout(() => {
-            document.getElementById('splash').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
-                document.getElementById('main-app').classList.remove('app-hidden');
-            }, 600);
+            document.getElementById('splash').style.display = 'none';
+            document.getElementById('app').classList.remove('hidden');
         }, 3000);
     },
 
-    updateUI() {
-        const data = this.db.get();
-        document.getElementById('cacaos-val').innerText = data.cacaos;
-    },
-
-    navigate(screenId, el) {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById(`screen-${screenId}`).classList.add('active');
+    nav(viewId, el) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(`view-${viewId}`).classList.add('active');
         
         if(el) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -40,37 +23,35 @@ const App = {
         }
     },
 
-    renderFeed() {
+    render() {
         const data = this.db.get();
+        document.getElementById('cacaos-val').innerText = data.cacaos;
+        
         const feed = document.getElementById('feed');
-        const all = [...data.myBiz, ...this.catalog];
-
-        feed.innerHTML = all.map(p => `
-            <div class="product-card">
-                <div class="free-badge">Envío Gratis 🇳🇮</div>
-                <div class="p-icon">${p.i}</div>
-                <div class="p-info">
-                    <b>${p.n}</b>
-                    <small>${p.s}</small>
-                    <div class="p-footer">
-                        <span class="price">C$ ${p.p}</span>
-                        <button class="add-btn">+</button>
-                    </div>
-                </div>
+        const items = [{n:"Nacatamal", p:120, s:"Doña Mary", i:"🫔"}, ...data.products];
+        
+        feed.innerHTML = items.map(p => `
+            <div class="card" style="background:white; padding:15px; border-radius:15px; margin:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                <span style="font-size:30px;">${p.i || '📦'}</span>
+                <h4>${p.n}</h4>
+                <p>C$ ${p.p}</p>
+                <button onclick="App.buy()" style="width:100%; background:var(--blue); color:white; border:none; padding:8px; border-radius:8px;">Pedir</button>
             </div>
         `).join('');
     },
 
-    sellerPanel() {
-        const name = prompt("Nombre de tu producto/negocio:");
+    sellerMode() {
+        const name = prompt("¿Qué vas a vender hoy?");
         if(name) {
             const data = this.db.get();
-            data.myBiz.push({ n: name, p: 100, s: "Mi Negocio", i: "🏬", c: "comida" });
-            this.db.set(data);
-            this.renderFeed();
-            alert("¡Producto publicado en PinolApp!");
+            data.products.push({n: name, p: 100, s: "Local", i: "🏪"});
+            this.db.save(data);
+            this.render();
+            alert("¡Producto registrado en tu memoria local!");
         }
-    }
+    },
+
+    action(msg) { alert(msg + " se activará en la versión final con servidor."); }
 };
 
 window.onload = () => App.init();

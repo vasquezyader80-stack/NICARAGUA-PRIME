@@ -1,29 +1,22 @@
-// Usamos el módulo 'http' nativo de Node.js para máxima compatibilidad y evitar errores de dependencias
-const http = require('http');
+const express = require('express');
+const app = express();
+app.use(express.json());
 
-const server = http.createServer((req, res) => {
-  // Configuramos cabeceras para permitir que tu frontend lea los datos (CORS)
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Content-Type', 'application/json');
+// Simulación de base de datos (puedes usar un JSON o MongoDB después)
+let productos = [
+  { id: 1, nombre: "Nacatamal", precio: 120, vendedor: "Fritanga El Norte", imagen: "nacatamal.png" }
+];
 
-  // Ruta básica para verificar que el servidor está vivo
-  if (req.url === '/api/status' || req.url === '/api/') {
-    res.writeHead(200);
-    return res.end(JSON.stringify({ 
-      status: "online", 
-      message: "Servidor de Tierra Nica Pro funcionando ✅",
-      version: "1.0.1"
-    }));
-  }
-
-  // Respuesta para rutas no encontradas
-  res.writeHead(404);
-  res.end(JSON.stringify({ error: "Ruta no encontrada" }));
+// Ruta para obtener todos los productos
+app.get('/api/productos', (req, res) => {
+  res.json(productos);
 });
 
-// Vercel asigna el puerto automáticamente
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(Servidor activo en puerto ${PORT});
-});    
+// Ruta para agregar un nuevo producto
+app.post('/api/productos', (req, res) => {
+  const nuevo = req.body;
+  productos.push({ id: Date.now(), ...nuevo });
+  res.status(201).json({ mensaje: "Producto guardado con éxito" });
+});
+
+module.exports = app;

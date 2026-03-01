@@ -3,92 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | 100% Nica</title>
+    <title>PinolApp | 100% Nica 🇳🇮</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <h1 class="logo">Pinol<span>App</span></h1>
-        <p>100% Orgullo Nicaragüense 🇳🇮</p>
+        <h1 class="logo">Pinol<span>app</span></h1>
+        <div class="loader-dot"></div>
+        <p>© 2026 DESIGNED BY YADER VASQUEZ</p>
     </div>
 
     <div id="app" style="display:none;">
-        
-        <section id="view-home" class="view active">
-            <header class="header">
-                <div class="loc-bar">
-                    <small>Entrega en</small>
-                    <b>📍 Managua, Nicaragua</b>
-                </div>
-                <div class="search">
-                    <input type="text" placeholder="Buscar Fritanga, Toña, Tip-Top..." oninput="App.search(this.value)">
-                </div>
-            </header>
-
-            <div class="main-body">
-                <div class="cat-nav">
-                    <div class="pill active" onclick="App.filter('all', this)">✨ Todo</div>
-                    <div class="pill" onclick="App.filter('comida', this)">🥘 Comida</div>
-                    <div class="pill" onclick="App.filter('bebidas', this)">🍺 Bebidas</div>
-                </div> 
-                <h3 class="label">Comercios en Nicaragua</h3>
-                <div id="grid" class="product-grid"></div>
-            </div>
-        </section> 
-
-        <section id="view-profile" class="view">
-            <div class="profile-header">
-                <div class="u-avatar">YN</div>
-                <div class="u-info">
-                    <h2 id="u-name">Yader</h2>
-                    <p>nicaragua@pinolapp.com</p>
+        <header class="header">
+            <div class="top-nav">
+                <div class="loc-info">
+                    <small>Entregar en</small>
+                    <b>📍 Nicaragua</b>
                 </div>
             </div>
+            <div class="search-box">
+                <input type="text" placeholder="Buscar fritangas, pulperías o mandados..." oninput="App.search(this.value)">
+            </div>
+        </header> 
 
-            <div class="menu-list">
-                <div class="m-card">
-                    <div class="m-row" onclick="App.navigate('socio')">
-                        <span class="m-ico">🏢</span>
-                        <div class="m-txt"><b>Registrar mi Tienda</b><p>Vendé tus productos aquí</p></div>
-                        <span class="m-arrow">❯</span>
+        <main class="content">
+            <section id="view-home" class="view active">
+                <div class="cat-bar">
+                    <div class="cat-pill active" onclick="App.filter('all', this)">Todo</div>
+                    <div class="cat-pill" onclick="App.filter('comida', this)">🥘 Fritangas</div>
+                    <div class="cat-pill" onclick="App.filter('tienda', this)">🛒 Pulperías</div>
+                    <div class="cat-pill" onclick="App.filter('envio', this)">🏍️ Mandados</div>
+                </div>
+                <div id="product-grid" class="product-grid"></div>
+            </section>
+
+            <section id="view-profile" class="view">
+                <div class="profile-card">
+                    <div class="avatar">YV</div>
+                    <div class="details">
+                        <h2 id="user-name-display">Cargando...</h2>
+                        <p>Socio Verificado 🇳🇮</p>
                     </div>
                 </div>
 
-                <div class="m-card">
-                    <div class="m-row">
-                        <span class="m-ico">💳</span>
-                        <div class="m-txt"><b>Métodos de pago</b><p>Córdobas y Tarjetas</p></div>
-                        <span class="m-arrow">❯</span>
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <b id="cacaos-balance">0</b>
+                        <span>Cacaos</span>
                     </div>
-                    <div class="m-row">
-                        <span class="m-ico">📍</span>
-                        <div class="m-txt"><b>Mis Direcciones</b><p>Casa, Trabajo, Otros</p></div>
-                        <span class="m-arrow">❯</span>
+                    <div class="stat-box">
+                        <b>C$</b>
+                        <span>Córdobas</span>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <section id="view-socio" class="view">
-            <div class="header-simple"><h2>Panel del Vendedor</h2></div>
-            <div class="form-box">
-                <p>Publicá un producto en Córdobas (C$):</p>
-                <input type="text" id="p-name" placeholder="Nombre (Ej: Tajadas con Queso)">
-                <input type="number" id="p-price" placeholder="Precio en C$">
-                <select id="p-cat">
-                    <option value="comida">Comida / Fritanga</option>
-                    <option value="bebidas">Bebidas / Licores</option>
-                </select>
-                <button class="btn-main" onclick="App.addProd()">Publicar Producto</button>
-            </div>
-            <div id="inventory-list" class="inventory-list"></div>
-        </section>
+                <div class="admin-panel">
+                    <h3>Panel de Vendedor</h3>
+                    <div class="form-add">
+                        <input type="text" id="new-p-name" placeholder="Nombre del producto">
+                        <input type="number" id="new-p-price" placeholder="Precio (C$)">
+                        <select id="new-p-cat">
+                            <option value="comida">🥘 Fritanga / Comida</option>
+                            <option value="tienda">🛒 Pulpería / Tienda</option>
+                            <option value="envio">🏍️ Delivery / Mandado</option>
+                        </select>
+                        <button class="btn-primary" onclick="App.saveProduct()">Registrar Producto</button>
+                    </div>
+                    <hr>
+                    <div id="my-inventory" class="inventory-list">
+                        </div>
+                </div>
+            </section>
+        </main>
 
         <nav class="dock">
-            <div class="d-btn active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
-            <div class="d-btn" onclick="App.navigate('profile', this)">👤<span>Perfil</span></div>
+            <div class="d-item active" onclick="App.navigate('home', this)">🏠<span>Inicio</span></div>
+            <div class="d-item" onclick="App.navigate('profile', this)">👤<span>Perfil/Socio</span></div>
         </nav>
     </div>
 

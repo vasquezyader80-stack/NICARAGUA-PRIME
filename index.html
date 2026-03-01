@@ -3,78 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PinolApp | Pedidos Ya Clone</title>
+    <title>PinolApp | 100% Nica</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="splash-center">
-            <h1 class="logo-main">Pinol<span>app</span></h1>
-            <p class="tagline">100% Orgullo Nicaragüense 🇳🇮</p>
-            <div class="loader-line"><div class="fill"></div></div>
+        <div class="splash-box">
+            <h1 class="logo-text">Pinol<span>app</span></h1>
+            <p class="n-tag">100% Orgullo Nicaragüense 🇳🇮</p>
+            <div class="bar-bg"><div class="bar-fill"></div></div>
         </div>
-        <p class="footer-brand">© 2026 DESIGNED BY YADER VASQUEZ</p>
     </div>
 
     <div id="app" style="display:none;">
         
-        <section id="view-inicio" class="view active">
-            <header class="peya-header">
-                <div class="top-bar">
-                    <div class="location">C. Principal Del Naranjo ▼</div>
-                    <div class="icons">🔔 🛒</div>
-                </div>
-                <div class="search-bar">
+        <section id="view-inicio" class="app-view active">
+            <header class="main-nav-blue">
+                <div class="user-loc">📍 C. Principal Del Naranjo ▼</div>
+                <div class="search-engine">
                     <input type="text" placeholder="Locales, platos y productos">
-                    <button class="search-btn">🔍</button>
+                    <button class="s-btn">🔍</button>
                 </div>
             </header>
 
-            <div class="container">
-                <div class="main-categories">
-                    <div class="cat-card big" onclick="App.filter('restaurantes')">
+            <div class="main-body">
+                <div class="grid-categories">
+                    <div class="cat-item-v" onclick="App.filter('comida')">
                         <img src="https://img.icons8.com/emoji/96/hamburger-emoji.png">
                         <b>Restaurantes</b>
                     </div>
-                    <div class="cat-card big" onclick="App.filter('mercados')">
-                        <img src="https://img.icons8.com/emoji/96/shopping-cart-emoji.png">
+                    <div class="cat-item-v" onclick="App.filter('mercados')">
+                        <img src="https://img.icons8.com/emoji/48/shopping-basket-emoji.png">
                         <b>Mercados</b>
                     </div>
                 </div>
 
-                <div class="sub-categories">
-                    <div class="sub-card">🏍️ Mandados</div>
-                    <div class="sub-card">🛍️ Tiendas</div>
-                    <div class="sub-card">☕ Café</div>
+                <div class="fast-access">
+                    <div class="f-pill">🏍️ Mandados</div>
+                    <div class="f-pill">🛍️ Tiendas</div>
+                    <div class="f-pill">☕ Café</div>
                 </div>
 
-                <div class="open-status">
-                    <p>A esta hora hay pocos locales abiertos</p>
-                    <small>Regresa más tarde para encontrar más opciones.</small>
+                <div class="local-status">
+                    <div class="store-icon">🏪</div>
+                    <h4>A esta hora hay pocos locales abiertos</h4>
+                    <p>Regresa más tarde para encontrar más opciones.</p>
                 </div>
             </div>
         </section>
 
-        <section id="view-perfil" class="view">
-            <div class="profile-red-header">
-                <button class="back-btn" onclick="App.navigate('inicio')">←</button>
+        <section id="view-perfil" class="app-view">
+            <div class="p-header-blue">
+                <div class="p-top">
+                    <button class="p-back" onclick="App.navigate('inicio')">←</button>
+                </div>
                 <h2>Te damos la bienvenida</h2>
             </div>
-            <div class="profile-menu">
-                <div class="p-item" onclick="App.login()">👤 Registrarme / Iniciar sesión</div>
-                <div class="p-item">🎧 Ayuda <span>›</span></div>
-                <div class="p-item">ℹ️ Información legal <span>›</span></div>
-                <div class="p-item" onclick="App.openBusiness()">🏠 Registrar mi negocio <span>›</span></div>
+            
+            <div class="p-options">
+                <div class="opt-line" onclick="App.login()">
+                    <span class="icon">👤</span> <b>Registrarme / Iniciar sesión</b>
+                </div>
+                <div class="opt-line" onclick="App.openHelp()">
+                    <span class="icon">🎧</span> <b>Ayuda</b> <span class="arr">›</span>
+                </div>
+                <div class="opt-line">
+                    <span class="icon">📜</span> <b>Información legal</b> <span class="arr">›</span>
+                </div>
+                <div class="opt-line highlight" onclick="App.sellerPanel()">
+                    <span class="icon">🏠</span> <b>Registrar mi negocio</b> <span class="arr">›</span>
+                </div>
             </div>
         </section>
 
         <nav class="bottom-tabs">
-            <div class="tab active" onclick="App.navigate('inicio', this)">🏠<span>Inicio</span></div>
-            <div class="tab" onclick="App.navigate('mercados', this)">🛒<span>Mercados</span></div>
-            <div class="tab" onclick="App.navigate('promos', this)">%<span>Promos</span></div>
-            <div class="tab" onclick="App.navigate('pedidos', this)">📋<span>Pedidos</span></div>
-            <div class="tab" onclick="App.navigate('perfil', this)">👤<span>Mi perfil</span></div>
+            <div class="tab-btn active" onclick="App.navigate('inicio', this)">
+                <span class="t-ico">🏠</span>
+                <span class="t-txt">Inicio</span>
+            </div>
+            <div class="tab-btn" onclick="alert('Explora Mercados Locales')">
+                <span class="t-ico">🛒</span>
+                <span class="t-txt">Mercados</span>
+            </div>
+            <div class="tab-btn" onclick="alert('Promociones del Mes')">
+                <span class="t-ico">%</span>
+                <span class="t-txt">Promos</span>
+            </div>
+            <div class="tab-btn" onclick="App.navigate('perfil', this)">
+                <span class="t-ico">👤</span>
+                <span class="t-txt">Mi perfil</span>
+            </div>
         </nav>
     </div>
 

@@ -1,37 +1,62 @@
-<div id="splash" class="splash">
-    <img src="logo.png" width="180"> <h1 style="color:#0055b8; font-size:42px; margin:0;">Pinol<span style="color:#e0004d;">app</span></h1>
-    <div class="loader-bar"><div class="progress"></div></div>
-    <p style="color:#bbb; font-size:10px; margin-top:30px;">© 2026 DESIGNED BY YADER VASQUEZ</p>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PinolApp | 100% Nica 🇳🇮</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-<div id="app" style="display:none;">
-    <header class="main-header">
-        <div style="font-size:12px; color:red;">📍 Entregar en <b>Managua</b> ▼</div>
-        <div class="search-box">
-            <span>🔍</span>
-            <input type="text" placeholder="¿Qué se te antoja hoy?">
+    <div id="splash" class="splash">
+        <h1 class="logo-text">Pinol<span>app</span></h1>
+        <div class="loader-container">
+            <div class="loader-progress"></div>
         </div>
-    </header>
-
-    <div class="cat-list">
-        <div class="cat-row" style="background:var(--bg-fritanga)">🥘 Fritangas</div>
-        <div class="cat-row" style="background:var(--bg-super)">🛒 Súper</div>
-        <div class="cat-row" style="background:var(--bg-bebidas)">🍺 Bebidas</div>
-        <div class="cat-row" style="background:var(--bg-mandaditos)">🏍️ Mandaditos</div>
+        <p class="branding">© 2026 DESIGNED BY YADER VASQUEZ</p>
     </div>
 
-    <div class="promo-box" style="padding:15px;">
-        <h2 style="margin:0;">¡Descuento Nica!</h2>
-        <p>15% OFF en Fritangas seleccionadas</p>
-        <button style="background:white; border:1px solid #ddd; padding:5px 15px; border-radius:5px;">Ver locales</button>
+    <div id="app" style="display:none;">
+        <header class="header-n">
+            <div class="location">
+                <span class="pin">📍</span>
+                <div class="loc-info">
+                    <small>Entregar en</small>
+                    <b>Managua</b>
+                </div>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="search-wrap">
+                <input type="text" placeholder="¿Qué se te antoja hoy?" oninput="App.search(this.value)">
+            </div>
+        </header>
+
+        <main class="content-n">
+            <div class="cat-section">
+                <div class="cat-row n-pink" onclick="App.filter('comida')">🍱 Fritangas</div>
+                <div class="cat-row n-green" onclick="App.filter('super')">🛒 Súper</div>
+                <div class="cat-row n-blue" onclick="App.filter('bebida')">🍺 Bebidas</div>
+                <div class="cat-row n-orange" onclick="App.filter('envio')">🏍️ Mandaditos</div>
+            </div>
+
+            <div class="promo-card">
+                <h2>¡Descuento Nica!</h2>
+                <p>15% OFF en Fritangas seleccionadas</p>
+                <button class="btn-locales">Ver locales</button>
+            </div>
+
+            <h3 class="title-section">Populares en tu zona</h3>
+            
+            <div id="product-grid" class="grid-n"></div>
+        </main>
+
+        <nav class="dock-n">
+            <div class="dock-item active" onclick="App.nav('home')">🏠<br><span>Inicio</span></div>
+            <div class="dock-item" onclick="App.nav('orders')">📋<br><span>Pedidos</span></div>
+            <div class="dock-item" onclick="App.nav('profile')">👤<br><span>Perfil</span></div>
+        </nav>
     </div>
 
-    <h3 style="padding:0 15px; margin-bottom:0;">Populares en tu zona</h3>
-    <div id="product-grid" class="product-grid"></div>
-
-    <nav class="bottom-nav">
-        <div onclick="App.navigate('home')">🏠<br><small>Inicio</small></div>
-        <div>📋<br><small>Pedidos</small></div>
-        <div onclick="App.navigate('profile')">👤<br><small>Perfil</small></div>
-    </nav>
-</div>
+    <script src="app.js"></script>
+</body>
+</html> 

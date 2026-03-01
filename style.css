@@ -1,89 +1,44 @@
 :root {
-    --nica-blue: #0056b3;
-    --peya-gray: #f7f7f7; /* El fondo gris claro de la app original */
-    --shadow: 0 2px 10px rgba(0,0,0,0.08);
+    --blue-nica: #0052cc;
+    --red-nica: #ff004c;
+    --gray-f: #f6f7f9;
 }
 
-body { 
-    font-family: 'Plus Jakarta Sans', sans-serif; 
-    margin: 0; 
-    background-color: var(--peya-gray); /* Esto quita lo 'raro' */
-    color: #333;
-}
+body { font-family: 'Outfit', sans-serif; margin: 0; background: var(--gray-f); color: #222; }
 
-/* Header con curva sutil */
-.header-blue {
-    background: var(--nica-blue);
-    padding: 25px 20px 35px 20px;
-    color: white;
-    border-radius: 0 0 24px 24px;
-}
+/* Splash Screen Profesional */
+.splash { position: fixed; inset: 0; background: #fff; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+.logo-text { font-size: 52px; font-weight: 800; color: var(--blue-nica); margin: 0; }
+.logo-text span { color: var(--red-nica); }
+.loader-wrapper { width: 180px; height: 5px; background: #eee; border-radius: 10px; margin: 20px auto; overflow: hidden; }
+.loader-progress { width: 0%; height: 100%; background: var(--blue-nica); animation: load 2.5s forwards; }
+@keyframes load { to { width: 100%; } }
 
-/* Buscador con sombra para que resalte */
-.search-box {
-    background: white;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    padding: 12px 15px;
-    margin-top: 20px;
-    box-shadow: var(--shadow);
-}
+/* Vistas con transiciones suaves */
+.view { display: none; height: 100vh; animation: slideUp 0.4s ease-out; }
+.view.active { display: block; }
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-.search-box input {
-    border: none;
-    outline: none;
-    width: 100%;
-    font-size: 15px;
-}
+/* Header Azul Estilo Peya */
+.header-main { background: var(--blue-nica); padding: 25px 20px 45px; border-radius: 0 0 30px 30px; color: white; }
+.search-container { background: white; border-radius: 15px; display: flex; padding: 12px 18px; margin-top: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+.search-container input { border: none; width: 100%; outline: none; font-size: 16px; font-family: inherit; }
 
-/* Categorías: Ahora son tarjetas blancas sobre fondo gris */
-.categories-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    padding: 20px;
-    margin-top: -20px; /* Para que muerdan un poco el header */
-}
+/* Menú de Perfil Mejorado */
+.profile-hero-blue { background: var(--blue-nica); padding: 50px 25px; color: white; border-radius: 0 0 0 100px; }
+.menu-list-container { margin-top: -30px; padding: 0 15px; }
+.menu-group { background: white; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); overflow: hidden; }
+.menu-item { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #f9f9f9; transition: 0.3s; }
+.menu-item:active { background: #f0f0f0; }
+.m-icon { font-size: 24px; margin-right: 15px; }
+.m-content { flex: 1; font-size: 16px; }
+.m-arrow { color: #ccc; font-size: 22px; }
+.special-blue { color: var(--blue-nica); }
 
-.cat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: transform 0.2s;
-}
+/* Tab Bar Estilo App Real */
+.tab-bar { position: fixed; bottom: 0; width: 100%; display: flex; background: white; border-top: 1px solid #eee; padding: 12px 0 25px; }
+.tab-item { flex: 1; text-align: center; color: #888; font-size: 12px; transition: 0.3s; }
+.tab-item.active { color: var(--blue-nica); font-weight: 700; transform: translateY(-3px); }
+.t-icon { font-size: 22px; margin-bottom: 4px; }
 
-.cat-card:active { transform: scale(0.95); }
-
-.cat-card img { width: 55px; margin-bottom: 10px; }
-
-/* Menú de Perfil: Limpio y organizado */
-.menu-group {
-    background: white;
-    margin: 15px;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-}
-
-.menu-item {
-    display: flex;
-    align-items: center;
-    padding: 18px 20px;
-    border-bottom: 1px solid #f2f2f2;
-    cursor: pointer;
-}
-
-.menu-item:last-child { border-bottom: none; }
-
-.menu-item i { 
-    font-size: 20px; 
-    width: 30px; 
-    color: var(--nica-blue); 
-}
-
-.menu-item span { flex: 1; font-weight: 500; }
-
-.arrow-right { color: #ccc; font-size: 12px; }
+.hidden { display: none !important; }

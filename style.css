@@ -1,37 +1,41 @@
 :root {
-    --blue: #0047AB;
+    --blue: #0047AB; /* Azul Pinolero */
     --red: #E31C44;
-    --gray: #F4F7F9;
+    --white: #FFFFFF;
+    --bg: #F6F8FA;
+    --text: #2D3436;
 }
 
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--gray); overflow: hidden; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: var(--text); overflow: hidden; -webkit-tap-highlight-color: transparent; }
 
-/* Splash Estilo Video */
-.splash { position: fixed; inset: 0; background: white; z-index: 1000; display: flex; align-items: center; justify-content: center; }
-.logo-main { font-size: 50px; font-weight: 800; color: var(--blue); margin: 0; }
-.logo-main span { color: var(--red); }
-.loader-line { width: 200px; height: 4px; background: #eee; border-radius: 10px; margin: 20px 0; overflow: hidden; }
-.fill { width: 0%; height: 100%; background: var(--blue); animation: load 2.5s forwards; }
+/* Splash Estilo Premium */
+.splash { position: fixed; inset: 0; background: var(--white); z-index: 9999; display: flex; align-items: center; justify-content: center; }
+.logo-text { font-size: 55px; font-weight: 800; color: var(--blue); margin: 0; letter-spacing: -2px; }
+.logo-text span { color: var(--red); }
+.loader-bg { width: 200px; height: 5px; background: #EEE; border-radius: 10px; margin-top: 25px; overflow: hidden; }
+.loader-fill { width: 0%; height: 100%; background: var(--blue); animation: load 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
 @keyframes load { to { width: 100%; } }
 
-/* Vistas */
-.view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 80px; }
-.view.active { display: block; animation: slideUp 0.3s ease; }
-@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+/* Navegación entre Pantallas */
+.view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 100px; position: absolute; width: 100%; }
+.view.active { display: block; animation: slideIn 0.3s ease-out; }
+@keyframes slideIn { from { transform: translateY(15px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-/* Header & Perfil */
-.p-header { background: var(--blue); padding: 30px 20px 40px; border-radius: 0 0 25px 25px; color: white; }
-.search-bar { background: white; border-radius: 12px; display: flex; padding: 12px; margin-top: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-.search-bar input { border: none; width: 100%; outline: none; font-size: 15px; }
+/* Headers y Cards */
+.main-header { background: var(--blue); padding: 40px 20px 45px; border-radius: 0 0 30px 30px; color: white; }
+.search-container { background: white; border-radius: 15px; display: flex; padding: 12px 18px; margin-top: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+.search-container input { border: none; width: 100%; outline: none; font-size: 16px; font-family: inherit; }
 
-.profile-header { background: var(--blue); padding: 50px 25px; color: white; border-radius: 0 0 0 100px; }
-.p-menu { padding: 15px; margin-top: -30px; }
-.p-group { background: white; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); overflow: hidden; }
-.p-item { padding: 20px; display: flex; justify-content: space-between; font-weight: 600; border-bottom: 1px solid #f9f9f9; }
-.b-blue { color: var(--blue); }
+.hero-profile { background: var(--blue); padding: 60px 25px 50px; color: white; border-radius: 0 0 0 100px; }
+.menu-container { padding: 15px; margin-top: -30px; }
+.menu-card { background: white; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); overflow: hidden; }
+.menu-item { padding: 20px; display: flex; justify-content: space-between; font-weight: 600; border-bottom: 1px solid #F8F8F8; cursor: pointer; }
+.nica-blue { color: var(--blue); }
 
-/* Bottom Nav */
-.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0 25px; border-top: 1px solid #eee; }
-.tab { text-align: center; color: #888; font-size: 11px; }
-.tab.active { color: var(--blue); font-weight: bold; }
+/* Bottom Dock */
+.dock { position: fixed; bottom: 0; width: 100%; background: white; display: flex; padding: 10px 0 25px; border-top: 1px solid #EEE; z-index: 100; }
+.dock-tab { flex: 1; text-align: center; color: #B2BEC3; font-size: 11px; transition: 0.2s; font-weight: 600; }
+.dock-tab.active { color: var(--blue); transform: translateY(-3px); }
+.dock-tab span { display: block; margin-top: 4px; }
+
 .hidden { display: none; }

@@ -1,44 +1,35 @@
 const App = {
     init() {
-        // Simular carga profesional
-        setTimeout(() => {
-            document.getElementById('splash').classList.add('hidden');
-            document.getElementById('app').classList.remove('hidden');
-        }, 3000);
-
-        // Cargar nombre si existe
-        this.data = JSON.parse(localStorage.getItem('PinolUserData')) || { name: "Invitado", stores: [] };
+        // Carga el nombre del usuario guardado
+        const savedName = localStorage.getItem('userName') || "Yader";
+        console.log("Sistema cargado para: " + savedName);
     },
 
-    navigate(viewId, element) {
-        // Cambiar vista
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(`view-${viewId}`).classList.add('active');
+    navigate(screenId, element) {
+        // 1. Apagar todas las pantallas
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        
+        // 2. Encender la que tocaste
+        const target = document.getElementById(`view-${screenId}`);
+        if(target) target.classList.add('active');
 
-        // Actualizar Tabs
-        if (element) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        // 3. Iluminar el botón del menú
+        if(element) {
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             element.classList.add('active');
         }
     },
 
-    action(type) {
-        // Esto le da "vida" a las opciones muertas
-        alert(`${type}: Esta función estará disponible en la próxima actualización local.`);
-    },
-
-    registerBusiness() {
-        const name = prompt("Ingrese el nombre de su negocio local:");
-        if (name) {
-            this.data.stores.push({ name: name, date: new Date().toLocaleDateString() });
-            localStorage.setItem('PinolUserData', JSON.stringify(this.data));
-            alert(`¡Éxito! El negocio "${name}" ha sido guardado en la memoria del teléfono.`);
+    openSeller() {
+        const name = prompt("¿Cómo se llama tu negocio?");
+        if(name) {
+            // Persistencia: Se guarda en el teléfono
+            let myStores = JSON.parse(localStorage.getItem('myStores')) || [];
+            myStores.push({ name: name, date: new Date().toLocaleDateString() });
+            localStorage.setItem('myStores', JSON.stringify(myStores));
+            
+            alert(`¡Buenísimo! ${name} ya está registrado en PinolApp 🇳🇮`);
         }
-    },
-
-    quickFilter(cat) {
-        alert("Filtrando por: " + cat);
-        // Aquí podrías filtrar los productos locales
     }
 };
 

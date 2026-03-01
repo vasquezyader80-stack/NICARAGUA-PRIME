@@ -1,37 +1,140 @@
-:root { --blue: #005aab; --red: #e60045; --white: #ffffff; --bg: #f8fafc; }
-body { font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; background: var(--bg); color: #1a202c; overflow: hidden; }
+:root { 
+    --peya-red: #e0004d;
+    --bg-fritanga: #ffebee;
+    --bg-super: #e8f5e9;
+    --bg-bebidas: #e3f2fd;
+    --bg-mandaditos: #fff3e0;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
 
-/* Splash */
-.splash { position: fixed; inset: 0; background: white; z-index: 2000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.logo { font-size: 3rem; font-weight: 800; color: var(--blue); }
-.logo span { color: var(--red); }
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 0;
+    background-color: #fff;
+    color: #333;
+}
 
-/* Vistas */
-.view { display: none; height: 100vh; overflow-y: auto; padding-bottom: 90px; }
-.view.active { display: block; animation: slideIn 0.2s ease; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+/* SPLASH SCREEN (Como tu foto 1 y 2) */
+.splash {
+    position: fixed;
+    inset: 0;
+    background: white;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
 
-/* Header */
-.header { background: white; padding: 20px; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
-.loc-header b { color: var(--blue); display: block; }
-.search-bar input { width: 100%; padding: 14px; border: none; background: #f1f5f9; border-radius: 12px; margin-top: 15px; box-sizing: border-box; font-weight: 600; }
+.loader-bar {
+    width: 200px;
+    height: 4px;
+    background: #eee;
+    margin-top: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+}
 
-/* Grid de Productos */
-.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 0 20px; }
-.p-card { background: white; border-radius: 20px; padding: 12px; border: 1px solid #f1f1f1; text-align: center; }
-.p-icon { background: #f8fafc; border-radius: 15px; font-size: 2.2rem; padding: 15px; margin-bottom: 10px; }
-.p-price { color: var(--blue); font-weight: 800; display: block; margin-top: 5px; }
+.progress {
+    width: 0%;
+    height: 100%;
+    background: #0055b8; /* El azul de tu barra en la foto 2 */
+    animation: load 2s forwards;
+}
 
-/* Perfil (PedidosYa Style) */
-.profile-top { padding: 40px 20px; background: #f0f7ff; display: flex; align-items: center; gap: 15px; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
-.avatar { width: 60px; height: 60px; background: var(--blue); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 800; }
-.menu-block { background: white; border-radius: 20px; margin: 20px; padding: 5px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
-.menu-item { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f8fafc; cursor: pointer; }
-.m-text { flex: 1; margin-left: 15px; }
-.m-text b { font-size: 0.95rem; display: block; }
-.m-text p { font-size: 0.75rem; color: #718096; margin: 0; }
+@keyframes load { to { width: 100%; } }
 
-/* Dock */
-.dock { position: fixed; bottom: 0; width: 100%; height: 85px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; }
-.d-item { color: #cbd5e0; font-size: 0.75rem; font-weight: 800; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; }
-.d-item.active { color: var(--blue); }
+/* HEADER Y BUSCADOR */
+.main-header {
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+}
+
+.search-box {
+    background: #f7f7f7;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    border: 1px solid #eee;
+}
+
+.search-box input {
+    border: none;
+    background: transparent;
+    width: 100%;
+    outline: none;
+    font-size: 14px;
+}
+
+/* CATEGORIAS (Como tu foto 3) */
+.cat-list {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+}
+
+.cat-row {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    margin-bottom: 5px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* PRODUCTOS */
+.product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+}
+
+.card {
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    padding: 12px;
+    position: relative;
+    box-shadow: var(--shadow);
+}
+
+.badge-free {
+    font-size: 10px;
+    color: #666;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.add-btn {
+    background: #f3f3f3;
+    border: none;
+    border-radius: 4px;
+    width: 24px;
+    height: 24px;
+    font-weight: bold;
+}
+
+/* NAVEGACIÓN INFERIOR */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+}

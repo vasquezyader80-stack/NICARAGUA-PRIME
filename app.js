@@ -1,26 +1,23 @@
 const App = {
-    // 1. MOTOR DE DATOS PERSISTENTE
-    db: {
-        get: () => JSON.parse(localStorage.getItem('PinolApp_Comercial_V1')) || {
-            myProducts: [],
+    // 1. DATABASE LOCAL (Persistence)
+    storage: {
+        get: () => JSON.parse(localStorage.getItem('PinolApp_Elite')) || {
+            user: "Yader Vasquez",
+            inventory: [
+                { id: 101, name: "Quesillo Trenza", price: 85, cat: "Tienda", shop: "Lácteos Chontales" },
+                { id: 102, name: "Servicio de Asado", price: 150, cat: "Fritanga", shop: "Fritanga El Norte" }
+            ],
             cart: []
         },
-        save: (data) => localStorage.setItem('PinolApp_Comercial_V1', JSON.stringify(data))
+        save: (data) => localStorage.setItem('PinolApp_Elite', JSON.stringify(data))
     },
-
-    // Catálogo inicial de ejemplo
-    staticCatalog: [
-        { id: 1, n: "Nacatamal de Cerdo", p: 130, c: "Fritanga", s: "Doña Mary" },
-        { id: 2, n: "Toña Litro", p: 85, c: "Mercado", s: "Súper Express" },
-        { id: 3, n: "Vigorón Granadino", p: 140, c: "Fritanga", s: "El Kiosko" }
-    ],
 
     init() {
         this.render();
         setTimeout(() => {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(() => {
-                document.getElementById('splash').style.display = 'none';
+                document.getElementById('splash').classList.add('hidden');
                 document.getElementById('app').classList.remove('hidden');
             }, 600);
         }, 3000);
@@ -30,78 +27,87 @@ const App = {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
         document.getElementById(`view-${viewId}`).classList.add('active');
         if(el) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.dock-item').forEach(d => d.classList.remove('active'));
             el.classList.add('active');
         }
     },
 
-    // 2. LÓGICA DE VENTAS (PUBLICAR)
-    publish() {
-        const title = document.getElementById('p-title').value;
+    // 2. LÓGICA DE NEGOCIO (Socio)
+    addProduct() {
+        const name = document.getElementById('p-name').value;
         const price = document.getElementById('p-price').value;
-        const cat = document.getElementById('p-category').value;
+        const cat = document.getElementById('p-cat').value;
 
-        if(!title || !price) return alert("Completa los datos del producto");
+        if(!name || !price) return alert("Por favor complete los datos");
 
-        const data = this.db.get();
-        data.myProducts.push({ id: Date.now(), n: title, p: parseInt(price), c: cat, s: "Tu Negocio" });
-        this.db.save(data);
+        const data = this.storage.get();
+        data.inventory.push({ id: Date.now(), name, price: parseInt(price), cat, shop: "Mi Negocio" });
+        this.storage.save(data);
         
-        alert("¡Producto Publicado! Ya está en el catálogo nacional.");
+        alert("¡Producto Afiliado! Ya está en vivo en Managua.");
         this.render();
-        document.getElementById('p-title').value = "";
+        document.getElementById('p-name').value = "";
         document.getElementById('p-price').value = "";
     },
 
-    // 3. LÓGICA DE COMPRAS
-    addToCart(id) {
-        const data = this.db.get();
-        const all = [...this.staticCatalog, ...data.myProducts];
-        const product = all.find(p => p.id === id);
-        
-        data.cart.push(product);
-        this.db.save(data);
+    // 3. LÓGICA DE COMPRA (Cliente)
+    addCart(id) {
+        const data = this.storage.get();
+        const item = data.inventory.find(p => p.id === id);
+        data.cart.push(item);
+        this.storage.save(data);
         this.render();
+        // Haptic feedback simulado
+        console.log("Añadido al pedido");
     },
 
     render() {
-        const data = this.db.get();
+        const data = this.storage.get();
         
-        // Contador de carrito
+        // Cart Badge
         document.getElementById('cart-count').innerText = data.cart.length;
+        document.getElementById('cart-dot').innerText = data.cart.length;
 
-        // Render Catálogo (Explorar)
-        const grid = document.getElementById('product-grid');
-        const allProducts = [...this.staticCatalog, ...data.myProducts];
-        grid.innerHTML = allProducts.map(p => `
+        // Feed de Productos
+        const feed = document.getElementById('feed-comercial');
+        feed.innerHTML = data.inventory.map(p => `
             <div class="p-card">
-                <span class="p-tag">${p.c}</span>
-                <h4>${p.n}</h4>
-                <div class="price">C$ ${p.p}</div>
-                <button class="add-btn" onclick="App.addToCart(${p.id})">+</button>
+                <small>${p.cat}</small>
+                <h4>${p.name}</h4>
+                <div class="p-price">C$ ${p.price}</div>
+                <button onclick="App.addCart(${p.id})">+</button>
             </div>
         `).join('');
 
-        // Render Carrito
-        const cartItems = document.getElementById('cart-items');
-        let total = 0;
-        cartItems.innerHTML = data.cart.map((p, index) => {
-            total += p.p;
-            return `<div class="cart-item-row" style="display:flex; justify-content:space-between; margin-bottom:10px; background:white; padding:15px; border-radius:15px;">
-                <span>${p.n}</span> <b>C$ ${p.p}</b>
+        // Carrito
+        const cartList = document.getElementById('cart-list');
+        let subtotal = 0;
+        cartList.innerHTML = data.cart.map(item => {
+            subtotal += item.price;
+            return `<div style="background:white; padding:15px; border-radius:15px; margin-bottom:10px; display:flex; justify-content:space-between;">
+                <span>${item.name}</span> <b>C$ ${item.price}</b>
             </div>`;
-        }).join('') || "<p>Tu carrito está vacío</p>";
+        }).join('');
 
-        document.getElementById('subtotal').innerText = "C$ " + total;
-        document.getElementById('final-total').innerText = "C$ " + (total > 0 ? total + 40 : 0);
+        document.getElementById('subtotal').innerText = "C$ " + subtotal;
+        document.getElementById('total-final').innerText = "C$ " + (subtotal > 0 ? subtotal + 45 : 0);
+
+        // Inventario del Socio
+        const invList = document.getElementById('my-inventory');
+        invList.innerHTML = data.inventory.filter(p => p.shop === "Mi Negocio").map(p => `
+            <div style="background:white; padding:12px; border-radius:10px; margin-bottom:8px; border-left:4px solid var(--blue);">
+                <b>${p.name}</b> - C$ ${p.price}
+            </div>
+        `).join('');
     },
 
-    completeOrder() {
-        const data = this.db.get();
-        if(data.cart.length === 0) return alert("Agrega productos primero");
-        alert("¡Pedido Realizado! El comercio ha recibido tu orden en Córdobas.");
+    processOrder() {
+        const data = this.storage.get();
+        if(data.cart.length === 0) return alert("Tu carrito está vacío");
+        
+        alert(`¡Orden confirmada por C$ ${document.getElementById('total-final').innerText}! El repartidor está en camino.`);
         data.cart = [];
-        this.db.save(data);
+        this.storage.save(data);
         this.render();
         this.nav('home');
     }

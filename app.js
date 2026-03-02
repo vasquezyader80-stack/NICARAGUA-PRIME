@@ -1,12 +1,21 @@
-var App = {
-    // Carga datos o crea una base limpia
-    db: JSON.parse(localStorage.getItem('Pinol_Master_DB')) || { productos: [] },
+var TierraNica = {
+    // 1. BASE DE DATOS (Se llena con tus 100 productos)
+    db: JSON.parse(localStorage.getItem('TierraNica_Store')) || {
+        carrito: [],
+        productos: [
+            { id: 1, n: "Ron Artesanal Añejo", p: 1640, cat: "Chinandega", stock: 15 },
+            { id: 2, n: "Sal Marina con Hierbas", p: 310, cat: "Chinandega", stock: 50 },
+            { id: 3, n: "Mesa de Centro Tropical", p: 16400, cat: "Chinandega", stock: 5 },
+            { id: 4, n: "Hamaca Matagalpa", p: 2500, cat: "Matagalpa", stock: 10 }
+            // Aquí se irán sumando los 100 productos
+        ]
+    },
 
     init: function() {
-        console.log("PinolApp cargando...");
-        this.render();
+        this.renderTienda();
+        this.actualizarContador();
         
-        // Quitar el Splash forzosamente a los 2 segundos
+        // Remover Splash
         setTimeout(function() {
             document.getElementById('splash').style.opacity = '0';
             setTimeout(function() {
@@ -16,62 +25,45 @@ var App = {
         }, 2000);
     },
 
-    nav: function(viewId) {
-        var views = document.querySelectorAll('.view');
-        for(var i=0; i < views.length; i++) {
-            views[i].classList.remove('active');
+    // 2. FILTRAR POR CATEGORÍA/DEPARTAMENTO
+    filtrar: function(dep) {
+        var items = this.db.productos;
+        if(dep !== 'todos') {
+            items = items.filter(function(p) { return p.cat === dep; });
         }
-        document.getElementById('view-' + viewId).classList.add('active');
+        this.renderTienda(items);
     },
 
-    vender: function() {
-        var nombre = document.getElementById('p-name').value;
-        var precio = document.getElementById('p-price').value;
-
-        if(nombre === "" || precio === "") {
-            alert("Por favor, llena los datos del producto.");
-            return;
-        }
-
-        var nuevo = {
-            id: Date.now(),
-            nombre: nombre,
-            precio: precio
-        };
-
-        this.db.productos.push(nuevo);
-        localStorage.setItem('Pinol_Master_DB', JSON.stringify(this.db));
-        
-        alert("¡Éxito! Producto guardado en la memoria del teléfono.");
-        this.render();
-        
-        document.getElementById('p-name').value = "";
-        document.getElementById('p-price').value = "";
+    // 3. LÓGICA DEL CARRITO
+    agregar: function(id) {
+        var prod = this.db.productos.find(function(p) { return p.id === id; });
+        this.db.carrito.push(prod);
+        localStorage.setItem('TierraNica_Store', JSON.stringify(this.db));
+        this.actualizarContador();
+        alert("✅ Añadido: " + prod.n);
     },
 
-    render: function() {
-        var feed = document.getElementById('feed');
-        var myList = document.getElementById('my-list');
+    actualizarContador: function() {
+        var count = document.getElementById('cart-count');
+        if(count) count.innerText = this.db.carrito.length;
+    },
+
+    // 4. DIBUJAR TIENDA
+    renderTienda: function(productosAMostrar) {
+        var lista = productosAMostrar || this.db.productos;
+        var contenedor = document.getElementById('market-grid');
         var html = "";
 
-        if(this.db.productos.length === 0) {
-            html = "<p style='grid-column: 1/-1; text-align:center;'>No hay productos aún. ¡Registra el tuyo!</p>";
-        } else {
-            for(var i=0; i < this.db.productos.length; i++) {
-                var p = this.db.productos[i];
-                html += '<div class="p-card">' +
-                        '<b>' + p.nombre + '</b>' +
-                        '<p style="color:blue">C$ ' + p.precio + '</p>' +
-                        '<button onclick="alert(\'Pedido enviado\')" style="padding:5px; font-size:12px;">Comprar</button>' +
-                        '</div>';
-            }
-        }
-        feed.innerHTML = html;
-        myList.innerHTML = html; // Muestra lo mismo en la lista de gestión
+        lista.forEach(function(p) {
+            html += '<div class="p-card">' +
+                    '<small>' + p.cat + '</small>' +
+                    '<h4>' + p.n + '</h4>' +
+                    '<b>C$ ' + p.p + '</b>' +
+                    '<button onclick="TierraNica.agregar(' + p.id + ')">Añadir</button>' +
+                    '</div>';
+        });
+        contenedor.innerHTML = html;
     }
 };
 
-// Arrancar App
-window.onload = function() {
-    App.init();
-};
+window.onload = function() { TierraNica.init(); };

@@ -2,125 +2,48 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PinolApp Enterprise 🇳🇮</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PinolApp Pro</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <div id="splash" class="splash-screen">
-        <div class="brand-box">
-            <h1 class="main-logo">Pinol<span>app</span></h1>
-            <div class="loading-track"><div class="loading-fill"></div></div>
-            <p class="enterprise-tag">SISTEMA DE COMERCIO UNIFICADO</p>
-        </div>
+    <div id="splash" class="splash">
+        <h1 class="logo">Pinol<span>app</span></h1>
+        <p>Cargando Comercio Nica...</p>
     </div>
 
-    <div id="app" class="app-hidden">
-        <header class="global-header">
-            <div class="nav-top">
-                <div class="location-info">
-                    <span class="pulse"></span>
-                    <div>
-                        <small>Entregar en</small>
-                        <b>Managua, Nicaragua 📍</b>
-                    </div>
-                </div>
-                <div class="user-action" onclick="App.nav('perfil')">
-                    <div class="avatar">YV</div>
-                </div>
+    <div id="app" style="display:none;">
+        <header class="header">
+            <div class="top">
+                <b>Managua, Nicaragua 📍</b>
+                <div class="cart-icon">🛒 <span id="cart-num">0</span></div>
             </div>
-            <div class="search-bar-container">
-                <input type="text" placeholder="Buscar fritangas, repuestos o farmacias..." id="global-search">
-            </div>
+            <div class="search"><input type="text" placeholder="¿Qué buscamos, Yader?"></div>
         </header>
 
-        <main class="main-scroller">
+        <main>
             <section id="view-home" class="view active">
-                <div class="horizontal-categories">
-                    <div class="cat-pill active" onclick="App.filter('Todo')">🌟 Todos</div>
-                    <div class="cat-pill" onclick="App.filter('Fritanga')">🥘 Fritangas</div>
-                    <div class="cat-pill" onclick="App.filter('Mercado')">🛒 Mercados</div>
-                    <div class="cat-pill" onclick="App.filter('Farmacia')">💊 Farmacias</div>
-                </div>
-
-                <div class="main-banner">
-                    <div class="banner-content">
-                        <span class="badge-promo">NUEVO</span>
-                        <h2>Envíos Express C$ 35</h2>
-                        <p>Válido en todo el casco urbano.</p>
-                    </div>
-                </div>
-
-                <h3 class="section-label">Comercios Afiliados</h3>
-                <div id="market-grid" class="market-grid">
-                    </div>
+                <div class="banner"><h3>Envíos C$ 35 en todo el casco urbano</h3></div>
+                <div id="product-list" class="grid"></div>
             </section>
 
-            <section id="view-socio" class="view">
-                <div class="admin-header">
-                    <h2>Panel de Afiliado</h2>
-                    <p>Sube tus productos al catálogo nacional.</p>
+            <section id="view-admin" class="view">
+                <div class="card">
+                    <h3>Registrar Producto</h3>
+                    <input type="text" id="p-name" placeholder="Nombre (ej. Quesillo)">
+                    <input type="number" id="p-price" placeholder="Precio C$">
+                    <button onclick="App.save()">Publicar Ahora</button>
                 </div>
-                
-                <div class="form-card">
-                    <div class="input-field">
-                        <label>Nombre del Producto</label>
-                        <input type="text" id="p-name" placeholder="Ej: Quesillo con Cacao">
-                    </div>
-                    <div class="row">
-                        <div class="input-field">
-                            <label>Precio (C$)</label>
-                            <input type="number" id="p-price" placeholder="0.00">
-                        </div>
-                        <div class="input-field">
-                            <label>Categoría</label>
-                            <select id="p-cat">
-                                <option value="Fritanga">Fritanga</option>
-                                <option value="Mercado">Mercado</option>
-                                <option value="Farmacia">Farmacia</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button class="btn-primary" onclick="App.registerProduct()">Publicar Producto</button>
-                </div>
-
-                <h3 class="section-label">Mis Ventas Activas</h3>
-                <div id="my-inventory" class="inventory-list"></div>
-            </section>
-
-            <section id="view-cart" class="view">
-                <div class="cart-container">
-                    <h2>Tu Pedido</h2>
-                    <div id="cart-items-list" class="cart-list"></div>
-                    
-                    <div class="billing-card">
-                        <div class="bill-row"><span>Subtotal</span> <b id="subtotal">C$ 0.00</b></div>
-                        <div class="bill-row"><span>Costo de Envío</span> <b>C$ 35.00</b></div>
-                        <div class="bill-row"><span>IVA (15%)</span> <b id="tax">C$ 0.00</b></div>
-                        <hr>
-                        <div class="bill-row total"><span>Total a Pagar</span> <b id="total">C$ 0.00</b></div>
-                        <button class="btn-checkout" onclick="App.checkout()">Confirmar Orden</button>
-                    </div>
-                </div>
+                <div id="my-items"></div>
             </section>
         </main>
 
-        <nav class="bottom-dock">
-            <div class="dock-item active" onclick="App.nav('home', this)">
-                <span class="icon">🏠</span><span>Inicio</span>
-            </div>
-            <div class="dock-item" onclick="App.nav('socio', this)">
-                <span class="icon">🏢</span><span>Afiliarse</span>
-            </div>
-            <div class="dock-item" onclick="App.nav('cart', this)">
-                <div class="badge-cart" id="cart-badge">0</div>
-                <span class="icon">🛍️</span><span>Pedido</span>
-            </div> 
-            <div class="dock-item" onclick="alert('Perfil de Yader')">
-                <span class="icon">👤</span><span>Perfil</span>
-            </div>
+        <nav class="tabs">
+            <div onclick="App.nav('home')">🏠<br>Inicio</div>
+            <div onclick="App.nav('admin')">🏢<br>Vender</div>
+            <div onclick="alert('Perfil Pro')">👤<br>Perfil</div>
         </nav>
     </div>
 

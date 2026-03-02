@@ -3,96 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>PinolApp Comercial | Nicaragua</title>
+    <title>PinolApp Premium 🇳🇮</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <div id="splash" class="splash">
-        <div class="logo-anim">
-            <h1 class="logo">Pinol<span>app</span></h1>
-            <div class="loader-line"><div class="fill"></div></div>
-            <p class="legado">NEGOCIOS LOCALES 🇳🇮</p>
+        <div class="logo-container">
+            <h1 class="logo-anim">Pinol<span>app</span></h1>
+            <div class="shimmer-bar"></div>
+            <p class="fade-in-text">POTENCIANDO EL COMERCIO LOCAL</p>
         </div>
     </div>
 
     <div id="app" class="hidden">
-        <header class="app-header">
-            <div class="header-top">
-                <div class="location">
-                    <small>Entregar en</small>
-                    <b>Managua, Nicaragua 📍</b>
+        <header class="glass-header">
+            <div class="user-row">
+                <div class="loc-box">
+                    <span class="pulse-dot"></span>
+                    <div>
+                        <small>Entregar en</small>
+                        <b>Managua, Nicaragua 📍</b>
+                    </div>
                 </div>
-                <div class="cart-trigger" onclick="App.nav('cart')">
-                    🛒 <span id="cart-count">0</span>
-                </div>
+                <div class="profile-circle" onclick="App.nav('perfil')">YV</div>
             </div>
-            <div class="search-wrap">
-                <input type="text" placeholder="Busca fritangas, tiendas o mandados..." id="main-search">
+            <div class="search-main">
+                <input type="text" placeholder="¿Qué buscamos hoy, Yader?" id="search">
+                <button class="filter-icon">🔘</button>
             </div>
         </header>
 
-        <section id="view-home" class="screen active">
-            <div class="categories-strip">
-                <div class="cat-pill" onclick="App.filter('Fritanga')">🥘 Fritangas</div>
-                <div class="cat-pill" onclick="App.filter('Farmacia')">💊 Farmacias</div>
-                <div class="cat-pill" onclick="App.filter('Mercado')">🛒 Mercados</div>
-                <div class="cat-pill" onclick="App.filter('Mandado')">🏍️ Mandados</div>
-            </div>
-
-            <div class="promo-slider">
-                <div class="slide">
-                    <h3>¡Envío Gratis! 🇳🇮</h3>
-                    <p>En tu primer pedido mayor a C$ 300</p>
-                </div>
-            </div>
-
-            <h3 class="label">Comercios Afiliados</h3>
-            <div id="product-grid" class="product-grid"></div>
-        </section>
-
-        <section id="view-vender" class="screen">
-            <div class="admin-card">
-                <h2>Panel de Comercio 🏪</h2>
-                <p>Publica tus productos para venta inmediata.</p>
-                
-                <div class="input-group">
-                    <input type="text" id="p-title" placeholder="Nombre del producto">
-                    <input type="number" id="p-price" placeholder="Precio en C$">
-                    <select id="p-category">
-                        <option value="Fritanga">Fritanga</option>
-                        <option value="Mercado">Mercado</option>
-                        <option value="Farmacia">Farmacia</option>
-                        <option value="Mandado">Mandado</option>
-                    </select>
-                    <button class="btn-publish" onclick="App.publish()">Publicar ahora</button>
+        <main class="content-wrapper">
+            <section id="view-home" class="screen active">
+                <div class="category-scroll">
+                    <div class="cat-item active" onclick="App.filter('Todo')">🌟 Todos</div>
+                    <div class="cat-item" onclick="App.filter('Fritanga')">🥘 Fritangas</div>
+                    <div class="cat-item" onclick="App.filter('Tienda')">🛍️ Tiendas</div>
+                    <div class="cat-item" onclick="App.filter('Farmacia')">💊 Farmacia</div>
                 </div>
 
-                <h4 style="margin-top:30px">Tus Ventas Activas</h4>
-                <div id="my-products" class="my-list"></div>
-            </div>
-        </section>
-
-        <section id="view-cart" class="screen">
-            <div class="cart-container">
-                <h2>Tu Carrito</h2>
-                <div id="cart-items"></div>
-                <div class="checkout-box">
-                    <div class="row"><span>Subtotal:</span> <b id="subtotal">C$ 0</b></div>
-                    <div class="row"><span>Envío:</span> <b>C$ 40</b></div>
-                    <hr>
-                    <div class="row total"><span>Total:</span> <b id="final-total">C$ 0</b></div>
-                    <button class="btn-order" onclick="App.completeOrder()">Confirmar Pedido</button>
+                <div class="featured-banner">
+                    <div class="overlay">
+                        <span class="tag">PROMO</span>
+                        <h2>Fritangas con 0% Envío</h2>
+                        <p>Solo por hoy en Managua</p>
+                    </div>
                 </div>
-            </div>
-        </section>
+
+                <h3 class="label-section">Comercios destacados</h3>
+                <div id="feed-comercial" class="feed-grid"></div>
+            </section>
+
+            <section id="view-vender" class="screen">
+                <div class="admin-header">
+                    <h2>Panel de Negocio</h2>
+                    <p>Gestiona tus productos y ventas reales.</p>
+                </div>
+                <div class="card-form">
+                    <input type="text" id="p-name" placeholder="Nombre del producto (ej. Quesillo)">
+                    <div class="row-input">
+                        <input type="number" id="p-price" placeholder="Precio C$">
+                        <select id="p-cat">
+                            <option value="Fritanga">Fritanga</option>
+                            <option value="Tienda">Tienda</option>
+                            <option value="Farmacia">Farmacia</option>
+                        </select>
+                    </div>
+                    <button class="btn-gradient" onclick="App.addProduct()">Publicar en PinolApp</button>
+                </div>
+                <h4 class="label-section">Mis Productos Activos</h4>
+                <div id="my-inventory" class="inventory-list"></div>
+            </section>
+
+            <section id="view-cart" class="screen">
+                <div class="cart-header">
+                    <h2>Tu Orden</h2>
+                </div>
+                <div id="cart-list" class="cart-items-container"></div>
+                <div class="summary-card">
+                    <div class="s-row"><span>Subtotal</span> <b id="subtotal">C$ 0</b></div>
+                    <div class="s-row"><span>Envío</span> <b>C$ 45</b></div>
+                    <div class="s-row total"><span>Total</span> <b id="total-final">C$ 0</b></div>
+                    <button class="btn-checkout" onclick="App.processOrder()">Confirmar Pago en Córdobas</button>
+                </div>
+            </section>
+        </main>
 
         <nav class="dock-nav">
-            <div class="tab active" onclick="App.nav('home', this)">🏠<span>Inicio</span></div>
-            <div class="tab" onclick="App.nav('vender', this)">🏢<span>Vender</span></div>
-            <div class="tab" onclick="App.nav('cart', this)">🛒<span>Carrito</span></div>
-            <div class="tab" onclick="alert('Configuración de cuenta')">👤<span>Perfil</span></div>
+            <div class="dock-item active" onclick="App.nav('home', this)">
+                <span class="d-icon">🏠</span><small>Inicio</small>
+            </div>
+            <div class="dock-item" onclick="App.nav('vender', this)">
+                <span class="d-icon">🏢</span><small>Vender</small>
+            </div>
+            <div class="dock-item" onclick="App.nav('cart', this)">
+                <div class="cart-badge" id="cart-dot">0</div>
+                <span class="d-icon">🛒</span><small>Pedido</small>
+            </div>
+            <div class="dock-item" onclick="alert('Historial de Ventas')">
+                <span class="d-icon">📊</span><small>Ventas</small>
+            </div>
         </nav>
     </div>
 
